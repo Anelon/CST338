@@ -77,6 +77,13 @@ class Card
       return true;
    }
 
+   //takes both values and sets them
+   public boolean set(char newValue, Suit newSuit)
+   {
+      setSuit(newSuit);
+      return setValue(newValue);
+   }
+
    //returns the value of the card as a char
    public char getValue()
    {
