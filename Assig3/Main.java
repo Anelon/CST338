@@ -3,25 +3,59 @@
 import java.util.Scanner;
 import java.text.DecimalFormat;
 import java.util.Random;
+
+
 class Card
 {
    public enum Suit {spades, hearts, clubs, diamonds};
    private char value;
+   private static final char ACE = 'A', KING = 'K', QUEEN = 'Q', JACK = 'J';
+   private static final char TEN = 'T';
+   private static final int MIN_VALUE = 2, MAX_VALUE = 9;
    private Suit suit;
+   private boolean errorFlag;
 
    //default constructor
    public Card()
    {
       value = '0';
       suit = Suit.spades;
+      errorFlag = true;
+   }
+
+   //get Number for the card returns if its valid and value was set
+   boolean setValue(char cardNumber) 
+   {
+      if ((cardNumber >= MIN_VALUE && cardNumber <= MAX_VALUE)
+            || cardNumber == ACE
+            )
+      {
+         value = cardNumber;
+         return true;
+      }
+      return false;
+   }
+
+   //returns the value of the card as a char
+   public char getValue()
+   {
+      return value;
+   }
+
+   //returns the suit of the card as an enum
+   public Suit getSuit()
+   {
+      return suit;
    }
 
    public Card(char cardNumber, Suit suit)
    {
+      setValue(cardNumber);
 
    }
    public Card(Card copy)
    {
+      setValue(copy.getValue());
 
    }
 
