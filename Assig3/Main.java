@@ -8,32 +8,73 @@ import java.util.Random;
 class Card
 {
    public enum Suit {spades, hearts, clubs, diamonds};
-   private char value;
+   //Characters to hold the values cards can be
    private static final char ACE = 'A', KING = 'K', QUEEN = 'Q', JACK = 'J';
    private static final char TEN = 'T';
-   private static final int MIN_VALUE = 2, MAX_VALUE = 9;
+   private static final char MIN_VALUE = '2', MAX_VALUE = '9';
+
+   //private class values of suit, card value, and errorflag
    private Suit suit;
-   private boolean errorFlag;
+   private char value;
+   //holds if an error has occured
+   private boolean errorFlag = false;
+
+   //Static finals for default card values
+   public static final Suit DEFAULT_SUIT = Suit.spades;
+   public static final char DEFAULT_VALUE = ACE;
+
+   //card to string converter
+   public String toString()
+   {
+      if(errorFlag)
+         return "[Invalid]";
+      return value + " of " + suit;
+
+   }
+
+   //returns if this card and another card are the same
+   public boolean equals(Card card)
+   {
+      return card.getValue() == value && card.getSuit() == suit;
+   }
 
    //default constructor
    public Card()
    {
-      value = '0';
+      value = ACE;
       suit = Suit.spades;
-      errorFlag = true;
    }
 
-   //get Number for the card returns if its valid and value was set
-   boolean setValue(char cardNumber) 
+   //For use of checking of the values are valid
+   boolean isValid(char newValue, Suit newSuit)
    {
-      if ((cardNumber >= MIN_VALUE && cardNumber <= MAX_VALUE)
-            || cardNumber == ACE
-            )
+      if ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
+            || newValue == ACE || newValue == KING || newValue == QUEEN
+            || newValue == TEN || newValue == JACK)
       {
-         value = cardNumber;
          return true;
       }
       return false;
+   }
+
+   //get Number for the card returns if its valid and value was set
+   public boolean setValue(char newValue)
+   {
+      if (isValid(newValue, suit))
+      {
+         value = newValue;
+         errorFlag = false;
+         return true;
+      }
+      errorFlag = true;
+      return false;
+   }
+
+   //takes in a new suit and if its valid sets the suit and returns true
+   public boolean setSuit(Suit newSuit)
+   {
+      suit = newSuit;
+      return true;
    }
 
    //returns the value of the card as a char
@@ -48,21 +89,32 @@ class Card
       return suit;
    }
 
-   public Card(char cardNumber, Suit suit)
+   //returns if an error has occured
+   public boolean getErrorFlag()
    {
-      setValue(cardNumber);
-
+      return errorFlag;
    }
+
+   //collection of constructors
+   public Card(char newValue, Suit newSuit)
+   {
+      errorFlag = !setValue(newValue);
+      setSuit(newSuit);
+   }
+   public Card(Suit newSuit)
+   {
+      this(ACE, newSuit);
+   }
+   public Card(char newValue)
+   {
+      this(newValue, Suit.spades);
+   }
+   //constructor for duplicating cards
    public Card(Card copy)
    {
-      setValue(copy.getValue());
+      errorFlag = !setValue(copy.getValue());
+      setSuit(copy.getSuit());
 
-   }
-
-   //card to string converter
-   public String toString()
-   {
-      return "Card";
    }
 }
 
@@ -99,7 +151,7 @@ class Deck
          for (int masterIndex = 0; masterIndex < masterPack.length; ++masterIndex)
          {
             cards[totalCardIndex] = new Card(masterPack[masterIndex]);
-               ++totalCardIndex;
+            ++totalCardIndex;
          }
       }
    }
@@ -160,14 +212,14 @@ class Deck
    {
       switch (toBeConverted)
       {
-         case 0:
-            return Card.Suit.hearts;
-         case 1:
-            return Card.Suit.clubs;
-         case 2:
-            return Card.Suit.diamonds;
-         default:
-            return Card.Suit.spades;
+      case 0:
+         return Card.Suit.hearts;
+      case 1:
+         return Card.Suit.clubs;
+      case 2:
+         return Card.Suit.diamonds;
+      default:
+         return Card.Suit.spades;
       }
 
    }
@@ -184,27 +236,33 @@ class Deck
             for (int cardNum = 1; cardNum <=13; ++cardNum)
             {
                char cardValue = (char)cardNum;
-               switch (cardNum) {
-                  case 1: {
-                     cardValue = 'A';
-                     break;
-                  }
-                  case 10: {
-                     cardValue = 'T';
-                     break;
-                  }
-                  case 11: {
-                     cardValue = 'J';
-                     break;
-                  }
-                  case 12: {
-                     cardValue = 'Q';
-                     break;
-                  }
-                  case 13: {
-                     cardValue = 'K';
-                     break;
-                  }
+               switch (cardNum)
+               {
+               case 1:
+               {
+                  cardValue = 'A';
+                  break;
+               }
+               case 10:
+               {
+                  cardValue = 'T';
+                  break;
+               }
+               case 11:
+               {
+                  cardValue = 'J';
+                  break;
+               }
+               case 12:
+               {
+                  cardValue = 'Q';
+                  break;
+               }
+               case 13:
+               {
+                  cardValue = 'K';
+                  break;
+               }
                }
                masterPack[masterIndex] = new Card(cardValue, intToSuit(suitInt));
                ++masterIndex;
@@ -248,14 +306,40 @@ class Hand
 
 public class Main
 {
+   //set up scanner object
+   Scanner keyboard = new Scanner(System.in);
+   //boolean that runs the class tests if true
+   private static boolean TESTING = true;
+
    public static void main(String[] args)
    {
-      //set up scanner object
-      Scanner keyboard = new Scanner(System.in);
+      if(TESTING)
+      {
+         CardTest.main();
+      }
+   }
+}
 
-      System.out.print("Please enter your first name: ");
-      String firstName = keyboard.next();
+class CardTest
+{
+   static final int TEST_CARD_SIZE = 3;
+   static Card[] testCards = new Card[TEST_CARD_SIZE];
 
-      System.out.println(firstName);
+   public static void main()
+   {
+      //set up test of card class
+      testCards[0] = new Card('Q', Card.Suit.hearts);
+      testCards[1] = new Card('D', Card.Suit.hearts);
+      testCards[2] = new Card();
+      //print test cards
+      for(Card card : testCards)
+         System.out.println(card.toString());
+      //fix the 2 bad ones
+      testCards[1].setValue('6');
+      testCards[2].setValue('F');
+      System.out.println();
+      //print fixed test cards
+      for(Card card : testCards)
+         System.out.println(card.toString());
    }
 }
