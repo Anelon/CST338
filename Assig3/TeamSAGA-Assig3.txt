@@ -310,7 +310,7 @@ public class Main
    //set up scanner object
    Scanner keyboard = new Scanner(System.in);
    //boolean that runs the class tests if true
-   private static boolean TESTING = true;
+   private static final boolean TESTING = true;
 
    public static void main(String[] args)
    {
