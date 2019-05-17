@@ -321,7 +321,7 @@ public class Main
    static final int TEST_CARD_SIZE = 3;
    static Card[] testCards = new Card[TEST_CARD_SIZE];
 
-   public static void main()
+   public static void main(String[] args)
    {
       if(TESTING)
       {
