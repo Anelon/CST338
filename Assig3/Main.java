@@ -318,22 +318,13 @@ public class Main
    //boolean that runs the class tests if true
    private static final boolean TESTING = true;
 
-   public static void main(String[] args)
-   {
-      if(TESTING)
-      {
-         CardTest.main();
-      }
-   }
-}
-
-class CardTest
-{
    static final int TEST_CARD_SIZE = 3;
    static Card[] testCards = new Card[TEST_CARD_SIZE];
 
    public static void main()
    {
+      if(TESTING)
+      {
       //set up test of card class
       testCards[0] = new Card('Q', Card.Suit.hearts);
       testCards[1] = new Card('D', Card.Suit.hearts);
@@ -348,5 +339,7 @@ class CardTest
       //print fixed test cards
       for(Card card : testCards)
          System.out.println(card);
+      //End of Card class Testing
+      }
    }
 }
