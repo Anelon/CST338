@@ -347,6 +347,6 @@ class CardTest
       System.out.println();
       //print fixed test cards
       for(Card card : testCards)
-         System.out.println(card.toString());
+         System.out.println(card);
    }
 }
