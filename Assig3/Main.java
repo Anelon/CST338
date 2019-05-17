@@ -46,7 +46,7 @@ class Card
    }
 
    //For use of checking of the values are valid
-   boolean isValid(char newValue, Suit newSuit)
+   private boolean isValid(char newValue, Suit newSuit)
    {
       if ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
             || newValue == ACE || newValue == KING || newValue == QUEEN
