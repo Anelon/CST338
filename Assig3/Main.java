@@ -465,6 +465,17 @@ public class Main
     	  System.out.println(testDeckSixPacks.dealCard());
       }
 
+      
+      testDeckOnePack.shuffle();
+      System.out.println(testDeckOnePack.inspectCard(2));
+      System.out.println(testDeckOnePack.getTopCard());
+      System.out.println(testDeckOnePack.inspectCard(2));
+      System.out.println(testDeckOnePack.getTopCard());
+      
+      
+      /*
+       * Attempt to throw an error by creating a set larger than Deck.MAX_CARDS
+       
       Deck testDeckTooManyPacks = new Deck(7);
       for (int i = 0; i < 7*52; ++i)
       {
@@ -475,5 +486,6 @@ public class Main
       {
     	  System.out.println(testDeckTooManyPacks.dealCard());
       }
+      */
    }
 }
