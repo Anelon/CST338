@@ -136,7 +136,7 @@ class Card
 /**
  * Class containing data for a deck of cards.  Contains static information of
  * all possible cards as well as current in-use cards/order within the Deck object.
- * 
+ *
  * public static int MAX_CARDS - Maximum number of cards allowed in play at once.
  * private Card[] cards - current "in use" cards for playing
  * private int topCard - top card of the deck, next to be "dealt".
@@ -146,32 +146,40 @@ class Deck
 {
 
 
+   private Card[] cards;
+   private int topCard;
+   public final int MAX_CARDS = 6*52;
+   private static Card[] masterPack = new Card[52];
+
    
+
    
-   
-   
+
+
    /**
     * Constructor that creates the deck based on the number of "packs" given.
     * Note that only a maximum of MAX_CARDS cards can be used.
-    * 
+    *
     * @param numPacks - number of traditional 52 card packs to be used in deck creation
     */
    public Deck(int numPacks)
    {
 
       allocateMasterPack();
+      
       if (52*numPacks > MAX_CARDS)
          cards = new Card[MAX_CARDS];
       else
          cards = new Card[52*numPacks];
+      
       init(numPacks);
    }
 
-   
-   
-   
-   
-   
+
+
+
+
+
    /**
     * Empty constructor. Initializes the deck with a default of a single 52 card pack.
     */
@@ -181,15 +189,15 @@ class Deck
    }
 
 
-   
-   
-   
-   
+
+
+
+
    /**
     * initializes the playable cards in cards[] based on the number of packs.
     * The resulting cards[] object will contain ((int)numPacks) copies of the masterPack.
     * Called by the constructors.
-    * 
+    *
     * @param numPacks number of 52 card packs to be used
     */
    public void init(int numPacks)
@@ -207,18 +215,19 @@ class Deck
    }
 
 
-   
-   
-   
-   
+
+
+
+
    /**
-    * Randomizes the cards within the in-use cards[] object and resets the topCard to 
+    * Randomizes the cards within the in-use cards[] object and resets the topCard to
     * the first position.
     */
    public void shuffle()
    {
       Random randomGenerator = new Random();
       int randomIndex = randomGenerator.nextInt(cards.length);
+      
       for (int i = 0; i < cards.length; ++i)
       {
          Card placeholder = new Card(cards[randomIndex]);
@@ -226,6 +235,7 @@ class Deck
          cards[i] = placeholder;
          randomIndex = randomGenerator.nextInt(cards.length);
       }
+      
       topCard = 0;
    }
 
@@ -233,7 +243,7 @@ class Deck
    /**
     * "Deals" the top card from the deck. The next card in cards[] becomes the new
     * topCard.
-    * 
+    *
     * @return the topCard at the time of calling
     */
    public Card dealCard()
@@ -246,7 +256,7 @@ class Deck
     * Gives information from the card at the given index within cards[].
     * Note that the card at the index is not returned, only a copy in order
     * to prevent the card itself from being altered in any way.
-    * 
+    *
     * @param k - index of cards[] to be checked
     * @return a copy of the Card object at cards[k]
     */
@@ -267,7 +277,7 @@ class Deck
 
    /**
     * Functions similarly to inspectCard, but only inspects the current topCard.
-    * 
+    *
     * @return a copy of the topCard; the Card object at cards[0]
     */
    public Card getTopCard()
@@ -276,10 +286,10 @@ class Deck
    }
 
 
-   
-   
-   
-   
+
+
+
+
    /**
     * The following function converts int values to a Card.Suit enum.
     * For use with quick access of enums.
@@ -349,18 +359,13 @@ class Deck
                      break;
                   }
                }
+               
                masterPack[masterIndex] = new Card(cardValue, intToSuit(suitInt));
                ++masterIndex;
             }
          }
       }
    }
-
-   private Card[] cards;
-   private int topCard;
-   public final int MAX_CARDS = 6*52;
-   private static Card[] masterPack = new Card[52];
-
 }
 
 
