@@ -139,7 +139,12 @@ class Deck
 
    public Deck(int numPacks)
    {
+	  
       allocateMasterPack();
+      if (52*numPacks > MAX_CARDS)
+         cards = new Card[MAX_CARDS];
+      else
+         cards = new Card[52*numPacks];
       init(numPacks);
    }
 
@@ -179,6 +184,7 @@ class Deck
          cards[i] = placeholder;
          randomIndex = randomGenerator.nextInt(cards.length);
       }
+      topCard = 0;
    }
 
 
@@ -245,7 +251,7 @@ class Deck
          {
             for (int cardNum = 1; cardNum <=13; ++cardNum)
             {
-               char cardValue = (char)cardNum;
+               char cardValue = (char)('0' + cardNum);
                switch (cardNum)
                {
                case 1:
@@ -357,6 +363,7 @@ class Hand
 }
 
 
+
 public class Main
 {
    //set up scanner object
@@ -429,6 +436,44 @@ public class Main
       System.out.println("After playing all cards");
       System.out.println(myHand.toString());
       
+
       
+      System.out.println("####################" + "\n" +
+    		  			 "### Deck Testing ###" + "\n"+
+    		             "####################" + "\n\n");
+      
+      
+      Deck testDeckOnePack = new Deck();
+      for (int i = 0; i < 52; ++i)
+      {
+    	  System.out.println(testDeckOnePack.dealCard());
+      }
+      testDeckOnePack.shuffle();
+      for (int i = 0; i < 52; ++i)
+      {
+    	  System.out.println(testDeckOnePack.dealCard());
+      }
+      
+      Deck testDeckSixPacks = new Deck(6);
+      for (int i = 0; i < 6*52; ++i)
+      {
+    	  System.out.println(testDeckSixPacks.dealCard());
+      }
+      testDeckSixPacks.shuffle();
+      for (int i = 0; i < 6*52; ++i)
+      {
+    	  System.out.println(testDeckSixPacks.dealCard());
+      }
+
+      Deck testDeckTooManyPacks = new Deck(7);
+      for (int i = 0; i < 7*52; ++i)
+      {
+    	  System.out.println(testDeckTooManyPacks.dealCard());
+      }
+      testDeckTooManyPacks.shuffle();
+      for (int i = 0; i < 7*52; ++i)
+      {
+    	  System.out.println(testDeckTooManyPacks.dealCard());
+      }
    }
 }
