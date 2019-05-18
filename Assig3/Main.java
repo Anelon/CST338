@@ -332,9 +332,9 @@ class Hand
       
       String cards = "";
       for(int i = 0; i<numCards; i++) {
-         cards += myCards[i].getValue() + " of " + myCards[i].getSuit() + ",";
+         cards += myCards[i].getValue() + " of " + myCards[i].getSuit() + ", ";
       }
-      return "Hand = ( " + cards + ") ";
+      return "Hand = (" + cards + ") ";
    }
    //Accessor for numCards.
    
@@ -394,22 +394,20 @@ public class Main
       System.out.println("");
       System.out.println("**Testing the hand class**");
       Hand myHand = new Hand();
+        
+      myHand.takeCard(new Card ('A', Card.Suit.hearts));
+      myHand.takeCard(new Card ('Q', Card.Suit.clubs));
+      myHand.takeCard(new Card ('9', Card.Suit.spades));
+      myHand.takeCard(new Card ('2', Card.Suit.diamonds));   
+      myHand.takeCard(new Card ('A', Card.Suit.hearts));
+      myHand.takeCard(new Card ('Q', Card.Suit.clubs));
+      myHand.takeCard(new Card ('9', Card.Suit.spades));
+      myHand.takeCard(new Card ('2', Card.Suit.diamonds));  
+      myHand.takeCard(new Card ('A', Card.Suit.hearts));
+      myHand.takeCard(new Card ('Q', Card.Suit.clubs));
+      myHand.takeCard(new Card ('9', Card.Suit.spades));
+      myHand.takeCard(new Card ('2', Card.Suit.diamonds));  
       
-      while(true) {
-         myHand.takeCard(new Card ('A', Card.Suit.hearts));
-         myHand.takeCard(new Card ('Q', Card.Suit.clubs));
-         myHand.takeCard(new Card ('9', Card.Suit.spades));
-         myHand.takeCard(new Card ('2', Card.Suit.diamonds));   
-         myHand.takeCard(new Card ('A', Card.Suit.hearts));
-         myHand.takeCard(new Card ('Q', Card.Suit.clubs));
-         myHand.takeCard(new Card ('9', Card.Suit.spades));
-         myHand.takeCard(new Card ('2', Card.Suit.diamonds)); 
-         myHand.takeCard(new Card ('A', Card.Suit.hearts));
-         myHand.takeCard(new Card ('Q', Card.Suit.clubs));
-         myHand.takeCard(new Card ('9', Card.Suit.spades));
-         myHand.takeCard(new Card ('2', Card.Suit.diamonds)); 
-         break;
-      }
       
       System.out.println(myHand.toString());
       System.out.println("");
