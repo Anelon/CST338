@@ -1,8 +1,11 @@
 /** Team SAGA */
 /** Card Deck */
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.text.DecimalFormat;
 import java.util.Random;
+import java.lang.IllegalArgumentException;
 
 
 class Card
@@ -287,27 +290,70 @@ class Deck
 
 class Hand
 {
-   //need to change the amount of cards (or use an arrayList?)
-   private static Card[] myArray = new Card[120];
-   private static int numCards;
+      
+ //Keeps track the numbers of cards
+   private static int numCards; 
+   public static int MAX_CARDS = 100; 
+   private static Card[] myCards = new Card[MAX_CARDS];
 
    //default constructor
    public Hand()
    {
-      numCards = -1;
+      resetHand();
+   }
+   
+   //remove all cards from the hand 
+   public void resetHand() {
+      
+      myCards = new Card[MAX_CARDS];
+      numCards = 0;
+      
    }
 
    //Helper function to take a newCard from the table and add to myArray
-   public void takeCard(Card newCard)
+   public boolean takeCard(Card newCard)
    {
-      return;
+      myCards[numCards] = newCard;
+      ++numCards;
+      
+      return true;
    }
 
    //Remove card from hand and return that card
+   
    public Card playCard()
    {
-      return myArray[0];
+      --numCards;
+      return myCards[numCards];
    }
+   
+   //Used prior to displaying the entire hand.
+   public String toString() {
+      
+      String cards = "";
+      for(int i = 0; i<numCards; i++) {
+         cards += myCards[i].getValue() + " of " + myCards[i].getSuit() + ",";
+      }
+      return "Hand = ( " + cards + ") ";
+   }
+   //Accessor for numCards.
+   
+   public int getnumCards() {
+      
+      return numCards;
+   }
+      
+   //Accessor for an individual card and returns a card with errorFalg if K is not valid.
+   
+   public Card inspectCard(int k) {
+      
+      if (k<=MAX_CARDS && k>=0){ 
+         return myCards[k];             
+      }   
+      return new Card('T', Card.Suit.hearts);
+   }
+
+
 }
 
 
@@ -323,6 +369,8 @@ public class Main
 
    public static void main(String[] args)
    {
+      
+      
       if(TESTING)
       {
       //set up test of card class
@@ -341,5 +389,48 @@ public class Main
          System.out.println(card);
       //End of Card class Testing
       }
+      
+      //Testing hand class
+      System.out.println("");
+      System.out.println("**Testing the hand class**");
+      Hand myHand = new Hand();
+      
+      while(true) {
+         myHand.takeCard(new Card ('A', Card.Suit.hearts));
+         myHand.takeCard(new Card ('Q', Card.Suit.clubs));
+         myHand.takeCard(new Card ('9', Card.Suit.spades));
+         myHand.takeCard(new Card ('2', Card.Suit.diamonds));   
+         myHand.takeCard(new Card ('A', Card.Suit.hearts));
+         myHand.takeCard(new Card ('Q', Card.Suit.clubs));
+         myHand.takeCard(new Card ('9', Card.Suit.spades));
+         myHand.takeCard(new Card ('2', Card.Suit.diamonds)); 
+         myHand.takeCard(new Card ('A', Card.Suit.hearts));
+         myHand.takeCard(new Card ('Q', Card.Suit.clubs));
+         myHand.takeCard(new Card ('9', Card.Suit.spades));
+         myHand.takeCard(new Card ('2', Card.Suit.diamonds)); 
+         break;
+      }
+      
+      System.out.println(myHand.toString());
+      System.out.println("");
+      System.out.println("Testing inspectCard()");
+      System.out.println("** legal **");
+      System.out.println(myHand.inspectCard(0));
+      System.out.println(myHand.inspectCard(2));
+      System.out.println(myHand.inspectCard(10));
+      System.out.println("** illegal **");
+      System.out.println(myHand.inspectCard(30));
+      System.out.println(myHand.inspectCard(200));
+      System.out.println(myHand.inspectCard(-1));
+      
+      while(myHand.getnumCards()!= 0) {
+         System.out.println("playing " + myHand.playCard());
+      }      
+      myHand.resetHand();
+      System.out.println("");
+      System.out.println("After playing all cards");
+      System.out.println(myHand.toString());
+      
+      
    }
 }
