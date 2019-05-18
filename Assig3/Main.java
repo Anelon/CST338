@@ -305,7 +305,7 @@ class Hand
    //default constructor
    public Hand()
    {
-      resetHand();
+      Hand.myCards= new Card[MAX_CARDS];
    }
    
    //remove all cards from the hand 
@@ -330,7 +330,9 @@ class Hand
    public Card playCard()
    {
       --numCards;
-      return myCards[numCards];
+      Card cardDrawn = myCards[numCards];
+      myCards[numCards] = null;
+      return cardDrawn;
    }
    
    //Used prior to displaying the entire hand.
@@ -424,7 +426,6 @@ public class Main
       System.out.println(myHand.inspectCard(2));
       System.out.println(myHand.inspectCard(10));
       System.out.println("** illegal **");
-      System.out.println(myHand.inspectCard(30));
       System.out.println(myHand.inspectCard(200));
       System.out.println(myHand.inspectCard(-1));
       
@@ -435,7 +436,7 @@ public class Main
       System.out.println("");
       System.out.println("After playing all cards");
       System.out.println(myHand.toString());
-      
+      System.out.println("");
 
       
       System.out.println("####################" + "\n" +
