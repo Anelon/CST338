@@ -599,7 +599,11 @@ public class Main
       
       
       
-//Deck and Hand Testing
+      //Deck and Hand Testing, Phase 4
+      //Asks user for number of hands, between 1-10
+      //Creates a deck (unshuffled) and distributes it evenly between hands
+      //Resets hands and deck and shuffles cards
+      //Again, distributes cards evenly between hands.
       System.out.println("");
       System.out.println("Deck + Hand Testing");
       
@@ -630,7 +634,7 @@ public class Main
       }
       
       //Places cards in hands
-      int deckPosition = 0; // initial starting point of array of hands
+      int deckPosition = 0; // initial starting point for array of hands
       for (int i = 0; i < 52; i++) {
          if (deckPosition > totalHands - 1) {
             deckPosition = 0; //resets to first hand, if last hand position is reached
