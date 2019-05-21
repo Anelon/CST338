@@ -1,7 +1,23 @@
 /** Team SAGA - 
- * Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado  */
+ * Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado  
+ * CST 338
+ * 5-21-2019
+ *
+ * The following set of classes form a basic API
+ * for use with card-based games that require hands to be
+ * dealt from traditional playing cards.  The class set
+ * includes basic functionality for shuffling, deck-sizing,
+ * dealing, and drawing.
+ *
+ * Classes:
+ * Deck - Core deck class. Holds static card data for available
+ *    cards. Drawing/dealing/shuffling handled here.
+ * Hand - Hand class. Holds data for each hand/player. Minimal functionality.
+ *
+ * Card - Card class. Holds one of the standard playing card values after
+ *    initialization. Holds card-identifying data (Suite, value).
+ */
 
-/** Card Deck */
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
