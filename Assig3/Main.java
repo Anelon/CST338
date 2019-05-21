@@ -391,22 +391,22 @@ class Deck
 
 
 
-
+/*This the hand class. It holds data for the player's hand.*/
 class Hand
 {
 
-   //Keeps track the numbers of cards
+   /*Keeps track the numbers of cards. */
    private int numCards;
    public static int MAX_CARDS = 100;
    private Card[] myCards = new Card[MAX_CARDS];
 
-   //default constructor
+   /*Default constructor for the hand class.*/
    public Hand()
    {
       this.myCards= new Card[MAX_CARDS];
    }
 
-   //remove all cards from the hand
+   /*This function remove all cards from the hand. */
    public void resetHand() {
 
       myCards = new Card[MAX_CARDS];
@@ -414,7 +414,8 @@ class Hand
 
    }
 
-   //Helper function to take a newCard from the table and add to myArray
+   /*This is a helper function to take a newCard 
+    * from the table and add to myCards */
    public boolean takeCard(Card newCard)
    {
       myCards[numCards] = newCard;
@@ -423,7 +424,8 @@ class Hand
       return true;
    }
 
-   //Remove card from hand and return that card
+   /*This function remove card from hand and
+    *  return that card. */
 
    public Card playCard()
    {
@@ -433,7 +435,8 @@ class Hand
       return cardDrawn;
    }
 
-   //Used prior to displaying the entire hand.
+   /*This function is used prior to displaying
+    *the entire hand.*/
    public String toString() {
 
       String cards = "";
@@ -442,14 +445,15 @@ class Hand
       }
       return "Hand = (" + cards + ") ";
    }
-   //Accessor for numCards.
+   /* This is the accessor method for numCards. */
 
    public int getnumCards() {
 
       return numCards;
    }
 
-   //Accessor for an individual card and returns a card with errorFalg if K is not valid.
+   /* This is accessor for an individual card and 
+    * it returns a card with errorFalg if K is not valid.*/
 
    public Card inspectCard(int k) {
 
