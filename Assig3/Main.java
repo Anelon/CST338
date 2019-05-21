@@ -607,16 +607,16 @@ public class Main
          hands[i] = new Hand();
       }
       
-      //By using modulo to calculate which hand to receive cards, the for loop will evenly 
-      //distribute cards to a different hand, each loop.
-      // ie:  0 mod 7 = position 0, 1 mod 7 = position 1, 2 mod 7 = position 2, etc.
-      //Loop stops before 52 because there are cards from 0-51
-      
+      //Places cards in hands
+      int deckPosition = 0; // initial starting point of array of hands
       for (int i = 0; i < 52; i++) {
-         hands[i % totalHands].takeCard(testerDeck.dealCard());
+         if (deckPosition > totalHands - 1) {
+            deckPosition = 0; //resets to first hand, if last hand position is reached
+         }
+         hands[deckPosition].takeCard(testerDeck.dealCard());
+         deckPosition++; //advances to next hand
                
       }
-
       //Print statement
       System.out.println("Here are our hand(s) from an unshuffled deck:");
       for (int i = 0; i< totalHands; i++) {
@@ -635,11 +635,16 @@ public class Main
       }
       
       
-      
       //Places cards in hand
-      for (int i = 0; i < 52; i++)
-      {
-            hands[i % totalHands].takeCard(testerDeck.dealCard() );
+      deckPosition = 0; 
+      for (int i = 0; i < 52; i++) {
+         hands[deckPosition].takeCard(testerDeck.dealCard());
+         deckPosition++; 
+         
+         if (deckPosition > totalHands - 1) {
+            deckPosition = 0; //resets to first hand, if last hand position is reached
+         }
+         
       }
       
      
