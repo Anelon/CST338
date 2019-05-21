@@ -1,4 +1,6 @@
-/** Team SAGA */
+/** Team SAGA - 
+ * Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado  */
+
 /** Card Deck */
 import java.util.Scanner;
 import java.util.ArrayList;
