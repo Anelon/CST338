@@ -455,6 +455,8 @@ public class Main
 
    static final int TEST_CARD_SIZE = 3;
    static Card[] testCards = new Card[TEST_CARD_SIZE];
+   
+   
 
    public static void main(String[] args)
    {
@@ -568,5 +570,15 @@ public class Main
     	  System.out.println(testDeckTooManyPacks.dealCard());
       }
       */
+     
+     //For preliminary testing purposes
+  
+ 
+      for (int i = 0; i< totalHands; i++) {
+         System.out.println(hands[i].toString());
+       }
+      */
+
+      
    }
 }
