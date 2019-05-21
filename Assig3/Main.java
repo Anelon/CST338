@@ -579,6 +579,71 @@ public class Main
       
       //Initializes tester deck
       Deck testerDeck = new Deck();
+      
+      //Preliminary Testing
+      
+      //Creates two separate objects
+      Hand myHand2 = new Hand();
+      Hand myHand3 = new Hand();
+      
+      //Puts one card in myHand2, none in myHand3
+      myHand2.takeCard(testerDeck.dealCard());
+   
+      System.out.println(myHand2.toString());
+      System.out.println(myHand3.toString());
+      
+      //Previous myHand
+      System.out.println(myHand.toString());
+      
+
+    //  myHand.takeCard(new Card ('A', Card.Suit.hearts));
+     
+      
+    /*
+      
+      //Gets user input on how many hands
+      Scanner userInput = new Scanner(System.in);
+     
+      //Initializes totalHands based on user input
+      System.out.println("How many hands, 1-10:");
+      int totalHands = userInput.nextInt();
+      
+      // If totalHands is not a valid number, asks user again for input
+      while (totalHands < 1 || totalHands > 10)
+      {
+         System.out.println("Invalid number. How many hands, 1-10:");
+         totalHands = userInput.nextInt();
+      }
+      
+      //Uses user input to initialize length of hand array
+      //Creates new hand object in each position
+      Hand[] hands = new Hand[totalHands];
+      
+      for (int i = 0; i < totalHands; i++) {
+         hands[i] = new Hand();
+      }
+      
+      int arrayPosition = 0;
+      int deckSize = 0;
+      
+     //Places cards in hands
+     
+      while (deckSize <52) {
+         hands[arrayPosition % totalHands].takeCard(testerDeck.dealCard());
+         arrayPosition++;
+         deckSize++;
+            if (arrayPosition > totalHands) {
+               arrayPosition = 0;
+            }
+          
+      }
+   
+     //Print statement
+      for (int i = 0; i < 52; i++)
+      {
+            hand[i % totalHands].takeCard(testerDeck.dealCard() );
+      }
+     
      
      //For preliminary testing purposes
   
