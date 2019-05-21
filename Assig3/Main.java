@@ -378,14 +378,14 @@ class Hand
 {
 
    //Keeps track the numbers of cards
-   private static int numCards;
+   private int numCards;
    public static int MAX_CARDS = 100;
-   private static Card[] myCards = new Card[MAX_CARDS];
+   private Card[] myCards = new Card[MAX_CARDS];
 
    //default constructor
    public Hand()
    {
-      Hand.myCards= new Card[MAX_CARDS];
+      this.myCards= new Card[MAX_CARDS];
    }
 
    //remove all cards from the hand
@@ -486,6 +486,7 @@ public class Main
       System.out.println("**Testing the hand class**");
       Hand myHand = new Hand();
 
+
       myHand.takeCard(new Card ('A', Card.Suit.hearts));
       myHand.takeCard(new Card ('Q', Card.Suit.clubs));
       myHand.takeCard(new Card ('9', Card.Suit.spades));
@@ -501,6 +502,7 @@ public class Main
 
 
       System.out.println(myHand.toString());
+
       System.out.println("");
       System.out.println("Testing inspectCard()");
       System.out.println("** legal **");
@@ -573,34 +575,16 @@ public class Main
       
       
       
-
+      
+      
+//Deck and Hand Testing
       System.out.println("");
       System.out.println("Deck + Hand Testing");
       
       //Initializes tester deck
       Deck testerDeck = new Deck();
-      
-      //Preliminary Testing
-      
-      //Creates two separate objects
-      Hand myHand2 = new Hand();
-      Hand myHand3 = new Hand();
-      
-      //Puts one card in myHand2, none in myHand3
-      myHand2.takeCard(testerDeck.dealCard());
-   
-      System.out.println(myHand2.toString());
-      System.out.println(myHand3.toString());
-      
-      //Previous myHand
-      System.out.println(myHand.toString());
-      
 
-    //  myHand.takeCard(new Card ('A', Card.Suit.hearts));
-     
-      
-    /*
-      
+
       //Gets user input on how many hands
       Scanner userInput = new Scanner(System.in);
      
@@ -623,35 +607,49 @@ public class Main
          hands[i] = new Hand();
       }
       
-      int arrayPosition = 0;
-      int deckSize = 0;
+      //By using modulo to calculate which hand to receive cards, the for loop will evenly 
+      //distribute cards to a different hand, each loop.
+      // ie:  0 mod 7 = position 0, 1 mod 7 = position 1, 2 mod 7 = position 2, etc.
+      //Loop stops before 52 because there are cards from 0-51
       
-     //Places cards in hands
-     
-      while (deckSize <52) {
-         hands[arrayPosition % totalHands].takeCard(testerDeck.dealCard());
-         arrayPosition++;
-         deckSize++;
-            if (arrayPosition > totalHands) {
-               arrayPosition = 0;
-            }
-          
+      for (int i = 0; i < 52; i++) {
+         hands[i % totalHands].takeCard(testerDeck.dealCard());
+               
       }
-   
-     //Print statement
-      for (int i = 0; i < 52; i++)
-      {
-            hand[i % totalHands].takeCard(testerDeck.dealCard() );
-      }
-     
-     
-     //For preliminary testing purposes
-  
- 
+
+      //Print statement
+      System.out.println("Here are our hand(s) from an unshuffled deck:");
       for (int i = 0; i< totalHands; i++) {
          System.out.println(hands[i].toString());
        }
-      */
+      
+    
+      //Resets deck and shuffles
+      testerDeck = new Deck();
+      testerDeck.shuffle();
+      
+      
+      //Empties hands
+      for (int i = 0; i < totalHands; i++) {
+         hands[i] = new Hand();
+      }
+      
+      
+      
+      //Places cards in hand
+      for (int i = 0; i < 52; i++)
+      {
+            hands[i % totalHands].takeCard(testerDeck.dealCard() );
+      }
+      
+     
+      //Print statement
+      System.out.println("");
+      System.out.println("Here are our hand(s) from a shuffled deck:");
+      for (int i = 0; i< totalHands; i++) {
+         System.out.println(hands[i].toString());
+       }
+ 
 
       
    }
