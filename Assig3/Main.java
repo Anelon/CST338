@@ -570,6 +570,15 @@ public class Main
     	  System.out.println(testDeckTooManyPacks.dealCard());
       }
       */
+      
+      
+      
+
+      System.out.println("");
+      System.out.println("Deck + Hand Testing");
+      
+      //Initializes tester deck
+      Deck testerDeck = new Deck();
      
      //For preliminary testing purposes
   
