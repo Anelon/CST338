@@ -493,7 +493,7 @@ public class Main
          //print test cards
          for(Card card : testCards)
             System.out.println(card.toString());
-         //fix the 2 bad ones
+         //fix the bad one, break one of the good ones
          testCards[1].setValue('6');
          testCards[2].setValue('F');
          System.out.println();
@@ -578,22 +578,6 @@ public class Main
       System.out.println(testDeckOnePack.getTopCard());
       System.out.println(testDeckOnePack.inspectCard(2));
       System.out.println(testDeckOnePack.getTopCard());
-
-
-      /*
-       * Attempt to throw an error by creating a set larger than Deck.MAX_CARDS
-
-      Deck testDeckTooManyPacks = new Deck(7);
-      for (int i = 0; i < 7*52; ++i)
-      {
-    	  System.out.println(testDeckTooManyPacks.dealCard());
-      }
-      testDeckTooManyPacks.shuffle();
-      for (int i = 0; i < 7*52; ++i)
-      {
-    	  System.out.println(testDeckTooManyPacks.dealCard());
-      }
-      */
       
       
       
