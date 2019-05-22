@@ -548,7 +548,7 @@ public class Main
       while(myHand.getnumCards()!= 0) {
          System.out.println("playing " + myHand.playCard());
       }
-      myHand.resetHand();
+      //myHand.resetHand();
       System.out.println("");
       System.out.println("After playing all cards");
       System.out.println(myHand.toString());
