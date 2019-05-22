@@ -1,5 +1,5 @@
-/** Team SAGA - 
- * Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado  
+/** Team SAGA -
+ * Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado
  * CST 338
  * 5-21-2019
  *
@@ -152,13 +152,16 @@ class Card
 
 
 /**
- * Class containing data for a deck of cards.  Contains static information of
- * all possible cards as well as current in-use cards/order within the Deck object.
+ * Class containing data for a deck of cards.  Contains static 
+ * information of all possible cards as well as current in-use 
+ * cards/order within the Deck object.
  *
- * public static int MAX_CARDS - Maximum number of cards allowed in play at once.
+ * public static int MAX_CARDS - Maximum number of cards allowed in play at 
+ *    once.
  * private Card[] cards - current "in use" cards for playing
  * private int topCard - top card of the deck, next to be "dealt".
- * private static Card[] masterPack - static representation of all possible cards
+ * private static Card[] masterPack - static representation of all possible 
+ *    cards
  */
 class Deck
 {
@@ -169,27 +172,28 @@ class Deck
    public final int MAX_CARDS = 6*52;
    private static Card[] masterPack = new Card[52];
 
-   
 
-   
+
+
 
 
    /**
     * Constructor that creates the deck based on the number of "packs" given.
     * Note that only a maximum of MAX_CARDS cards can be used.
     *
-    * @param numPacks - number of traditional 52 card packs to be used in deck creation
+    * @param numPacks - number of traditional 52 card packs to be used in 
+    *                 deck creation
     */
    public Deck(int numPacks)
    {
 
       allocateMasterPack();
-      
+
       if (52*numPacks > MAX_CARDS)
          cards = new Card[MAX_CARDS];
       else
          cards = new Card[52*numPacks];
-      
+
       init(numPacks);
    }
 
@@ -199,7 +203,8 @@ class Deck
 
 
    /**
-    * Empty constructor. Initializes the deck with a default of a single 52 card pack.
+    * Empty constructor. Initializes the deck with a default of a single 
+    * 52 card pack.
     */
    public Deck()
    {
@@ -213,18 +218,19 @@ class Deck
 
    /**
     * initializes the playable cards in cards[] based on the number of packs.
-    * The resulting cards[] object will contain ((int)numPacks) copies of the masterPack.
+    * The resulting cards[] object will contain ((int)numPacks) copies of the 
+    * masterPack.
     * Called by the constructors.
     *
     * @param numPacks number of 52 card packs to be used
     */
    public void init(int numPacks)
    {
-
       int totalCardIndex = 0;
       for (int packNumber = 0; packNumber < numPacks; ++packNumber)
       {
-         for (int masterIndex = 0; masterIndex < masterPack.length; ++masterIndex)
+         for (int masterIndex = 0; masterIndex < masterPack.length; 
+              ++masterIndex)
          {
             cards[totalCardIndex] = new Card(masterPack[masterIndex]);
             ++totalCardIndex;
@@ -238,14 +244,14 @@ class Deck
 
 
    /**
-    * Randomizes the cards within the in-use cards[] object and resets the topCard to
-    * the first position.
+    * Randomizes the cards within the in-use cards[] object and resets 
+    * the topCard to the first position.
     */
    public void shuffle()
    {
       Random randomGenerator = new Random();
       int randomIndex = randomGenerator.nextInt(cards.length);
-      
+
       for (int i = 0; i < cards.length; ++i)
       {
          Card placeholder = new Card(cards[randomIndex]);
@@ -253,14 +259,14 @@ class Deck
          cards[i] = placeholder;
          randomIndex = randomGenerator.nextInt(cards.length);
       }
-      
+
       topCard = 0;
    }
 
 
    /**
-    * "Deals" the top card from the deck. The next card in cards[] becomes the new
-    * topCard.
+    * "Deals" the top card from the deck. The next card in cards[] becomes 
+    * the new topCard.
     *
     * @return the topCard at the time of calling
     */
@@ -294,7 +300,8 @@ class Deck
 
 
    /**
-    * Functions similarly to inspectCard, but only inspects the current topCard.
+    * Functions similarly to inspectCard, but only inspects the current 
+    * topCard.
     *
     * @return a copy of the topCard; the Card object at cards[0]
     */
@@ -334,8 +341,10 @@ class Deck
 
 
    /**
-    * Handles creation of the masterPack.  Called by init and indirectly by constructors.
-    * Note that this only occurs once per object lifecycle. Repeated calls from the same object
+    * Handles creation of the masterPack.  Called by init and 
+    * indirectly by constructors.
+    * Note that this only occurs once per object lifecycle. 
+    * Repeated calls from the same object
     * will have no effect.
     */
    private static void allocateMasterPack()
@@ -377,8 +386,9 @@ class Deck
                      break;
                   }
                }
-               
-               masterPack[masterIndex] = new Card(cardValue, intToSuit(suitInt));
+
+               masterPack[masterIndex] = 
+                  new Card(cardValue, intToSuit(suitInt));
                ++masterIndex;
             }
          }
@@ -414,7 +424,7 @@ class Hand
 
    }
 
-   /*This is a helper function to take a newCard 
+   /*This is a helper function to take a newCard
     * from the table and add to myCards */
    public boolean takeCard(Card newCard)
    {
@@ -452,7 +462,7 @@ class Hand
       return numCards;
    }
 
-   /* This is accessor for an individual card and 
+   /* This is accessor for an individual card and
     * it returns a card with errorFalg if K is not valid.*/
 
    public Card inspectCard(int k) {
@@ -477,8 +487,8 @@ public class Main
 
    static final int TEST_CARD_SIZE = 3;
    static Card[] testCards = new Card[TEST_CARD_SIZE];
-   
-   
+
+
 
    public static void main(String[] args)
    {
@@ -578,11 +588,11 @@ public class Main
       System.out.println(testDeckOnePack.getTopCard());
       System.out.println(testDeckOnePack.inspectCard(2));
       System.out.println(testDeckOnePack.getTopCard());
-      
-      
-      
-      
-      
+
+
+
+
+
       //Deck and Hand Testing, Phase 4
       //Asks user for number of hands, between 1-10
       //Creates a deck (unshuffled) and distributes it evenly between hands
@@ -590,82 +600,897 @@ public class Main
       //Again, distributes cards evenly between hands.
       System.out.println("");
       System.out.println("Deck + Hand Testing");
-      
+
       //Initializes tester deck
       Deck testerDeck = new Deck();
 
 
       //Gets user input on how many hands
       Scanner userInput = new Scanner(System.in);
-     
+
       //Initializes totalHands based on user input
       System.out.println("How many hands, 1-10:");
       int totalHands = userInput.nextInt();
-      
+
       // If totalHands is not a valid number, asks user again for input
       while (totalHands < 1 || totalHands > 10)
       {
          System.out.println("Invalid number. How many hands, 1-10:");
          totalHands = userInput.nextInt();
       }
-      
+
       //Uses user input to initialize length of hand array
       //Creates new hand object in each position
       Hand[] hands = new Hand[totalHands];
-      
+
       for (int i = 0; i < totalHands; i++) {
          hands[i] = new Hand();
       }
-      
+
       //Places cards in hands
       int deckPosition = 0; // initial starting point for array of hands
       for (int i = 0; i < 52; i++) {
          if (deckPosition > totalHands - 1) {
-            deckPosition = 0; //resets to first hand, if last hand position is reached
+            deckPosition = 0; //resets to first hand, 
+                              // if last hand position is reached
          }
          hands[deckPosition].takeCard(testerDeck.dealCard());
          deckPosition++; //advances to next hand
-               
+
       }
       //Print statement
       System.out.println("Here are our hand(s) from an unshuffled deck:");
       for (int i = 0; i< totalHands; i++) {
          System.out.println(hands[i].toString());
-       }
-      
-    
+      }
+
+
       //Resets deck and shuffles
       testerDeck = new Deck();
       testerDeck.shuffle();
-      
-      
+
+
       //Empties hands
       for (int i = 0; i < totalHands; i++) {
          hands[i] = new Hand();
       }
-      
-      
+
+
       //Places cards in hand
-      deckPosition = 0; 
+      deckPosition = 0;
       for (int i = 0; i < 52; i++) {
          hands[deckPosition].takeCard(testerDeck.dealCard());
-         deckPosition++; 
-         
+         deckPosition++;
+
          if (deckPosition > totalHands - 1) {
-            deckPosition = 0; //resets to first hand, if last hand position is reached
+            deckPosition = 0; //resets to first hand, 
+                              // if last hand position is reached
          }
-         
+
       }
-      
-     
+
+
       //Print statement
       System.out.println("");
       System.out.println("Here are our hand(s) from a shuffled deck:");
       for (int i = 0; i< totalHands; i++) {
          System.out.println(hands[i].toString());
-       }
- 
+      }
 
-      
+
+
    }
 }
+
+
+/*
+   Test output:
+
+ Q of hearts
+[Invalid]
+A of spades
+
+Q of hearts
+6 of hearts
+[Invalid]
+
+**Testing the hand class**
+Hand = (A of hearts, Q of clubs, 9 of spades, 2 of diamonds, A of hearts, Q of clubs, 9 of spades, 2 of diamonds, A of hearts, Q of clubs, 9 of spades, 2 of diamonds, ) 
+
+Testing inspectCard()
+** legal **
+A of hearts
+9 of spades
+9 of spades
+** illegal **
+T of hearts
+T of hearts
+playing 2 of diamonds
+playing 9 of spades
+playing Q of clubs
+playing A of hearts
+playing 2 of diamonds
+playing 9 of spades
+playing Q of clubs
+playing A of hearts
+playing 2 of diamonds
+playing 9 of spades
+playing Q of clubs
+playing A of hearts
+
+After playing all cards
+Hand = () 
+
+####################
+### Deck Testing ###
+####################
+
+
+A of hearts
+2 of hearts
+3 of hearts
+4 of hearts
+5 of hearts
+6 of hearts
+7 of hearts
+8 of hearts
+9 of hearts
+T of hearts
+J of hearts
+Q of hearts
+K of hearts
+A of clubs
+2 of clubs
+3 of clubs
+4 of clubs
+5 of clubs
+6 of clubs
+7 of clubs
+8 of clubs
+9 of clubs
+T of clubs
+J of clubs
+Q of clubs
+K of clubs
+A of diamonds
+2 of diamonds
+3 of diamonds
+4 of diamonds
+5 of diamonds
+6 of diamonds
+7 of diamonds
+8 of diamonds
+9 of diamonds
+T of diamonds
+J of diamonds
+Q of diamonds
+K of diamonds
+A of spades
+2 of spades
+3 of spades
+4 of spades
+5 of spades
+6 of spades
+7 of spades
+8 of spades
+9 of spades
+T of spades
+J of spades
+Q of spades
+K of spades
+4 of hearts
+K of diamonds
+2 of diamonds
+6 of clubs
+T of clubs
+2 of hearts
+7 of spades
+4 of clubs
+J of spades
+Q of spades
+3 of spades
+A of clubs
+Q of hearts
+A of spades
+6 of hearts
+5 of diamonds
+J of hearts
+Q of clubs
+6 of spades
+4 of diamonds
+A of diamonds
+J of diamonds
+7 of hearts
+9 of diamonds
+3 of clubs
+K of hearts
+8 of spades
+T of diamonds
+8 of clubs
+9 of hearts
+4 of spades
+8 of hearts
+9 of spades
+J of clubs
+2 of spades
+K of clubs
+5 of hearts
+6 of diamonds
+T of hearts
+5 of clubs
+A of hearts
+3 of hearts
+T of spades
+7 of diamonds
+9 of clubs
+5 of spades
+Q of diamonds
+K of spades
+2 of clubs
+7 of clubs
+3 of diamonds
+8 of diamonds
+A of hearts
+2 of hearts
+3 of hearts
+4 of hearts
+5 of hearts
+6 of hearts
+7 of hearts
+8 of hearts
+9 of hearts
+T of hearts
+J of hearts
+Q of hearts
+K of hearts
+A of clubs
+2 of clubs
+3 of clubs
+4 of clubs
+5 of clubs
+6 of clubs
+7 of clubs
+8 of clubs
+9 of clubs
+T of clubs
+J of clubs
+Q of clubs
+K of clubs
+A of diamonds
+2 of diamonds
+3 of diamonds
+4 of diamonds
+5 of diamonds
+6 of diamonds
+7 of diamonds
+8 of diamonds
+9 of diamonds
+T of diamonds
+J of diamonds
+Q of diamonds
+K of diamonds
+A of spades
+2 of spades
+3 of spades
+4 of spades
+5 of spades
+6 of spades
+7 of spades
+8 of spades
+9 of spades
+T of spades
+J of spades
+Q of spades
+K of spades
+A of hearts
+2 of hearts
+3 of hearts
+4 of hearts
+5 of hearts
+6 of hearts
+7 of hearts
+8 of hearts
+9 of hearts
+T of hearts
+J of hearts
+Q of hearts
+K of hearts
+A of clubs
+2 of clubs
+3 of clubs
+4 of clubs
+5 of clubs
+6 of clubs
+7 of clubs
+8 of clubs
+9 of clubs
+T of clubs
+J of clubs
+Q of clubs
+K of clubs
+A of diamonds
+2 of diamonds
+3 of diamonds
+4 of diamonds
+5 of diamonds
+6 of diamonds
+7 of diamonds
+8 of diamonds
+9 of diamonds
+T of diamonds
+J of diamonds
+Q of diamonds
+K of diamonds
+A of spades
+2 of spades
+3 of spades
+4 of spades
+5 of spades
+6 of spades
+7 of spades
+8 of spades
+9 of spades
+T of spades
+J of spades
+Q of spades
+K of spades
+A of hearts
+2 of hearts
+3 of hearts
+4 of hearts
+5 of hearts
+6 of hearts
+7 of hearts
+8 of hearts
+9 of hearts
+T of hearts
+J of hearts
+Q of hearts
+K of hearts
+A of clubs
+2 of clubs
+3 of clubs
+4 of clubs
+5 of clubs
+6 of clubs
+7 of clubs
+8 of clubs
+9 of clubs
+T of clubs
+J of clubs
+Q of clubs
+K of clubs
+A of diamonds
+2 of diamonds
+3 of diamonds
+4 of diamonds
+5 of diamonds
+6 of diamonds
+7 of diamonds
+8 of diamonds
+9 of diamonds
+T of diamonds
+J of diamonds
+Q of diamonds
+K of diamonds
+A of spades
+2 of spades
+3 of spades
+4 of spades
+5 of spades
+6 of spades
+7 of spades
+8 of spades
+9 of spades
+T of spades
+J of spades
+Q of spades
+K of spades
+A of hearts
+2 of hearts
+3 of hearts
+4 of hearts
+5 of hearts
+6 of hearts
+7 of hearts
+8 of hearts
+9 of hearts
+T of hearts
+J of hearts
+Q of hearts
+K of hearts
+A of clubs
+2 of clubs
+3 of clubs
+4 of clubs
+5 of clubs
+6 of clubs
+7 of clubs
+8 of clubs
+9 of clubs
+T of clubs
+J of clubs
+Q of clubs
+K of clubs
+A of diamonds
+2 of diamonds
+3 of diamonds
+4 of diamonds
+5 of diamonds
+6 of diamonds
+7 of diamonds
+8 of diamonds
+9 of diamonds
+T of diamonds
+J of diamonds
+Q of diamonds
+K of diamonds
+A of spades
+2 of spades
+3 of spades
+4 of spades
+5 of spades
+6 of spades
+7 of spades
+8 of spades
+9 of spades
+T of spades
+J of spades
+Q of spades
+K of spades
+A of hearts
+2 of hearts
+3 of hearts
+4 of hearts
+5 of hearts
+6 of hearts
+7 of hearts
+8 of hearts
+9 of hearts
+T of hearts
+J of hearts
+Q of hearts
+K of hearts
+A of clubs
+2 of clubs
+3 of clubs
+4 of clubs
+5 of clubs
+6 of clubs
+7 of clubs
+8 of clubs
+9 of clubs
+T of clubs
+J of clubs
+Q of clubs
+K of clubs
+A of diamonds
+2 of diamonds
+3 of diamonds
+4 of diamonds
+5 of diamonds
+6 of diamonds
+7 of diamonds
+8 of diamonds
+9 of diamonds
+T of diamonds
+J of diamonds
+Q of diamonds
+K of diamonds
+A of spades
+2 of spades
+3 of spades
+4 of spades
+5 of spades
+6 of spades
+7 of spades
+8 of spades
+9 of spades
+T of spades
+J of spades
+Q of spades
+K of spades
+A of hearts
+2 of hearts
+3 of hearts
+4 of hearts
+5 of hearts
+6 of hearts
+7 of hearts
+8 of hearts
+9 of hearts
+T of hearts
+J of hearts
+Q of hearts
+K of hearts
+A of clubs
+2 of clubs
+3 of clubs
+4 of clubs
+5 of clubs
+6 of clubs
+7 of clubs
+8 of clubs
+9 of clubs
+T of clubs
+J of clubs
+Q of clubs
+K of clubs
+A of diamonds
+2 of diamonds
+3 of diamonds
+4 of diamonds
+5 of diamonds
+6 of diamonds
+7 of diamonds
+8 of diamonds
+9 of diamonds
+T of diamonds
+J of diamonds
+Q of diamonds
+K of diamonds
+A of spades
+2 of spades
+3 of spades
+4 of spades
+5 of spades
+6 of spades
+7 of spades
+8 of spades
+9 of spades
+T of spades
+J of spades
+Q of spades
+K of spades
+6 of clubs
+T of hearts
+5 of hearts
+8 of clubs
+7 of diamonds
+T of hearts
+7 of diamonds
+K of clubs
+T of clubs
+4 of clubs
+9 of diamonds
+8 of spades
+3 of clubs
+K of diamonds
+6 of diamonds
+3 of clubs
+7 of spades
+T of clubs
+5 of clubs
+3 of spades
+Q of hearts
+5 of spades
+K of clubs
+9 of spades
+T of spades
+A of clubs
+2 of hearts
+9 of hearts
+9 of clubs
+Q of diamonds
+5 of spades
+5 of hearts
+3 of clubs
+8 of diamonds
+T of diamonds
+5 of diamonds
+4 of hearts
+J of spades
+8 of hearts
+8 of diamonds
+7 of hearts
+2 of clubs
+2 of clubs
+8 of clubs
+8 of diamonds
+2 of diamonds
+K of spades
+Q of clubs
+K of diamonds
+4 of clubs
+A of hearts
+T of clubs
+8 of diamonds
+6 of diamonds
+6 of diamonds
+J of spades
+A of hearts
+T of spades
+A of spades
+A of hearts
+Q of hearts
+3 of hearts
+K of diamonds
+2 of spades
+2 of spades
+4 of diamonds
+8 of spades
+9 of hearts
+9 of diamonds
+4 of clubs
+K of spades
+Q of clubs
+J of hearts
+8 of spades
+J of diamonds
+4 of spades
+8 of hearts
+9 of clubs
+A of spades
+9 of spades
+4 of diamonds
+5 of clubs
+T of diamonds
+6 of clubs
+7 of clubs
+2 of diamonds
+4 of hearts
+9 of hearts
+J of clubs
+Q of diamonds
+K of clubs
+7 of clubs
+2 of diamonds
+8 of diamonds
+7 of hearts
+9 of spades
+Q of clubs
+A of spades
+4 of diamonds
+8 of clubs
+8 of hearts
+9 of diamonds
+6 of clubs
+7 of clubs
+2 of spades
+9 of hearts
+T of hearts
+5 of spades
+K of clubs
+7 of hearts
+Q of diamonds
+3 of spades
+6 of spades
+J of hearts
+T of hearts
+A of diamonds
+2 of hearts
+2 of diamonds
+8 of hearts
+6 of spades
+K of clubs
+A of clubs
+4 of spades
+5 of clubs
+7 of spades
+3 of hearts
+2 of diamonds
+4 of diamonds
+T of diamonds
+8 of clubs
+6 of spades
+A of spades
+6 of clubs
+9 of spades
+4 of clubs
+Q of hearts
+J of clubs
+Q of spades
+6 of diamonds
+8 of spades
+5 of clubs
+5 of spades
+J of hearts
+Q of spades
+K of hearts
+7 of diamonds
+3 of diamonds
+3 of diamonds
+6 of hearts
+9 of hearts
+2 of hearts
+8 of clubs
+6 of spades
+A of diamonds
+Q of hearts
+J of clubs
+8 of hearts
+A of clubs
+A of hearts
+A of clubs
+Q of diamonds
+T of hearts
+4 of hearts
+5 of diamonds
+5 of clubs
+5 of spades
+4 of clubs
+4 of spades
+6 of hearts
+5 of clubs
+J of diamonds
+7 of hearts
+J of clubs
+Q of clubs
+4 of hearts
+2 of hearts
+4 of spades
+T of spades
+3 of hearts
+K of clubs
+Q of clubs
+Q of spades
+A of diamonds
+K of hearts
+6 of clubs
+K of spades
+3 of diamonds
+7 of spades
+Q of spades
+7 of hearts
+6 of hearts
+K of hearts
+4 of clubs
+6 of spades
+7 of diamonds
+K of hearts
+A of diamonds
+3 of spades
+9 of spades
+2 of clubs
+5 of diamonds
+2 of spades
+4 of hearts
+A of diamonds
+8 of hearts
+K of hearts
+Q of clubs
+3 of spades
+6 of diamonds
+3 of spades
+J of clubs
+7 of clubs
+9 of diamonds
+A of clubs
+5 of diamonds
+A of spades
+J of spades
+K of spades
+5 of hearts
+Q of hearts
+4 of spades
+3 of diamonds
+2 of spades
+J of hearts
+7 of hearts
+3 of clubs
+Q of diamonds
+4 of diamonds
+T of clubs
+T of diamonds
+T of spades
+J of spades
+7 of diamonds
+J of spades
+J of diamonds
+T of diamonds
+2 of hearts
+9 of hearts
+7 of diamonds
+J of hearts
+5 of hearts
+A of spades
+2 of clubs
+K of diamonds
+8 of diamonds
+K of spades
+3 of clubs
+7 of clubs
+Q of hearts
+3 of spades
+2 of diamonds
+7 of spades
+K of spades
+6 of hearts
+3 of diamonds
+4 of spades
+9 of clubs
+6 of clubs
+T of clubs
+9 of clubs
+A of clubs
+T of spades
+A of diamonds
+J of clubs
+2 of clubs
+T of spades
+6 of hearts
+J of diamonds
+7 of spades
+2 of spades
+6 of spades
+J of spades
+6 of diamonds
+Q of diamonds
+3 of clubs
+J of diamonds
+Q of spades
+3 of hearts
+9 of diamonds
+8 of spades
+5 of hearts
+3 of hearts
+K of diamonds
+8 of clubs
+6 of hearts
+2 of hearts
+9 of clubs
+9 of clubs
+4 of hearts
+K of diamonds
+J of diamonds
+7 of clubs
+5 of diamonds
+7 of spades
+2 of clubs
+A of hearts
+5 of hearts
+A of hearts
+5 of diamonds
+4 of diamonds
+T of diamonds
+J of hearts
+9 of diamonds
+9 of spades
+K of hearts
+Q of spades
+8 of spades
+5 of spades
+T of clubs
+T of hearts
+3 of diamonds
+3 of hearts
+T of clubs
+8 of spades
+T of clubs
+8 of spades
+
+Deck + Hand Testing
+How many hands, 1-10:
+0
+Invalid number. How many hands, 1-10:
+-1
+Invalid number. How many hands, 1-10:
+20
+Invalid number. How many hands, 1-10:
+38
+Invalid number. How many hands, 1-10:
+10
+Here are our hand(s) from an unshuffled deck:
+Hand = (A of hearts, J of hearts, 8 of clubs, 5 of diamonds, 2 of spades, Q of spades, ) 
+Hand = (2 of hearts, Q of hearts, 9 of clubs, 6 of diamonds, 3 of spades, K of spades, ) 
+Hand = (3 of hearts, K of hearts, T of clubs, 7 of diamonds, 4 of spades, ) 
+Hand = (4 of hearts, A of clubs, J of clubs, 8 of diamonds, 5 of spades, ) 
+Hand = (5 of hearts, 2 of clubs, Q of clubs, 9 of diamonds, 6 of spades, ) 
+Hand = (6 of hearts, 3 of clubs, K of clubs, T of diamonds, 7 of spades, ) 
+Hand = (7 of hearts, 4 of clubs, A of diamonds, J of diamonds, 8 of spades, ) 
+Hand = (8 of hearts, 5 of clubs, 2 of diamonds, Q of diamonds, 9 of spades, ) 
+Hand = (9 of hearts, 6 of clubs, 3 of diamonds, K of diamonds, T of spades, ) 
+Hand = (T of hearts, 7 of clubs, 4 of diamonds, A of spades, J of spades, ) 
+
+Here are our hand(s) from a shuffled deck:
+Hand = (6 of hearts, J of hearts, 8 of hearts, A of clubs, 5 of hearts, 8 of clubs, ) 
+Hand = (7 of diamonds, 4 of diamonds, 4 of clubs, 6 of clubs, T of clubs, 7 of hearts, ) 
+Hand = (3 of clubs, 5 of spades, 9 of hearts, 4 of hearts, K of hearts, ) 
+Hand = (8 of diamonds, Q of diamonds, 9 of clubs, A of spades, 9 of spades, ) 
+Hand = (K of diamonds, 4 of spades, 3 of spades, 2 of spades, K of spades, ) 
+Hand = (5 of diamonds, 6 of diamonds, 7 of clubs, T of diamonds, Q of hearts, ) 
+Hand = (J of spades, J of diamonds, 3 of diamonds, A of diamonds, 6 of spades, ) 
+Hand = (3 of hearts, 9 of diamonds, K of clubs, 2 of hearts, 2 of clubs, ) 
+Hand = (Q of clubs, J of clubs, 2 of diamonds, 7 of spades, 8 of spades, ) 
+Hand = (A of hearts, 5 of clubs, Q of spades, T of spades, T of hearts, ) 
+ */
