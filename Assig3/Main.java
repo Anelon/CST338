@@ -401,7 +401,7 @@ class Deck
 
 
 
-/*This the hand class. It holds data for the player's hand.*/
+/*This is the hand class. It holds data for the player's hand.*/
 class Hand
 {
 
