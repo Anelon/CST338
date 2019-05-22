@@ -1,19 +1,15 @@
 
 
-
-
-
-
 interface BarcodeIO
 {
-   public boolean scan(BarcodeImage bc);
+   boolean scan(BarcodeImage bc);
 
-   public boolean readText(String text);
+   boolean readText(String text);
 
-   public boolean generateImageFromText();
-   public boolean translateImageToText();
-   public void displayTextToConsole();
-   public void displayImageToConsole();
+   boolean generateImageFromText();
+   boolean translateImageToText();
+   void displayTextToConsole();
+   void displayImageToConsole();
 }
 
 
@@ -53,6 +49,7 @@ class BarcodeImage implements Cloneable
    public static final int MAX_WIDTH = 65;
    private boolean[][] imageData;
 
+
 }
 
 
@@ -72,22 +69,41 @@ class DataMatrix implements BarcodeIO
 
    DataMatrix()
    {
-
+      actualHeight = 0;
+      actualWidth = 0;
+      text = "";
    }
 
    DataMatrix(BarcodeImage image)
    {
-
+      if (!scan(image))
+      {
+         System.out.println("BarcodeImage failed to scan properly. " +
+            "Proceed with caution.");
+      };
    }
 
    DataMatrix(String text)
    {
-
+      if (!readText(text))
+      {
+         System.out.println("String failed to scan properly. " +
+            "Proceed with caution.");
+      };
    }
 
    DataMatrix(DataMatrix copy)
    {
-
+      for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
+      {
+         for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
+         {
+            image.setPixel(y, x, copy.image.getPixel(y, x));
+         }
+      }
+      actualWidth = copy.getActualWidth();
+      actualHeight = copy.getActualHeight();
+      text = copy.text;
    }
 
    public boolean scan(BarcodeImage bc) {
@@ -136,6 +152,207 @@ class DataMatrix implements BarcodeIO
 
    }
 
+
+   /**
+    * Moves the given data matrix to the lower left of the
+    * available space.
+    *
+    * NEEDS TESTING
+    *
+    */
+   private void moveImageToLowerLeft()
+   {
+      while (getBottomLineOfImage() < BarcodeImage.MAX_HEIGHT)
+      {
+         shiftImageDown();
+      }
+
+      while (getLeftColumn() > 0)
+      {
+         shiftImageLeft();
+      }
+
+   }
+
+
+
+
+
+
+   /**
+    * Finds the first/top row of valid data from the object's BarcodeImage object
+    * named image. The object must be a valid, initialized object. If no data
+    * is found, -1 is returned to indicate this.
+    *
+    * @return The first/top row index with valid data.
+    */
+   private int getTopLineOfImage()
+   {
+      for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
+      {
+         for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
+         {
+            if (image.getPixel(y, x))
+            {
+               return y;
+            }
+         }
+      }
+      return -1;
+   }
+
+
+
+
+
+
+
+   /**
+    * Finds the last/bottom row of valid data from the object's BarcodeImage object
+    * named image. The object must be a valid, initialized object. If no data
+    * is found, -1 is returned to indicate this.
+    *
+    * @return The last/bottom row index with valid data.
+    */
+   private int getBottomLineOfImage()
+   {
+      for (int y = BarcodeImage.MAX_HEIGHT-1; y > 0; --y)
+      {
+         for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
+         {
+            if (image.getPixel(y, x))
+            {
+               return y;
+            }
+         }
+      }
+      return -1;
+   }
+
+
+
+
+
+
+
+   /**
+    * Finds the far left/first column of valid data from the object's BarcodeImage object
+    * named image. The object must be a valid, initialized object. If no data
+    * is found, -1 is returned to indicate this.
+    *
+    * @return The left/first column index with valid data.
+    */
+   private int getLeftColumn()
+   {
+      for (int x = 0; x < BarcodeImage.MAX_HEIGHT; ++x)
+      {
+         for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
+         {
+            if (image.getPixel(y, x))
+            {
+               return x;
+            }
+         }
+      }
+      return -1;
+   }
+
+
+
+
+
+
+
+   /**
+    * Finds the far right/last column of valid data from the object's BarcodeImage object
+    * named image. The object must be a valid, initialized object. If no data
+    * is found, -1 is returned to indicate this.
+    *
+    * @return The far right/last column index with valid data.
+    */
+   private int getRightColumn()
+   {
+      for (int x = BarcodeImage.MAX_HEIGHT-1; x > 0; --x)
+      {
+         for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
+         {
+            if (image.getPixel(y, x))
+            {
+               return x;
+            }
+         }
+      }
+      return -1;
+   }
+
+
+
+
+
+
+   /**
+    * Shifts the valid "image" down in the "frame" one row if space
+    * is available, where the image is a visual representation of the
+    * BarcodeImage object and the frame is a grid of
+    * BarcodeImage.MAX_WIDTH x BarcodeImage.MAX_HEIGHT
+    */
+   private void shiftImageDown()
+   {
+      int endingRow = getBottomLineOfImage();
+      if (endingRow < BarcodeImage.MAX_HEIGHT-1)
+      {
+         int startingRow = getTopLineOfImage();
+
+         for (int y = endingRow; y > startingRow; --y)
+         {
+            for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
+            {
+               image.setPixel(y, x, image.getPixel(y - 1, x));
+            }
+         }
+
+         for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
+         {
+            image.setPixel(startingRow, x, false);
+         }
+      }
+   }
+
+
+
+
+
+
+   /**
+    * Shifts the valid "image" left in the "frame" one column if space
+    * is available, where the image is a visual representation of the
+    * BarcodeImage object and the frame is a grid of
+    * BarcodeImage.MAX_WIDTH x BarcodeImage.MAX_HEIGHT
+    */
+   private void shiftImageLeft()
+   {
+
+      int startingColumn = getLeftColumn();
+      if (startingColumn > 0)
+      {
+         int endingColumn = getRightColumn();
+
+         for (int x = startingColumn; x < endingColumn; ++x)
+         {
+            for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
+            {
+               image.setPixel(y, x, image.getPixel(y, x + 1));
+            }
+         }
+
+         for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
+         {
+            image.setPixel(y, endingColumn, false);
+         }
+      }
+   }
+
+
    private char readCharFromCol(int col)
    {
       return '\0';
@@ -156,6 +373,6 @@ class DataMatrix implements BarcodeIO
 public class Main {
    public static void main(String[] args)
    {
-
+      DataMatrix test = new DataMatrix();
    }
 }
