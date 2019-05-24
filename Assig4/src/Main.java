@@ -76,19 +76,21 @@ class DataMatrix implements BarcodeIO
 
    DataMatrix(BarcodeImage image)
    {
+      this.image = image;
       if (!scan(image))
       {
          System.out.println("BarcodeImage failed to scan properly. " +
-            "Proceed with caution.");
+               "Proceed with caution.");
       };
    }
 
    DataMatrix(String text)
    {
+      this.text = text;
       if (!readText(text))
       {
          System.out.println("String failed to scan properly. " +
-            "Proceed with caution.");
+               "Proceed with caution.");
       };
    }
 
@@ -112,16 +114,26 @@ class DataMatrix implements BarcodeIO
 
 
    public boolean readText(String text) {
-      return false;
+      //check if the text size could be encoded into a BarcodeImage
+      //    -2 to account for needed space for border characters
+      if (text.length() > BarcodeImage.MAX_WIDTH - 2)
+         return false;
+      this.text = text;
    }
 
 
    public boolean generateImageFromText() {
+      //for each char in text write data to col, place black on left and bottom
+      //also put every other on top and right
+      //WriteCharToCol(int, char)
       return false;
    }
 
 
    public boolean translateImageToText() {
+      //read char from column for each actualHeight (-2? for border characters)
+      //put chars into string text
+      //readCharFromCol(int)
       return false;
    }
 
@@ -373,6 +385,91 @@ class DataMatrix implements BarcodeIO
 public class Main {
    public static void main(String[] args)
    {
-      DataMatrix test = new DataMatrix();
+      //not used right now can be used for testing decoding
+      String[] scanForText = 
+      {
+         "* * * * * * * * * * * * * * * * * *",
+         "*                                 *",
+         "***** ** * **** ****** ** **** **  ",
+         "* **************      *************",
+         "**  *  *        *  *   *        *  ",
+         "* **  *     **    * *   * ****   **",
+         "**         ****   * ** ** ***   ** ",
+         "*   *  *   ***  *       *  ***   **",
+         "*  ** ** * ***  ***  *  *  *** *   ",
+         "***********************************"
+      };
+      //used for testing encoding of text
+      String testText = "Hello World";
+      DataMatrix test = new DataMatrix(testText);
+
+      /*
+      //his main to be implemented later when functions are more complete
+      String[] sImageIn =
+      {
+         "                                               ",
+         "                                               ",
+         "                                               ",
+         "     * * * * * * * * * * * * * * * * * * * * * ",
+         "     *                                       * ",
+         "     ****** **** ****** ******* ** *** *****   ",
+         "     *     *    ****************************** ",
+         "     * **    * *        **  *    * * *   *     ",
+         "     *   *    *  *****    *   * *   *  **  *** ",
+         "     *  **     * *** **   **  *    **  ***  *  ",
+         "     ***  * **   **  *   ****    *  *  ** * ** ",
+         "     *****  ***  *  * *   ** ** **  *   * *    ",
+         "     ***************************************** ",
+         "                                               ",
+         "                                               ",
+         "                                               "
+
+      };
+
+
+
+      String[] sImageIn_2 =
+      {
+         "                                          ",
+         "                                          ",
+         "* * * * * * * * * * * * * * * * * * *     ",
+         "*                                    *    ",
+         "**** *** **   ***** ****   *********      ",
+         "* ************ ************ **********    ",
+         "** *      *    *  * * *         * *       ",
+         "***   *  *           * **    *      **    ",
+         "* ** * *  *   * * * **  *   ***   ***     ",
+         "* *           **    *****  *   **   **    ",
+         "****  *  * *  * **  ** *   ** *  * *      ",
+         "**************************************    ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          "
+
+      };
+
+      BarcodeImage bc = new BarcodeImage(sImageIn);
+      DataMatrix dm = new DataMatrix(bc);
+
+      // First secret message
+      dm.translateImageToText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+
+      // second secret message
+      bc = new BarcodeImage(sImageIn_2);
+      dm.scan(bc);
+      dm.translateImageToText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+
+      // create your own message
+      dm.readText("What a great resume builder this is!");
+      dm.generateImageFromText();
+      dm.displayTextToConsole();
+      dm.displayImageToConsole();
+      */
+
    }
 }
