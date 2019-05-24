@@ -1,3 +1,4 @@
+/*------- File: Main.java -------*/
 
 
 interface BarcodeIO
@@ -482,3 +483,8 @@ public class Main
 
    }
 }
+/* ---------- paste of run ----------
+
+String failed to scan properly. Proceed with caution.
+   ---------- paste of run ----------*/
+

@@ -42,7 +42,7 @@ class BarcodeImage implements Cloneable
 
    public BarcodeImage clone()
    {
-      return new BarcodeImage(new String[] {"", ""});
+      return new BarcodeImage(new String[]{"", ""});
    }
 
    public static final int MAX_HEIGHT = 30;
@@ -80,7 +80,7 @@ class DataMatrix implements BarcodeIO
       if (!scan(image))
       {
          System.out.println("BarcodeImage failed to scan properly. " +
-                            "Proceed with caution.");
+               "Proceed with caution.");
       };
    }
 
@@ -90,7 +90,7 @@ class DataMatrix implements BarcodeIO
       if (!readText(text))
       {
          System.out.println("String failed to scan properly. " +
-                            "Proceed with caution.");
+               "Proceed with caution.");
       };
    }
 
@@ -108,14 +108,12 @@ class DataMatrix implements BarcodeIO
       text = copy.text;
    }
 
-   public boolean scan(BarcodeImage bc)
-   {
+   public boolean scan(BarcodeImage bc) {
       return false;
    }
 
 
-   public boolean readText(String text)
-   {
+   public boolean readText(String text) {
       //check if the text size could be encoded into a BarcodeImage
       //    -2 to account for needed space for border characters
       if (text.length() > BarcodeImage.MAX_WIDTH - 2)
@@ -124,8 +122,7 @@ class DataMatrix implements BarcodeIO
    }
 
 
-   public boolean generateImageFromText()
-   {
+   public boolean generateImageFromText() {
       //for each char in text write data to col, place black on left and bottom
       //also put every other on top and right
       //WriteCharToCol(int, char)
@@ -133,8 +130,7 @@ class DataMatrix implements BarcodeIO
    }
 
 
-   public boolean translateImageToText()
-   {
+   public boolean translateImageToText() {
       //read char from column for each actualHeight (-2? for border characters)
       //put chars into string text
       //readCharFromCol(int)
@@ -142,23 +138,19 @@ class DataMatrix implements BarcodeIO
    }
 
 
-   public void displayTextToConsole()
-   {
+   public void displayTextToConsole() {
 
    }
 
-   public void displayImageToConsole()
-   {
+   public void displayImageToConsole() {
 
    }
 
-   public int getActualHeight()
-   {
+   public int getActualHeight() {
       return actualHeight;
    }
 
-   public int getActualWidth()
-   {
+   public int getActualWidth() {
       return actualWidth;
    }
 
@@ -390,12 +382,11 @@ class DataMatrix implements BarcodeIO
 }
 
 
-public class Main
-{
+public class Main {
    public static void main(String[] args)
    {
       //not used right now can be used for testing decoding
-      String[] scanForText =
+      String[] scanForText = 
       {
          "* * * * * * * * * * * * * * * * * *",
          "*                                 *",
