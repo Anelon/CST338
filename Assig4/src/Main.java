@@ -121,6 +121,7 @@ class DataMatrix implements BarcodeIO
       if (text.length() > BarcodeImage.MAX_WIDTH - 2)
          return false;
       this.text = text;
+		return true;
    }
 
 
@@ -373,9 +374,21 @@ class DataMatrix implements BarcodeIO
    }
 
 
+	//Takes the col to read from and returns a character baised on the true or false values
    private char readCharFromCol(int col)
    {
-      return '\0';
+		char temp = 0;
+		char one = 1;
+		//for all of the spots in that col starting at the bottom because thats the ones bit
+		for (int y = BarcodeImage.MAX_HEIGHT; y > BarcodeImage.MAX_HEIGHT - actualHeight; --y)
+		{
+			//if the pixel is true add to temp char
+			if(image.getPixel(y,col))
+				temp |= one;
+			//left shift the one bit
+			one <<= 1; 
+		}
+		return temp;
    }
 
    private boolean WriteCharToCol(int col, int charCode)
