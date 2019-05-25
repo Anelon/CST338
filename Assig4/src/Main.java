@@ -165,6 +165,7 @@ class DataMatrix implements BarcodeIO {
 
    public boolean generateImageFromText() {
       int stringLength = text.length();
+      int max = 0;
       String[] arrayOfStrings = new String[stringLength];
       for (int i = 0; i < stringLength; ++i)
       {
@@ -174,8 +175,13 @@ class DataMatrix implements BarcodeIO {
          temp = temp.replace('1', BLACK_CHAR);
          //System.out.println(temp);
          arrayOfStrings[i] = temp;
+         if(temp.length() > max)
+            max = temp.length();
       }
 
+      //set actualWidth
+      actualWidth = stringLength;
+      actualHeight = max;
 
       this.image = new BarcodeImage(arrayOfStrings);
       return false;
