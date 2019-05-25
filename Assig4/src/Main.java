@@ -19,35 +19,78 @@ interface BarcodeIO
 
 class BarcodeImage implements Cloneable
 {
-   BarcodeImage(String[] strData)
-   {
-
-   }
-
-   boolean getPixel(int row, int col)
-   {
-      return false;
-   }
-
-   boolean setPixel(int row, int col, boolean value)
-   {
-      return false;
-   }
-
-
-   private int checkSize(String[] data)
-   {
-      return 0;
-   }
-
-   public BarcodeImage clone()
-   {
-      return new BarcodeImage(new String[] {"", ""});
-   }
-
+   
    public static final int MAX_HEIGHT = 30;
    public static final int MAX_WIDTH = 65;
    private boolean[][] imageData;
+   
+   
+   /*Instantiates a 2D array (MAX_HEIGHT x MAX_WIDTH) 
+    * that sets the array as false. */   
+   public BarcodeImage() {
+      this.imageData = new boolean[MAX_HEIGHT][MAX_WIDTH];
+      this.imageData[MAX_HEIGHT][MAX_WIDTH] = false;
+      
+   }
+ 
+   /*Converts 1d string array to 2d array of booleans
+    * that sets all the WHITE_CHAR to false and all the BLACK_CHAR to true 
+    * in the 2d boolean array.*/   
+   BarcodeImage(String[] strData)
+   {
+      for(int i = 0; i<strData.length; i++) {
+         for (int j = 0; j<strData[i].length(); j++) {
+            if(strData[i].charAt(j)== DataMatrix.WHITE_CHAR) {
+               setPixel(i, j, false);
+            }else if (strData[i].charAt(j)== DataMatrix.BLACK_CHAR) {
+               setPixel(i, j, true);
+            }
+         }
+      }
+   }
+   
+      
+
+   /*Accessor method for each bit in the image. */
+   public boolean getPixel(int row, int col)
+   {
+      if((row<0 || row>MAX_HEIGHT) && (col<0 || col >MAX_WIDTH)) {
+         return this.imageData[row][col];
+      }else {
+         return false;         
+      }
+      
+   }
+   
+   /*Mutator method for each bit in the image. */
+   public boolean setPixel(int row, int col, boolean value)
+   {
+      if((row<0 ||row>MAX_HEIGHT) && (col<0 || col >MAX_WIDTH)) {
+         this.imageData[row][col] = value;
+      }
+         return false;             
+      
+   }
+
+
+   /*This method overwrites the clone() method in the
+    * Cloneable interface.*/
+   public BarcodeImage clone()
+   {
+      BarcodeImage cloned = new BarcodeImage();
+      for(int i = 0; i<MAX_WIDTH; i++)
+      {
+         for(int j= 0; j<MAX_HEIGHT; j++) {
+            this.imageData[i][j] = cloned.imageData[i][j];
+            
+         }
+         
+      }
+      return cloned;
+      
+   }
+
+   
 
 
 }
