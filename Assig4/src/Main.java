@@ -424,8 +424,10 @@ class DataMatrix implements BarcodeIO
    {
 		char temp = 0;
 		char one = 1;
-		//for all of the spots in that col starting at the bottom because thats the ones bit
-		for (int y = BarcodeImage.MAX_HEIGHT; y > BarcodeImage.MAX_HEIGHT - actualHeight; --y)
+		//for all of the spots in that col starting at the bottom 
+      //because thats the ones bit
+		for (int y = BarcodeImage.MAX_HEIGHT; 
+            y > BarcodeImage.MAX_HEIGHT - actualHeight; --y)
 		{
 			//if the pixel is true add to temp char
 			if(image.getPixel(y,col))
