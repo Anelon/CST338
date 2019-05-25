@@ -54,7 +54,7 @@ class BarcodeImage implements Cloneable
    /*Accessor method for each bit in the image. */
    public boolean getPixel(int row, int col)
    {
-      if(( row<MAX_HEIGHT) && ( col <MAX_WIDTH)) {
+      if(( row>= 0 && row<MAX_HEIGHT) && ( col>= 0 && col <MAX_WIDTH)) {
          return imageData[row][col];
       }
          return false;
@@ -65,7 +65,7 @@ class BarcodeImage implements Cloneable
    /*Mutator method for each bit in the image. */
    public boolean setPixel(int row, int col, boolean value)
    {
-      if((row<MAX_HEIGHT) && (col <MAX_WIDTH)) {
+      if((row>= 0 && row<MAX_HEIGHT) && (col>= 0 && col <MAX_WIDTH)) {
          imageData[row][col] = value;
          return true;
       }
