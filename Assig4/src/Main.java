@@ -174,15 +174,18 @@ class DataMatrix implements BarcodeIO {
          //repalce 1s and 0s in string with proper characters
          temp = temp.replace('0', WHITE_CHAR);
          temp = temp.replace('1', BLACK_CHAR);
-         //System.out.println(temp);
+         System.out.println(temp.length() + " " + temp);
          arrayOfStrings[i] = temp;
+         //get max string length to encode
          if(temp.length() > max)
             max = temp.length();
       }
 
-      //set actualWidth
+      //set actualWidth and height (should get moved to cleanImage)
       actualWidth = stringLength;
       actualHeight = max;
+      
+      //TODO add borders
 
       this.image = new BarcodeImage(arrayOfStrings);
       return false;
@@ -231,7 +234,11 @@ class DataMatrix implements BarcodeIO {
       {
          for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
          {
-            System.out.print(image.getPixel(x, y));
+            if(image.getPixel(x,y))
+               System.out.print(BLACK_CHAR);
+            else
+               System.out.print(WHITE_CHAR);
+            //System.out.print(image.getPixel(x, y));
          }
          System.out.println();
       }
