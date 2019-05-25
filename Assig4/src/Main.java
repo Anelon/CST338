@@ -22,7 +22,7 @@ class BarcodeImage implements Cloneable
 
    public static final int MAX_HEIGHT = 30;
    public static final int MAX_WIDTH = 65;
-   private boolean[][] imageData;
+   private boolean[][] imageData = new boolean[MAX_WIDTH][MAX_HEIGHT];
 
 
    /*Instantiates a 2D array (MAX_HEIGHT x MAX_WIDTH)
@@ -38,12 +38,13 @@ class BarcodeImage implements Cloneable
     * in the 2d boolean array.*/
    BarcodeImage(String[] strData)
    {
+      System.out.println("words = " + strData.length);
       for(int i = 0; i<strData.length; i++) {
          for (int j = 0; j<strData[i].length(); j++) {
             if(strData[i].charAt(j)== DataMatrix.WHITE_CHAR) {
-               setPixel(i, j, false);
+               setPixel(j, i, false);
             }else if (strData[i].charAt(j)== DataMatrix.BLACK_CHAR) {
-               setPixel(i, j, true);
+               setPixel(j, i, true);
             }
          }
       }
@@ -167,7 +168,12 @@ class DataMatrix implements BarcodeIO {
       String[] arrayOfStrings = new String[stringLength];
       for (int i = 0; i < stringLength; ++i)
       {
-         arrayOfStrings[i] = Integer.toBinaryString(text.charAt(i));
+         String temp = Integer.toBinaryString(text.charAt(i));
+         //repalce 1s and 0s in string with proper characters
+         temp = temp.replace('0', WHITE_CHAR);
+         temp = temp.replace('1', BLACK_CHAR);
+         //System.out.println(temp);
+         arrayOfStrings[i] = temp;
       }
 
 
@@ -212,6 +218,8 @@ class DataMatrix implements BarcodeIO {
    }
 
    public void displayRawImage() {
+      System.out.println("actualHeight = " + actualHeight);
+      System.out.println("actualWidth = " + actualWidth);
       for (int x = 0; x < BarcodeImage.MAX_HEIGHT; ++x)
       {
          for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
