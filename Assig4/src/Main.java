@@ -67,34 +67,36 @@ class BarcodeImage implements Cloneable
    {
       if((row<0 ||row>MAX_HEIGHT) && (col<0 || col >MAX_WIDTH)) {
          this.imageData[row][col] = value;
-      }
+         return true;
+      }else {
          return false;             
       
+   }
    }
 
 
    /*This method overwrites the clone() method in the
-    * Cloneable interface.*/
-   public BarcodeImage clone()
+    * Cloneable interface. This method casts the the clone()
+    * method to the superclass method BarcodeImage.*/
+   public BarcodeImage clone() 
    {
-      BarcodeImage cloned = new BarcodeImage();
-      for(int i = 0; i<MAX_WIDTH; i++)
-      {
-         for(int j= 0; j<MAX_HEIGHT; j++) {
-            this.imageData[i][j] = cloned.imageData[i][j];
-            
-         }
-         
+      try {
+         BarcodeImage cloned = (BarcodeImage) super.clone();
+         for(int i = 0; i<MAX_HEIGHT; i++) {
+            for(int j = 0; j<MAX_WIDTH; j++){
+               cloned.imageData[i][j] = this.imageData[i][j];
+               
+            }
+         }return (BarcodeImage) cloned;
+                 
       }
-      return cloned;
-      
+      catch(CloneNotSupportedException e) {
+         throw new InternalError();
+      }
+            
    }
 
-   
-
-
 }
-
 
 
 
