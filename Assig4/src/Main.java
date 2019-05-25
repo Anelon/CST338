@@ -167,7 +167,7 @@ class DataMatrix implements BarcodeIO {
    public boolean generateImageFromText() {
       int stringLength = text.length();
       int max = 0;
-      String[] arrayOfStrings = new String[stringLength];
+      String[] arrayOfStrings = new String[stringLength + 2];
       for (int i = 0; i < stringLength; ++i)
       {
          String temp = Integer.toBinaryString(text.charAt(i));
@@ -175,7 +175,7 @@ class DataMatrix implements BarcodeIO {
          temp = temp.replace('0', WHITE_CHAR);
          temp = temp.replace('1', BLACK_CHAR);
          System.out.println(temp.length() + " " + temp);
-         arrayOfStrings[i] = temp;
+         arrayOfStrings[i + 1] = temp;
          //get max string length to encode
          if(temp.length() > max)
             max = temp.length();
@@ -186,6 +186,39 @@ class DataMatrix implements BarcodeIO {
       actualHeight = max;
       
       //TODO add borders
+      for (int i = 0; i < stringLength + 2; i++)
+      {
+         //border on left
+         if (i == 0)
+         {
+            arrayOfStrings[i] = "";
+            for(int j = 0; j < max + 2; j++)
+               arrayOfStrings[i] += BLACK_CHAR;
+         }
+         //border on right
+         else if (i == stringLength + 1)
+         {
+            arrayOfStrings[i] = "";
+            for(int j = 0; j < max + 2; j++)
+               if(j % 2 == 0)
+                  arrayOfStrings[i] += BLACK_CHAR;
+               else
+                  arrayOfStrings[i] += WHITE_CHAR;
+         }
+         //Put border on top and bottom
+         else
+         {
+            for(int j = arrayOfStrings[i].length(); j < max; j++)
+            {
+               arrayOfStrings[i] = " " + arrayOfStrings[i];
+            }
+            if(i % 2 == 0)
+               arrayOfStrings[i] = "*" + arrayOfStrings[i] + "*";
+            else
+               arrayOfStrings[i] = " " + arrayOfStrings[i] + "*";
+         }
+         System.out.println(arrayOfStrings[i].length() + " " + arrayOfStrings[i]);
+      }
 
       this.image = new BarcodeImage(arrayOfStrings);
       return false;
