@@ -185,17 +185,17 @@ class DataMatrix implements BarcodeIO {
       actualWidth = stringLength;
       actualHeight = max;
       
-      //TODO add borders
+      //add borders around the main string
       for (int i = 0; i < stringLength + 2; i++)
       {
-         //border on left
+         //border on left solid
          if (i == 0)
          {
             arrayOfStrings[i] = "";
             for(int j = 0; j < max + 2; j++)
                arrayOfStrings[i] += BLACK_CHAR;
          }
-         //border on right
+         //border on right put black everyother
          else if (i == stringLength + 1)
          {
             arrayOfStrings[i] = "";
@@ -208,20 +208,23 @@ class DataMatrix implements BarcodeIO {
          //Put border on top and bottom
          else
          {
+            //normalize the string lengths by adding leading spaces
             for(int j = arrayOfStrings[i].length(); j < max; j++)
             {
                arrayOfStrings[i] = " " + arrayOfStrings[i];
             }
+            //if every other column
             if(i % 2 == 0)
                arrayOfStrings[i] = "*" + arrayOfStrings[i] + "*";
             else
                arrayOfStrings[i] = " " + arrayOfStrings[i] + "*";
          }
+         //remeove debugging messages
          System.out.println(arrayOfStrings[i].length() + " " + arrayOfStrings[i]);
       }
 
       this.image = new BarcodeImage(arrayOfStrings);
-      return false;
+      return true;
    }
 
 
