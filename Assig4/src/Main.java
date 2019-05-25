@@ -22,7 +22,7 @@ class BarcodeImage implements Cloneable
 
    public static final int MAX_HEIGHT = 30;
    public static final int MAX_WIDTH = 65;
-   private boolean[][] imageData = new boolean[MAX_WIDTH][MAX_HEIGHT];
+   private boolean[][] imageData;
 
 
    /*Instantiates a 2D array (MAX_HEIGHT x MAX_WIDTH)
@@ -37,7 +37,8 @@ class BarcodeImage implements Cloneable
     * that sets all the WHITE_CHAR to false and all the BLACK_CHAR to true
     * in the 2d boolean array.*/
    BarcodeImage(String[] strData)
-   {  this();
+   {  
+      this();
       System.out.println("words = " + strData.length);
       for(int i = 0; i<strData.length; i++) {
          for (int j = 0; j<strData[i].length(); j++) {
