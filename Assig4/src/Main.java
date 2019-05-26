@@ -184,7 +184,29 @@ class DataMatrix implements BarcodeIO {
       //set actualWidth and height (should get moved to cleanImage)
       actualWidth = stringLength;
       actualHeight = max;
-      
+
+      addBorders(arrayOfStrings, max);
+
+
+      this.image = new BarcodeImage(arrayOfStrings);
+      return true;
+   }
+
+
+   /**
+    * Adds "borders" around a 2d array consisting of "solid lines"
+    * on the far left and bottom borders and "dotted lines" on the
+    * far right and top borders.
+    *
+    * The array of strings is assumed to be initialized with
+    * values that correspond to the string whose length is passed.
+    * @param arrayOfStrings an array of strings holding the
+    *                       binary data for the a string of text
+    * @param max size of the largest string within the array
+    */
+   private void addBorders(String[] arrayOfStrings, int max)
+   {
+      int stringLength = text.length();
       //add borders around the main string
       for (int i = 0; i < stringLength + 2; i++)
       {
@@ -219,19 +241,29 @@ class DataMatrix implements BarcodeIO {
             else
                arrayOfStrings[i] = " " + arrayOfStrings[i] + "*";
          }
-         //remeove debugging messages
+         //remove debugging messages
          System.out.println(arrayOfStrings[i].length() + " " + arrayOfStrings[i]);
       }
-
-      this.image = new BarcodeImage(arrayOfStrings);
-      return true;
    }
+
 
 
    public boolean translateImageToText() {
       //read char from column for each actualHeight (-2? for border characters)
       //put chars into string text
       //readCharFromCol(int)
+      int startingX = getLeftColumn()+1;
+      int startingY = getTopLineOfImage()+1;
+      char[] arrayOfChars = new char[actualWidth];
+      int index = 0;
+      for (int x = startingX; x < startingX + actualWidth; ++x)
+      {
+
+         arrayOfChars[index] = readCharFromCol(index);
+         ++index;
+      }
+      text = new String(arrayOfChars);
+      System.out.println(arrayOfChars.length);
       return false;
    }
 
@@ -244,9 +276,9 @@ class DataMatrix implements BarcodeIO {
    public void displayImageToConsole() {
       int startingX = getLeftColumn();
       int startingY = getTopLineOfImage();
-      for (int y = startingY; y < actualHeight + startingY; ++y)
+      for (int y = startingY; y <= computeSignalHeight() + startingY; ++y)
       {
-         for (int x = startingX; x < actualWidth + startingX; ++x)
+         for (int x = startingX; x <= computeSignalWidth() + startingX; ++x)
          {
             System.out.print(boolToChar(image.getPixel(y, x)));
          }
@@ -461,10 +493,10 @@ class DataMatrix implements BarcodeIO {
    private char readCharFromCol(int col) {
       char temp = 0;
       char one = 1;
-      //for all of the spots in that col starting at the 
+      //for all of the spots in that col starting at the
       //bottom because thats the ones bit
-      for (int y = BarcodeImage.MAX_HEIGHT; 
-         y > BarcodeImage.MAX_HEIGHT - actualHeight; --y) {
+      for (int y = BarcodeImage.MAX_HEIGHT;
+           y > BarcodeImage.MAX_HEIGHT - actualHeight; --y) {
          //if the pixel is true add to temp char
          if (image.getPixel(y, col))
             temp |= one;
@@ -474,7 +506,7 @@ class DataMatrix implements BarcodeIO {
       return temp;
    }
 
-   private boolean WriteCharToCol(int col, int charCodeValue) {
+   private boolean writeCharToCol(int col, int charCodeValue) {
       try {
          int currentBinaryPosition = 128;
 
@@ -502,29 +534,33 @@ class DataMatrix implements BarcodeIO {
    }
 }
 
-   public class Main {
-      public static void main(String[] args) {
-         //not used right now can be used for testing decoding
-         String[] scanForText =
-            {
-               "* * * * * * * * * * * * * * * * * *",
-               "*                                 *",
-               "***** ** * **** ****** ** **** **  ",
-               "* **************      *************",
-               "**  *  *        *  *   *        *  ",
-               "* **  *     **    * *   * ****   **",
-               "**         ****   * ** ** ***   ** ",
-               "*   *  *   ***  *       *  ***   **",
-               "*  ** ** * ***  ***  *  *  *** *   ",
-               "***********************************"
-            };
-         //used for testing encoding of text
-         String testText = "Hello World";
-         DataMatrix test = new DataMatrix(testText);
-         test.generateImageFromText();
-         test.displayRawImage();
-       
-      
+public class Main {
+   public static void main(String[] args) {
+      //not used right now can be used for testing decoding
+      String[] scanForText =
+         {
+            "* * * * * * * * * * * * * * * * * *",
+            "*                                 *",
+            "***** ** * **** ****** ** **** **  ",
+            "* **************      *************",
+            "**  *  *        *  *   *        *  ",
+            "* **  *     **    * *   * ****   **",
+            "**         ****   * ** ** ***   ** ",
+            "*   *  *   ***  *       *  ***   **",
+            "*  ** ** * ***  ***  *  *  *** *   ",
+            "***********************************"
+         };
+      //used for testing encoding of text
+      String testText = "Hello World";
+      DataMatrix test = new DataMatrix(testText);
+      test.generateImageFromText();
+      test.displayRawImage();
+      test.displayImageToConsole();
+      test.displayImageToConsole();
+      test.translateImageToText();
+      test.displayTextToConsole();
+      test.displayTextToConsole();
+
       /*
       //his main to be implemented later when functions are more complete
       String[] sImageIn =
@@ -593,6 +629,6 @@ class DataMatrix implements BarcodeIO {
       dm.displayImageToConsole();
       */
 
-      }
    }
+}
 
