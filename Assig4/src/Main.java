@@ -388,6 +388,9 @@ class DataMatrix implements BarcodeIO
     */
    private void moveImageToLowerLeft()
    {
+      System.out.println(computeSignalHeight());
+
+      System.out.println(computeSignalWidth());
       while (getBottomLineOfImage() < BarcodeImage.MAX_HEIGHT-1)
       {
          System.out.println("Shifting Down");
@@ -411,11 +414,18 @@ class DataMatrix implements BarcodeIO
     */
    private int getTopLineOfImage()
    {
+      int minimumNumberAlternatingPixels = 3;
+      int alternatingPixels = 0;
       for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
       {
          for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
          {
-            if (image.getPixel(y, x))
+
+            if ( x > 0 && image.getPixel(y, x) != image.getPixel(y, x-1))
+            {
+               alternatingPixels++;
+            }
+            if (alternatingPixels == minimumNumberAlternatingPixels)
             {
                return y;
             }
@@ -434,11 +444,20 @@ class DataMatrix implements BarcodeIO
     */
    private int getBottomLineOfImage()
    {
+      int uninterruptedPixels = 0;
       for (int y = BarcodeImage.MAX_HEIGHT; y > 0; --y)
       {
          for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
          {
             if (image.getPixel(y, x))
+            {
+               ++uninterruptedPixels;
+            }
+            else
+            {
+               uninterruptedPixels = 0;
+            }
+            if (uninterruptedPixels == computeSignalWidth())
             {
                return y;
             }
@@ -457,6 +476,7 @@ class DataMatrix implements BarcodeIO
     */
    private int getLeftColumn()
    {
+      int minimumValidUninterruptedPixels = 9;
       int uninterruptedPixels = 0;
       for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
       {
@@ -470,7 +490,7 @@ class DataMatrix implements BarcodeIO
             {
                uninterruptedPixels = 0;
             }
-            if (uninterruptedPixels == computeSignalHeight())
+            if (uninterruptedPixels >= minimumValidUninterruptedPixels)
                return x;
          }
       }
@@ -487,11 +507,18 @@ class DataMatrix implements BarcodeIO
     */
    private int getRightColumn()
    {
-      for (int x = BarcodeImage.MAX_HEIGHT; x > 0; --x)
+      int minimumNumberAlternatingPixels = 3;
+      int alternatingPixels = 0;
+      for (int x = BarcodeImage.MAX_WIDTH; x > 0; --x)
       {
-         for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
+         for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
          {
-            if (image.getPixel(y, x))
+
+            if ( y > 0 && image.getPixel(y, x) != image.getPixel(y-1, x))
+            {
+               alternatingPixels++;
+            }
+            if (alternatingPixels >= minimumNumberAlternatingPixels)
             {
                return x;
             }
