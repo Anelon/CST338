@@ -43,9 +43,9 @@ class BarcodeImage implements Cloneable
       for(int i = 0; i<strData.length; i++) {
          for (int j = 0; j<strData[i].length(); j++) {
             if(strData[i].charAt(j)== DataMatrix.WHITE_CHAR) {
-               setPixel(j, i, false);
+               setPixel(i, j, false);
             }else if (strData[i].charAt(j)== DataMatrix.BLACK_CHAR) {
-               setPixel(j, i, true);
+               setPixel(i, j, true);
             }
          }
       }
