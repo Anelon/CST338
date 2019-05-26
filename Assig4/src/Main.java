@@ -168,9 +168,18 @@ class DataMatrix implements BarcodeIO
       text = copy.text;
    }
 
+
+   /**
+    * needs to handle cloneNotSupported exception in addition to normal duties.
+    * See assignment spec for details
+    * @param bc
+    * @return
+    */
    public boolean scan(BarcodeImage bc)
    {
 
+      actualHeight = 8;
+      //actualWidth = computed width value?
       return false;
    }
 
@@ -182,6 +191,8 @@ class DataMatrix implements BarcodeIO
       if (text.length() > BarcodeImage.MAX_WIDTH - 2)
          return false;
       this.text = text;
+      actualHeight = 8;
+      actualWidth = text.length();
       return true;
    }
 
@@ -208,9 +219,7 @@ class DataMatrix implements BarcodeIO
             max = temp.length();
       }
 
-      //set actualWidth and height (should get moved to cleanImage)
-      actualWidth = stringLength;
-      actualHeight = max;
+
 
       addBorders(arrayOfStrings, max);
 
@@ -592,13 +601,13 @@ class DataMatrix implements BarcodeIO
    }
 
 
-   //Takes the col to read from and returns a character baised on the true or false values
+   //Takes the col to read from and returns a character based on the true or false values
    private char readCharFromCol(int col)
    {
       char temp = 0;
       char one = 1;
       //for all of the spots in that col starting at the
-      //bottom because thats the ones bit (-2 to acount for border)
+      //bottom because thats the ones bit (-2 to account for border)
       for (int y = BarcodeImage.MAX_HEIGHT - 2;
            y > (BarcodeImage.MAX_HEIGHT - actualHeight) - 2; --y)
       {
@@ -608,7 +617,6 @@ class DataMatrix implements BarcodeIO
          //left shift the one bit
          one <<= 1;
       }
-      //System.out.println(col + " " + (int)temp);
       return temp;
    }
 
