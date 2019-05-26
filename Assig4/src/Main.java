@@ -561,14 +561,15 @@ public class Main {
       //used for testing encoding of text
       String testText = "Hello World";
       DataMatrix test = new DataMatrix(testText);
+      //Convert text to image
       test.generateImageFromText();
       test.displayRawImage();
       test.displayImageToConsole();
+      //convert image back to text
+      System.out.println("image:");
       test.translateImageToText();
-      System.out.println("image:");
+      test.displayRawImage();
       test.displayImageToConsole();
-      System.out.println("image:");
-      test.displayTextToConsole();
       test.displayTextToConsole();
 
       /*
