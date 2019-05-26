@@ -186,6 +186,10 @@ class DataMatrix implements BarcodeIO
    }
 
 
+   /**
+    * needs to have return value set properly
+    * @return
+    */
    public boolean generateImageFromText()
    {
       int stringLength = text.length();
@@ -194,7 +198,7 @@ class DataMatrix implements BarcodeIO
       for (int i = 0; i < stringLength; ++i)
       {
          String temp = Integer.toBinaryString(text.charAt(i));
-         //repalce 1s and 0s in string with proper characters
+         //replace 1s and 0s in string with proper characters
          temp = temp.replace('0', WHITE_CHAR);
          temp = temp.replace('1', BLACK_CHAR);
          //System.out.println(temp.length() + " " + temp);
@@ -268,7 +272,10 @@ class DataMatrix implements BarcodeIO
    }
 
 
-
+   /**
+    * needs to have return value set properly
+    * @return
+    */
    public boolean translateImageToText()
    {
       //read char from column for each actualHeight (-2? for border characters)
@@ -578,6 +585,13 @@ class DataMatrix implements BarcodeIO
       return temp;
    }
 
+
+   /**
+    * needs to have return value checked better
+    * @param col
+    * @param charCodeValue
+    * @return
+    */
    private boolean writeCharToCol(int col, int charCodeValue)
    {
       try
