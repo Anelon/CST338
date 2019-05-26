@@ -562,11 +562,6 @@ class DataMatrix implements BarcodeIO
             }
          }
 
-         /*
-         for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x) {
-            image.setPixel(startingRow, x, false);
-         }
-         */
       }
    }
 
