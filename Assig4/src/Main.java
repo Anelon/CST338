@@ -136,7 +136,6 @@ class DataMatrix implements BarcodeIO
 
    DataMatrix(BarcodeImage image)
    {
-      this.image = image;
       if (!scan(image))
       {
          System.out.println("BarcodeImage failed to scan properly. " +
@@ -147,7 +146,6 @@ class DataMatrix implements BarcodeIO
 
    DataMatrix(String text)
    {
-      this.text = text;
       if (!readText(text))
       {
          System.out.println("String failed to scan properly. " +
