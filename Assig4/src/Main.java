@@ -140,7 +140,7 @@ class DataMatrix implements BarcodeIO
       if (!scan(image))
       {
          System.out.println("BarcodeImage failed to scan properly. " +
-                            "Proceed with caution.");
+            "Proceed with caution.");
       }
       ;
    }
@@ -151,7 +151,7 @@ class DataMatrix implements BarcodeIO
       if (!readText(text))
       {
          System.out.println("String failed to scan properly. " +
-                            "Proceed with caution.");
+            "Proceed with caution.");
       }
       ;
    }
@@ -453,18 +453,19 @@ class DataMatrix implements BarcodeIO
    private int getLeftColumn()
    {
       int uninterruptedPixels = 0;
-      int heightOfBarcode = 10;
-      for (int x = 0; x < BarcodeImage.MAX_HEIGHT; ++x)
+      for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
       {
-         for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
+         for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
          {
-            if (!image.getPixel(y, x))
+            if (image.getPixel(y, x))
+            {
+               ++uninterruptedPixels;
+            }
+            else
             {
                uninterruptedPixels = 0;
             }
-            else
-               ++uninterruptedPixels;
-            if (uninterruptedPixels == heightOfBarcode)
+            if (uninterruptedPixels == computeSignalHeight())
                return x;
          }
       }
@@ -567,7 +568,7 @@ class DataMatrix implements BarcodeIO
       //for all of the spots in that col starting at the
       //bottom because thats the ones bit (-2 to acount for border)
       for (int y = BarcodeImage.MAX_HEIGHT - 2;
-            y > (BarcodeImage.MAX_HEIGHT - actualHeight) - 2; --y)
+           y > (BarcodeImage.MAX_HEIGHT - actualHeight) - 2; --y)
       {
          //if the pixel is true add to temp char
          if (image.getPixel(y, col))
@@ -619,18 +620,18 @@ public class Main
    {
       //not used right now can be used for testing decoding
       String[] scanForText =
-      {
-         "* * * * * * * * * * * * * * * * * *",
-         "*                                 *",
-         "***** ** * **** ****** ** **** **  ",
-         "* **************      *************",
-         "**  *  *        *  *   *        *  ",
-         "* **  *     **    * *   * ****   **",
-         "**         ****   * ** ** ***   ** ",
-         "*   *  *   ***  *       *  ***   **",
-         "*  ** ** * ***  ***  *  *  *** *   ",
-         "***********************************"
-      };
+         {
+            "* * * * * * * * * * * * * * * * * *",
+            "*                                 *",
+            "***** ** * **** ****** ** **** **  ",
+            "* **************      *************",
+            "**  *  *        *  *   *        *  ",
+            "* **  *     **    * *   * ****   **",
+            "**         ****   * ** ** ***   ** ",
+            "*   *  *   ***  *       *  ***   **",
+            "*  ** ** * ***  ***  *  *  *** *   ",
+            "***********************************"
+         };
       //used for testing encoding of text
       String testText = "Hello World";
       DataMatrix test = new DataMatrix(testText);
