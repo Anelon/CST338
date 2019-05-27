@@ -88,7 +88,7 @@ class BarcodeImage implements Cloneable
    /*This method overwrites the clone() method in the
     * Cloneable interface. This method casts the the clone()
     * method to the superclass method BarcodeImage.*/
-   public BarcodeImage clone()
+   public BarcodeImage clone() throws CloneNotSupportedException 
    {
       try
       {
@@ -174,12 +174,50 @@ class DataMatrix implements BarcodeIO
     * See assignment spec for details
     * @param bc
     * @return
+    * 
+    * 
+    * SPEC NOTES, WILL DELETE
+    * scan(BarcodeImage image) - a mutator for image.  
+Like the constructor;  in fact it is called by the constructor.
+
+  Besides calling the clone() method of the BarcodeImage class,
+  this method will do a couple of things including calling
+  
+  cleanImage() and then set the actualWidth and actualHeight. 
+  Because scan() calls clone(), it should deal with the 
+  
+  
+  CloneNotSupportedException by embeddingthe clone() call within
+  a try/catch block.  
+  
+  using a "throws" clause in the function header since that will
+  Don't attempt to hand-off the exception
+  not be compatible with the underlying BarcodeIO interface. 
+  The catches(...) clause can have an empty body that does nothing.
     */
    public boolean scan(BarcodeImage bc)
    {
-
-      actualHeight = 8;
-      //actualWidth = computed width value?
+      //Attempts to clone and catches if clone not supported (uses try catch)
+      try {
+         this.image = (BarcodeImage) image.clone();
+      } 
+      catch(CloneNotSupportedException e) {
+      }
+      
+      //Calls cleanImage
+      cleanImage ();
+      
+      //Sets actualWidth and actualHeight ?
+      actualWidth = computeSignalWidth();
+      actualHeight = computeSignalHeight();
+      
+      
+     
+      //actualHeight = 8;
+      //computeSignalWidth
+      //actualWidth/Height = computed width/height value?
+      
+      
       return false;
    }
 
