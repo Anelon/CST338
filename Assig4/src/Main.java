@@ -382,8 +382,8 @@ Like the constructor;  in fact it is called by the constructor.
 
    public void displayRawImage()
    {
-      System.out.println("actualHeight = " + actualHeight);
-      System.out.println("actualWidth = " + actualWidth);
+      //System.out.println("actualHeight = " + actualHeight);
+      //System.out.println("actualWidth = " + actualWidth);
       for (int x = 0; x < BarcodeImage.MAX_HEIGHT; ++x)
       {
          for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
@@ -634,7 +634,8 @@ Like the constructor;  in fact it is called by the constructor.
    }
 
 
-   //Takes the col to read from and returns a character based on the true or false values
+   //Takes the col to read from and returns a character
+   //based on the true or false values
    private char readCharFromCol(int col)
    {
       char temp = 0;
