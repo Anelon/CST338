@@ -47,14 +47,15 @@ class BarcodeImage implements Cloneable
          {
             if(strData[i].charAt(j)== DataMatrix.WHITE_CHAR)
             {
-               setPixel(j, i, false);
+               setPixel(i, j, false);
             }
             else if (strData[i].charAt(j)== DataMatrix.BLACK_CHAR)
             {
-               setPixel(j, i, true);
+               setPixel(i, j, true);
             }
          }
       }
+
    }
 
 
@@ -88,7 +89,7 @@ class BarcodeImage implements Cloneable
    /*This method overwrites the clone() method in the
     * Cloneable interface. This method casts the the clone()
     * method to the superclass method BarcodeImage.*/
-   public BarcodeImage clone() throws CloneNotSupportedException 
+   public BarcodeImage clone() throws CloneNotSupportedException
    {
       try
       {
@@ -138,6 +139,7 @@ class DataMatrix implements BarcodeIO
    {
       if (!scan(image))
       {
+
          System.out.println("BarcodeImage failed to scan properly. " +
             "Proceed with caution.");
       }
@@ -174,50 +176,50 @@ class DataMatrix implements BarcodeIO
     * See assignment spec for details
     * @param bc
     * @return
-    * 
-    * 
+    *
+    *
     * SPEC NOTES, WILL DELETE
-    * scan(BarcodeImage image) - a mutator for image.  
-Like the constructor;  in fact it is called by the constructor.
+    * scan(BarcodeImage image) - a mutator for image.
+   Like the constructor;  in fact it is called by the constructor.
 
-  Besides calling the clone() method of the BarcodeImage class,
-  this method will do a couple of things including calling
-  
-  cleanImage() and then set the actualWidth and actualHeight. 
-  Because scan() calls clone(), it should deal with the 
-  
-  
-  CloneNotSupportedException by embeddingthe clone() call within
-  a try/catch block.  
-  
-  using a "throws" clause in the function header since that will
-  Don't attempt to hand-off the exception
-  not be compatible with the underlying BarcodeIO interface. 
-  The catches(...) clause can have an empty body that does nothing.
+   Besides calling the clone() method of the BarcodeImage class,
+   this method will do a couple of things including calling
+
+   cleanImage() and then set the actualWidth and actualHeight.
+   Because scan() calls clone(), it should deal with the
+
+
+   CloneNotSupportedException by embeddingthe clone() call within
+   a try/catch block.
+
+   using a "throws" clause in the function header since that will
+   Don't attempt to hand-off the exception
+   not be compatible with the underlying BarcodeIO interface.
+   The catches(...) clause can have an empty body that does nothing.
     */
    public boolean scan(BarcodeImage bc)
    {
       //Attempts to clone and catches if clone not supported (uses try catch)
       try {
          this.image = (BarcodeImage) bc.clone();
-      } 
+      }
       catch(CloneNotSupportedException e) {
       }
-      
+
       //Calls cleanImage
       cleanImage ();
-      
+
       //Sets actualWidth and actualHeight ?
       actualWidth = computeSignalWidth() -2 ;
       actualHeight = 8;
-      
-      
-     
+
+
+
       //actualHeight = 8;
       //computeSignalWidth
       //actualWidth/Height = computed width/height value?
-      
-      
+
+
       return false;
    }
 
@@ -438,10 +440,14 @@ Like the constructor;  in fact it is called by the constructor.
       System.out.println(computeSignalHeight());
 
       System.out.println(computeSignalWidth());
-      while (getBottomLineOfImage() < BarcodeImage.MAX_HEIGHT-1)
+      if (getBottomLineOfImage() < BarcodeImage.MAX_HEIGHT-1)
       {
+         System.out.println(computeSignalHeight());
+
+         System.out.println(computeSignalWidth());
          System.out.println("Shifting Down");
          shiftImageDown();
+         System.out.println("Done Shifting");
       }
 
       while (getLeftColumn() > 0)
@@ -467,7 +473,9 @@ Like the constructor;  in fact it is called by the constructor.
       {
          for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
          {
-
+            if (image.getPixel(y, x))
+               return y;
+/*
             if ( x > 0 && image.getPixel(y, x) != image.getPixel(y, x-1))
             {
                alternatingPixels++;
@@ -475,7 +483,7 @@ Like the constructor;  in fact it is called by the constructor.
             if (alternatingPixels == minimumNumberAlternatingPixels)
             {
                return y;
-            }
+            }*/
          }
       }
       return -1;
@@ -491,6 +499,19 @@ Like the constructor;  in fact it is called by the constructor.
     */
    private int getBottomLineOfImage()
    {
+
+
+      displayRawImage();
+      for (int y = BarcodeImage.MAX_HEIGHT; y > 0; --y) {
+         for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
+         {
+            if (image.getPixel(y, x)) {
+               return y;
+            }
+         }
+      }
+      int x = 1000/0;
+      /*
       int uninterruptedPixels = 0;
       for (int y = BarcodeImage.MAX_HEIGHT; y > 0; --y)
       {
@@ -511,6 +532,8 @@ Like the constructor;  in fact it is called by the constructor.
          }
       }
       return -1;
+      */
+   return -1;
    }
 
 
@@ -531,14 +554,15 @@ Like the constructor;  in fact it is called by the constructor.
          {
             if (image.getPixel(y, x))
             {
-               ++uninterruptedPixels;
+               return x;
+             //  ++uninterruptedPixels;
             }
-            else
+           /* else
             {
                uninterruptedPixels = 0;
             }
             if (uninterruptedPixels >= minimumValidUninterruptedPixels)
-               return x;
+               return x;*/
          }
       }
       return -1;
@@ -560,7 +584,9 @@ Like the constructor;  in fact it is called by the constructor.
       {
          for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
          {
-
+            if (image.getPixel(y, x))
+               return x;
+/*
             if ( y > 0 && image.getPixel(y, x) != image.getPixel(y-1, x))
             {
                alternatingPixels++;
@@ -569,6 +595,8 @@ Like the constructor;  in fact it is called by the constructor.
             {
                return x;
             }
+            */
+
          }
       }
       return -1;
@@ -727,51 +755,51 @@ public class Main
       //test.displayImageToConsole();
       test.displayTextToConsole();
 
-   
+
       //his main to be implemented later when functions are more complete
       String[] sImageIn =
-      {
-         "                                               ",
-         "                                               ",
-         "                                               ",
-         "     * * * * * * * * * * * * * * * * * * * * * ",
-         "     *                                       * ",
-         "     ****** **** ****** ******* ** *** *****   ",
-         "     *     *    ****************************** ",
-         "     * **    * *        **  *    * * *   *     ",
-         "     *   *    *  *****    *   * *   *  **  *** ",
-         "     *  **     * *** **   **  *    **  ***  *  ",
-         "     ***  * **   **  *   ****    *  *  ** * ** ",
-         "     *****  ***  *  * *   ** ** **  *   * *    ",
-         "     ***************************************** ",
-         "                                               ",
-         "                                               ",
-         "                                               "
+         {
+            "                                               ",
+            "                                               ",
+            "                                               ",
+            "     * * * * * * * * * * * * * * * * * * * * * ",
+            "     *                                       * ",
+            "     ****** **** ****** ******* ** *** *****   ",
+            "     *     *    ****************************** ",
+            "     * **    * *        **  *    * * *   *     ",
+            "     *   *    *  *****    *   * *   *  **  *** ",
+            "     *  **     * *** **   **  *    **  ***  *  ",
+            "     ***  * **   **  *   ****    *  *  ** * ** ",
+            "     *****  ***  *  * *   ** ** **  *   * *    ",
+            "     ***************************************** ",
+            "                                               ",
+            "                                               ",
+            "                                               "
 
-      };
+         };
 
 
 
       String[] sImageIn_2 =
-      {
-         "                                          ",
-         "                                          ",
-         "* * * * * * * * * * * * * * * * * * *     ",
-         "*                                    *    ",
-         "**** *** **   ***** ****   *********      ",
-         "* ************ ************ **********    ",
-         "** *      *    *  * * *         * *       ",
-         "***   *  *           * **    *      **    ",
-         "* ** * *  *   * * * **  *   ***   ***     ",
-         "* *           **    *****  *   **   **    ",
-         "****  *  * *  * **  ** *   ** *  * *      ",
-         "**************************************    ",
-         "                                          ",
-         "                                          ",
-         "                                          ",
-         "                                          "
+         {
+            "                                          ",
+            "                                          ",
+            "* * * * * * * * * * * * * * * * * * *     ",
+            "*                                    *    ",
+            "**** *** **   ***** ****   *********      ",
+            "* ************ ************ **********    ",
+            "** *      *    *  * * *         * *       ",
+            "***   *  *           * **    *      **    ",
+            "* ** * *  *   * * * **  *   ***   ***     ",
+            "* *           **    *****  *   **   **    ",
+            "****  *  * *  * **  ** *   ** *  * *      ",
+            "**************************************    ",
+            "                                          ",
+            "                                          ",
+            "                                          ",
+            "                                          "
 
-      };
+         };
 
       BarcodeImage bc = new BarcodeImage(sImageIn);
       DataMatrix dm = new DataMatrix(bc);
@@ -793,7 +821,8 @@ public class Main
       dm.generateImageFromText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
-      
+
+
 
    }
 }
