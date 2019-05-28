@@ -199,7 +199,7 @@ Like the constructor;  in fact it is called by the constructor.
    {
       //Attempts to clone and catches if clone not supported (uses try catch)
       try {
-         this.image = (BarcodeImage) image.clone();
+         this.image = (BarcodeImage) bc.clone();
       } 
       catch(CloneNotSupportedException e) {
       }
@@ -208,8 +208,8 @@ Like the constructor;  in fact it is called by the constructor.
       cleanImage ();
       
       //Sets actualWidth and actualHeight ?
-      actualWidth = computeSignalWidth();
-      actualHeight = computeSignalHeight();
+      actualWidth = computeSignalWidth() -2 ;
+      actualHeight = 8;
       
       
      
@@ -727,7 +727,7 @@ public class Main
       //test.displayImageToConsole();
       test.displayTextToConsole();
 
-      /*
+   
       //his main to be implemented later when functions are more complete
       String[] sImageIn =
       {
@@ -793,7 +793,7 @@ public class Main
       dm.generateImageFromText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
-      */
+      
 
    }
 }
