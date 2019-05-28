@@ -453,12 +453,17 @@ class Hand
    }
 
    /*This is a helper function to take a newCard
-    * from the table and add to myCards */
+    * from the table and add to myCards array if
+    * there is room in the hand.*/
    public boolean takeCard(Card newCard)
-   {
-      myCards[numCards] = newCard;
-      ++numCards;
-
+   {          
+      if(numCards >=MAX_CARDS) {
+         return false;
+      }
+      
+      myCards[numCards] = new Card(newCard.getValue(), newCard.getSuit());     
+      numCards++;
+      
       return true;
    }
 
