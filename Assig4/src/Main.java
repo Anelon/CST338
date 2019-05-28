@@ -206,12 +206,12 @@ class DataMatrix implements BarcodeIO
       catch(CloneNotSupportedException e) {
       }
 
-      //Calls cleanImage
-      cleanImage ();
-
-      //Sets actualWidth and actualHeight ?
       actualWidth = computeSignalWidth() -2 ;
       actualHeight = 8;
+      //Calls cleanImage
+      cleanImage();
+
+      //Sets actualWidth and actualHeight ?
 
 
 
@@ -249,7 +249,7 @@ class DataMatrix implements BarcodeIO
       for (int letterIndex = 0; letterIndex < text.length(); ++ letterIndex)
       {
          charValue = text.charAt(letterIndex);
-         
+
          for (int bitIndex = 0; bitIndex < 8; ++bitIndex)
          {
             int bitPosition = (int)(128/Math.pow(2, bitIndex));
@@ -293,7 +293,7 @@ class DataMatrix implements BarcodeIO
       char[] bottomLine = new char[stringLength];
       for (int i = 0; i < stringLength; ++i)
       {
-         if (i%2 == 0)
+         if (i%2 == 1)
             topLine[i] = '*';
          else
             topLine[i] = ' ';
@@ -305,7 +305,7 @@ class DataMatrix implements BarcodeIO
 
       for (int i = 0; i < 10; ++i)
       {
-         if (i % 2 == 0)
+         if (i % 2 == 0 || i == 9)
             arrayOfStrings[i] = "*" + arrayOfStrings[i] + "*";
          else
             arrayOfStrings[i]= "*" + arrayOfStrings[i] + ' ';
@@ -412,12 +412,50 @@ class DataMatrix implements BarcodeIO
 
    private int computeSignalWidth()
    {
-      return getRightColumn()-getLeftColumn();
+      int continuousPixels = 0;
+      int highest = 0;
+      for (int y = BarcodeImage.MAX_HEIGHT-1; y >=0; --y)
+      {
+         for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
+         {
+            if (image.getPixel(y, x))
+            {
+               ++continuousPixels;
+               if (continuousPixels > highest)
+                  highest = continuousPixels;
+            }
+            else
+            {
+               continuousPixels = 0;
+            }
+         }
+      }
+      return highest;
    }
 
    private int computeSignalHeight()
    {
-      return getBottomLineOfImage() - getTopLineOfImage();
+      int continuousPixels = 0;
+      int highest = 0;
+
+      for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
+      {
+         for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
+         {
+            if (image.getPixel(y, x))
+            {
+               ++continuousPixels;
+               if (continuousPixels > highest)
+                  highest = continuousPixels;
+            }
+            else
+            {
+               continuousPixels = 0;
+            }
+
+         }
+      }
+      return highest;
    }
 
 
@@ -493,7 +531,6 @@ class DataMatrix implements BarcodeIO
    {
 
 
-      displayRawImage();
       for (int y = BarcodeImage.MAX_HEIGHT; y > 0; --y) {
          for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
          {
@@ -502,7 +539,6 @@ class DataMatrix implements BarcodeIO
             }
          }
       }
-      int x = 1000/0;
       /*
       int uninterruptedPixels = 0;
       for (int y = BarcodeImage.MAX_HEIGHT; y > 0; --y)
@@ -570,28 +606,7 @@ class DataMatrix implements BarcodeIO
     */
    private int getRightColumn()
    {
-      int minimumNumberAlternatingPixels = 3;
-      int alternatingPixels = 0;
-      for (int x = BarcodeImage.MAX_WIDTH; x > 0; --x)
-      {
-         for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
-         {
-            if (image.getPixel(y, x))
-               return x;
-/*
-            if ( y > 0 && image.getPixel(y, x) != image.getPixel(y-1, x))
-            {
-               alternatingPixels++;
-            }
-            if (alternatingPixels >= minimumNumberAlternatingPixels)
-            {
-               return x;
-            }
-            */
-
-         }
-      }
-      return -1;
+      return getLeftColumn()+computeSignalWidth();
    }
 
 
@@ -636,7 +651,7 @@ class DataMatrix implements BarcodeIO
       int startingColumn = getLeftColumn();
       if (startingColumn > 0)
       {
-         int endingColumn = getRightColumn();
+         int endingColumn = startingColumn + computeSignalWidth();
 
          for (int x = startingColumn; x < endingColumn; ++x)
          {
