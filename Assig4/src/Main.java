@@ -89,7 +89,7 @@ class BarcodeImage implements Cloneable
    /*This method overwrites the clone() method in the
     * Cloneable interface. This method casts the the clone()
     * method to the superclass method BarcodeImage.*/
-   public BarcodeImage clone()
+   public BarcodeImage clone() throws CloneNotSupportedException
    {
       try
       {
@@ -107,7 +107,7 @@ class BarcodeImage implements Cloneable
       }
       catch(CloneNotSupportedException e)
       {
-         
+         throw new InternalError();
       }
 
    }
