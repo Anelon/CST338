@@ -204,6 +204,7 @@ class DataMatrix implements BarcodeIO
          this.image = (BarcodeImage) bc.clone();
       }
       catch(CloneNotSupportedException e) {
+         return false;
       }
 
       actualWidth = computeSignalWidth() -2 ;
@@ -220,7 +221,7 @@ class DataMatrix implements BarcodeIO
       //actualWidth/Height = computed width/height value?
 
 
-      return false;
+      return true;
    }
 
 
@@ -531,7 +532,7 @@ class DataMatrix implements BarcodeIO
    {
 
 
-      for (int y = BarcodeImage.MAX_HEIGHT; y > 0; --y) {
+      for (int y = BarcodeImage.MAX_HEIGHT-1; y > 0; --y) {
          for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
          {
             if (image.getPixel(y, x)) {
@@ -539,28 +540,6 @@ class DataMatrix implements BarcodeIO
             }
          }
       }
-      /*
-      int uninterruptedPixels = 0;
-      for (int y = BarcodeImage.MAX_HEIGHT; y > 0; --y)
-      {
-         for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
-         {
-            if (image.getPixel(y, x))
-            {
-               ++uninterruptedPixels;
-            }
-            else
-            {
-               uninterruptedPixels = 0;
-            }
-            if (uninterruptedPixels == computeSignalWidth())
-            {
-               return y;
-            }
-         }
-      }
-      return -1;
-      */
    return -1;
    }
 
@@ -583,30 +562,10 @@ class DataMatrix implements BarcodeIO
             if (image.getPixel(y, x))
             {
                return x;
-             //  ++uninterruptedPixels;
             }
-           /* else
-            {
-               uninterruptedPixels = 0;
-            }
-            if (uninterruptedPixels >= minimumValidUninterruptedPixels)
-               return x;*/
          }
       }
       return -1;
-   }
-
-
-   /**
-    * Finds the far right/last column of valid data from the object's BarcodeImage object
-    * named image. The object must be a valid, initialized object. If no data
-    * is found, -1 is returned to indicate this.
-    *
-    * @return The far right/last column index with valid data.
-    */
-   private int getRightColumn()
-   {
-      return getLeftColumn()+computeSignalWidth();
    }
 
 
