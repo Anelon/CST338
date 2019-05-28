@@ -243,29 +243,36 @@ class DataMatrix implements BarcodeIO
     */
    public boolean generateImageFromText()
    {
-      int stringLength = text.length();
-      int max = 0;
-      String[] arrayOfStrings = new String[stringLength + 2];
-      for (int i = 0; i < stringLength; ++i)
+      int charValue = 0;
+      String[] arrayOfStrings = new String[10];
+      char[][] arrayOfArraysUndersized = new char[8][text.length()];
+      for (int letterIndex = 0; letterIndex < text.length(); ++ letterIndex)
       {
-         String temp = Integer.toBinaryString(text.charAt(i));
-         //replace 1s and 0s in string with proper characters
-         temp = temp.replace('0', WHITE_CHAR);
-         temp = temp.replace('1', BLACK_CHAR);
-         //System.out.println(temp.length() + " " + temp);
-         arrayOfStrings[i + 1] = temp;
-         //get max string length to encode
-         if(temp.length() > max)
-            max = temp.length();
+         charValue = text.charAt(letterIndex);
+         
+         for (int bitIndex = 0; bitIndex < 8; ++bitIndex)
+         {
+            int bitPosition = (int)(128/Math.pow(2, bitIndex));
+
+            if (charValue/bitPosition == 1)
+               arrayOfArraysUndersized[bitIndex][letterIndex] = '*';
+            else
+               arrayOfArraysUndersized[bitIndex][letterIndex] = ' ';
+            charValue%=bitPosition;
+         }
       }
 
+      for (int i = 1; i < 9; ++i)
+      {
+         arrayOfStrings[i] = new String(arrayOfArraysUndersized[i-1]);
+      }
 
+      addBorders(arrayOfStrings);
+      image = new BarcodeImage(arrayOfStrings);
 
-      addBorders(arrayOfStrings, max);
-
-
-      this.image = new BarcodeImage(arrayOfStrings);
       return true;
+
+
    }
 
 
@@ -278,45 +285,30 @@ class DataMatrix implements BarcodeIO
     * values that correspond to the string whose length is passed.
     * @param arrayOfStrings an array of strings holding the
     *                       binary data for the a string of text
-    * @param max size of the largest string within the array
     */
-   private void addBorders(String[] arrayOfStrings, int max)
+   private void addBorders(String[] arrayOfStrings)
    {
       int stringLength = text.length();
-      //add borders around the main string
-      for (int i = 0; i < stringLength + 2; i++)
+      char[] topLine = new char[stringLength];
+      char[] bottomLine = new char[stringLength];
+      for (int i = 0; i < stringLength; ++i)
       {
-         //border on left solid
-         if (i == 0)
-         {
-            arrayOfStrings[i] = "";
-            for(int j = 0; j < max + 2; j++)
-               arrayOfStrings[i] += BLACK_CHAR;
-         }
-         //border on right put black everyother
-         else if (i == stringLength + 1)
-         {
-            arrayOfStrings[i] = "";
-            for(int j = 0; j < max + 2; j++)
-               if(j % 2 == 0)
-                  arrayOfStrings[i] += BLACK_CHAR;
-               else
-                  arrayOfStrings[i] += WHITE_CHAR;
-         }
-         //Put border on top and bottom
+         if (i%2 == 0)
+            topLine[i] = '*';
          else
-         {
-            //normalize the string lengths by adding leading spaces
-            for(int j = arrayOfStrings[i].length(); j < max; j++)
-            {
-               arrayOfStrings[i] = " " + arrayOfStrings[i];
-            }
-            //if every other column
-            if(i % 2 == 0)
-               arrayOfStrings[i] = "*" + arrayOfStrings[i] + "*";
-            else
-               arrayOfStrings[i] = " " + arrayOfStrings[i] + "*";
-         }
+            topLine[i] = ' ';
+
+         bottomLine[i] = '*';
+      }
+      arrayOfStrings[0] = new String(topLine);
+      arrayOfStrings[9] = new String(bottomLine);
+
+      for (int i = 0; i < 10; ++i)
+      {
+         if (i % 2 == 0)
+            arrayOfStrings[i] = "*" + arrayOfStrings[i] + "*";
+         else
+            arrayOfStrings[i]= "*" + arrayOfStrings[i] + ' ';
       }
    }
 
