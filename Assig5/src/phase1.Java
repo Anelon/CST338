@@ -12,9 +12,19 @@ public class Main
 
    static void loadCardIcons()
    {
-      // build the file names ("AC.gif", "2C.gif", "3C.gif", "TC.gif", etc.)
-      // in a SHORT loop.  For each file name, read it in and use it to
-      // instantiate each of the 57 Icons in the icon[] array.
+      int iconIndex = 0;
+      for (int cardNum = 1; cardNum < 15; ++cardNum)
+      {
+         for (int suitNum = 0; suitNum < 4; ++suitNum)
+         {
+            String filename = turnIntIntoCardValue(cardNum) +
+               turnIntIntoCardSuit(suitNum) + ".gif";
+            ImageIcon cardPic = new ImageIcon(filename);
+            icon[iconIndex] = cardPic;
+            ++iconIndex;
+         }
+      }
+      icon[NUM_CARD_IMAGES-1] = new ImageIcon("BK.gif");
    }
 
    // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
@@ -40,6 +50,10 @@ public class Main
          }
          case 13: {
             cardValue = 'K';
+            break;
+         }
+         case 14: {
+            cardValue = 'X';
             break;
          }
       }
