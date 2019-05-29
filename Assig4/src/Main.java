@@ -329,7 +329,6 @@ class DataMatrix implements BarcodeIO
       //remove below when above function is fixed
       startingX = 1;
       int startingY = getTopLineOfImage()+1;
-      //System.out.println("actualWidth " + actualWidth);
       char[] arrayOfChars = new char[actualWidth];
       int index = 0;
       cleanImage();
@@ -337,11 +336,9 @@ class DataMatrix implements BarcodeIO
       {
 
          arrayOfChars[x-1] = readCharFromCol(x);
-         //System.out.println(x + " " + arrayOfChars[x-1]);
          ++index;
       }
       text = new String(arrayOfChars);
-      //System.out.println(arrayOfChars.length);
       return false;
    }
 
@@ -358,7 +355,6 @@ class DataMatrix implements BarcodeIO
       int startingY = getTopLineOfImage();
       int imageWidth = computeSignalWidth();
       int imageHeight = computeSignalHeight();
-      //System.out.println(startingX + " " + startingY);
       for (int y = startingY; y <= imageHeight + startingY; ++y)
       {
          for (int x = startingX; x <= imageWidth + startingX; ++x)
@@ -382,8 +378,6 @@ class DataMatrix implements BarcodeIO
 
    public void displayRawImage()
    {
-      //System.out.println("actualHeight = " + actualHeight);
-      //System.out.println("actualWidth = " + actualWidth);
       for (int x = 0; x < BarcodeImage.MAX_HEIGHT; ++x)
       {
          for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
@@ -392,7 +386,6 @@ class DataMatrix implements BarcodeIO
                System.out.print(BLACK_CHAR);
             else
                System.out.print(WHITE_CHAR);
-            //System.out.print(image.getPixel(x, y));
          }
          System.out.println();
       }
@@ -451,7 +444,6 @@ class DataMatrix implements BarcodeIO
             if (image.getPixel(y, x))
             {
                ++continuousPixels;
-               //System.out.println("pixels " + continuousPixels);
             }
             else
             {
@@ -462,7 +454,6 @@ class DataMatrix implements BarcodeIO
 
          }
       }
-      System.out.println("Hightest " + highest);
       return highest;
    }
 
@@ -475,48 +466,16 @@ class DataMatrix implements BarcodeIO
     */
    private void moveImageToLowerLeft()
    {
-      System.out.println("Move Lower Left");
-      /*
-      int startingX = getLeftColumn();
-      int startingY = getTopLineOfImage();
-      int imageWidth = computeSignalWidth();
-      int imageHeight = computeSignalHeight();
-      //System.out.println(startingX + " " + startingY);
-      for (int y = imageHeight + startingY; y >= startingY; --y)
-      {
-         for (int x = imageWidth + startingX; x >= startingX; --x)
-         {
-            boolean pixel = image.getPixel(y,x);
-            System.out.print(boolToChar(image.getPixel(y, x)));
-            image.setPixel(y,x,false);
-            //add 2 for the borders
-            int shift = imageHeight - y;
-            image.setPixel(BarcodeImage.MAX_HEIGHT - shift, x, pixel);
-
-         }
-         System.out.println();
-      }
-      */
-
-      //System.out.println("Height " + computeSignalHeight());
-
-      //System.out.println("Width " + computeSignalWidth());
-      //displayRawImage();
       if (getBottomLineOfImage() < BarcodeImage.MAX_HEIGHT-1)
       {
-         System.out.println("Shifting Down");
          shiftImageDown();
-         System.out.println("Done Shifting");
       }
 
       //displayRawImage();
-      System.out.println("left col " + getLeftColumn());
       if (getLeftColumn() > 0)
       {
-         System.out.println("Left");
          shiftImageLeft();
       }
-      System.out.println("Shifted Left");
       //displayRawImage();
 
    }
@@ -614,9 +573,6 @@ class DataMatrix implements BarcodeIO
       if (endingRow < BarcodeImage.MAX_HEIGHT)
       {
          int startingRow = getTopLineOfImage();
-         System.out.println("End " + endingRow);
-         System.out.println("Start " + startingRow);
-         System.out.println("height " + actualHeight);
 
          for (int y = endingRow; y > startingRow - 1; --y)
          {
@@ -627,7 +583,6 @@ class DataMatrix implements BarcodeIO
                image.setPixel(y,x,false);
                //add 2 for the borders
                int shift = actualHeight+2 - (y - startingRow);
-               //System.out.println("Shift " + shift);
                image.setPixel(BarcodeImage.MAX_HEIGHT - shift, x, pixel);
             }
          }
@@ -650,10 +605,6 @@ class DataMatrix implements BarcodeIO
       {
          int endingColumn = startingColumn + computeSignalWidth();
 
-         System.out.println("End " + endingColumn);
-         System.out.println("Start " + startingColumn);
-         System.out.println("height " + actualWidth);
-
          for (int x = startingColumn; x < endingColumn + 1; ++x)
          {
             for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
@@ -664,7 +615,6 @@ class DataMatrix implements BarcodeIO
                image.setPixel(y, x, false);
                //add 2 for the borders
                int shift = x - startingColumn;
-               //System.out.println("Shift " + shift);
                image.setPixel(y, shift, pixel);
             }
          }
@@ -737,7 +687,6 @@ public class Main
 {
    public static void main(String[] args)
    {
-      /*
       //not used right now can be used for testing decoding
       String[] scanForText =
          {
@@ -757,15 +706,10 @@ public class Main
       DataMatrix test = new DataMatrix(testText);
       //Convert text to image
       test.generateImageFromText();
-      //test.displayRawImage();
       test.displayImageToConsole();
       //convert image back to text
-      //System.out.println("image:");
       test.translateImageToText();
-      //test.displayRawImage();
-      //test.displayImageToConsole();
       test.displayTextToConsole();
-      */
 
 
       //his main to be implemented later when functions are more complete
@@ -814,7 +758,6 @@ public class Main
          };
 
       
-      System.out.println("thing");
       BarcodeImage bc = new BarcodeImage(sImageIn);
       DataMatrix dm = new DataMatrix(bc);
 
