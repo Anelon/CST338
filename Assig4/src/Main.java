@@ -5,9 +5,9 @@ Team SAGA - Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado
 The following program contains the tools for a basic
 barcode scanner. The BarcodeImage class functions as
 an advanced 2d array to hold data corresponding
-to a string. The DataMatrix class functions as the 
+to a string. The DataMatrix class functions as the
 core of the tool, giving functionality to scan
-and decode barcode images to text as well as 
+and decode barcode images to text as well as
 the reverse case.
 
 
@@ -198,7 +198,7 @@ class DataMatrix implements BarcodeIO
       {
 
          System.out.println("BarcodeImage failed to scan properly. " +
-            "Proceed with caution.");
+                            "Proceed with caution.");
       }
 
    }
@@ -215,7 +215,7 @@ class DataMatrix implements BarcodeIO
       if (!readText(text))
       {
          System.out.println("String failed to scan properly. " +
-            "Proceed with caution.");
+                            "Proceed with caution.");
       }
 
    }
@@ -253,10 +253,12 @@ class DataMatrix implements BarcodeIO
    public boolean scan(BarcodeImage bc)
    {
       //Attempts to clone and catches if clone not supported (uses try catch)
-      try {
+      try
+      {
          this.image = (BarcodeImage) bc.clone();
       }
-      catch(CloneNotSupportedException e) {
+      catch(CloneNotSupportedException e)
+      {
          return false;
       }
 
@@ -300,14 +302,17 @@ class DataMatrix implements BarcodeIO
     */
    public boolean generateImageFromText()
    {
-      try {
+      try
+      {
          int charValue;
          String[] arrayOfStrings = new String[10];
          char[][] arrayOfArraysUndersized = new char[8][text.length()];
-         for (int letterIndex = 0; letterIndex < text.length(); ++letterIndex) {
+         for (int letterIndex = 0; letterIndex < text.length(); ++letterIndex)
+         {
             charValue = text.charAt(letterIndex);
 
-            for (int bitIndex = 0; bitIndex < 8; ++bitIndex) {
+            for (int bitIndex = 0; bitIndex < 8; ++bitIndex)
+            {
                int bitPosition = (int) (128 / Math.pow(2, bitIndex));
 
                if (charValue / bitPosition == 1)
@@ -318,7 +323,8 @@ class DataMatrix implements BarcodeIO
             }
          }
 
-         for (int i = 1; i < 9; ++i) {
+         for (int i = 1; i < 9; ++i)
+         {
             arrayOfStrings[i] = new String(arrayOfArraysUndersized[i - 1]);
          }
 
@@ -651,10 +657,12 @@ class DataMatrix implements BarcodeIO
    {
 
 
-      for (int y = BarcodeImage.MAX_HEIGHT-1; y > 0; --y) {
+      for (int y = BarcodeImage.MAX_HEIGHT-1; y > 0; --y)
+      {
          for (int x = 0; x < BarcodeImage.MAX_WIDTH; ++x)
          {
-            if (image.getPixel(y, x)) {
+            if (image.getPixel(y, x))
+            {
                return y;
             }
          }
@@ -774,7 +782,7 @@ class DataMatrix implements BarcodeIO
       //for all of the spots in that col starting at the
       //bottom because thats the ones bit (-2 to account for border)
       for (int y = BarcodeImage.MAX_HEIGHT - 2;
-           y > (BarcodeImage.MAX_HEIGHT - actualHeight) - 2; --y)
+            y > (BarcodeImage.MAX_HEIGHT - actualHeight) - 2; --y)
       {
          //if the pixel is true add to temp char
          if (image.getPixel(y, col))
@@ -809,48 +817,48 @@ public class Main
 
 
       String[] sImageIn =
-         {
-            "                                               ",
-            "                                               ",
-            "                                               ",
-            "     * * * * * * * * * * * * * * * * * * * * * ",
-            "     *                                       * ",
-            "     ****** **** ****** ******* ** *** *****   ",
-            "     *     *    ****************************** ",
-            "     * **    * *        **  *    * * *   *     ",
-            "     *   *    *  *****    *   * *   *  **  *** ",
-            "     *  **     * *** **   **  *    **  ***  *  ",
-            "     ***  * **   **  *   ****    *  *  ** * ** ",
-            "     *****  ***  *  * *   ** ** **  *   * *    ",
-            "     ***************************************** ",
-            "                                               ",
-            "                                               ",
-            "                                               "
+      {
+         "                                               ",
+         "                                               ",
+         "                                               ",
+         "     * * * * * * * * * * * * * * * * * * * * * ",
+         "     *                                       * ",
+         "     ****** **** ****** ******* ** *** *****   ",
+         "     *     *    ****************************** ",
+         "     * **    * *        **  *    * * *   *     ",
+         "     *   *    *  *****    *   * *   *  **  *** ",
+         "     *  **     * *** **   **  *    **  ***  *  ",
+         "     ***  * **   **  *   ****    *  *  ** * ** ",
+         "     *****  ***  *  * *   ** ** **  *   * *    ",
+         "     ***************************************** ",
+         "                                               ",
+         "                                               ",
+         "                                               "
 
-         };
+      };
 
 
 
       String[] sImageIn_2 =
-         {
-            "                                          ",
-            "                                          ",
-            "* * * * * * * * * * * * * * * * * * *     ",
-            "*                                    *    ",
-            "**** *** **   ***** ****   *********      ",
-            "* ************ ************ **********    ",
-            "** *      *    *  * * *         * *       ",
-            "***   *  *           * **    *      **    ",
-            "* ** * *  *   * * * **  *   ***   ***     ",
-            "* *           **    *****  *   **   **    ",
-            "****  *  * *  * **  ** *   ** *  * *      ",
-            "**************************************    ",
-            "                                          ",
-            "                                          ",
-            "                                          ",
-            "                                          "
+      {
+         "                                          ",
+         "                                          ",
+         "* * * * * * * * * * * * * * * * * * *     ",
+         "*                                    *    ",
+         "**** *** **   ***** ****   *********      ",
+         "* ************ ************ **********    ",
+         "** *      *    *  * * *         * *       ",
+         "***   *  *           * **    *      **    ",
+         "* ** * *  *   * * * **  *   ***   ***     ",
+         "* *           **    *****  *   **   **    ",
+         "****  *  * *  * **  ** *   ** *  * *      ",
+         "**************************************    ",
+         "                                          ",
+         "                                          ",
+         "                                          ",
+         "                                          "
 
-         };
+      };
 
 
       BarcodeImage bc = new BarcodeImage(sImageIn);
