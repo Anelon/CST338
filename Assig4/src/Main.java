@@ -329,7 +329,7 @@ class DataMatrix implements BarcodeIO
       //remove below when above function is fixed
       startingX = 1;
       int startingY = getTopLineOfImage()+1;
-      System.out.println("actualWidth " + actualWidth);
+      //System.out.println("actualWidth " + actualWidth);
       char[] arrayOfChars = new char[actualWidth];
       int index = 0;
       cleanImage();
@@ -341,7 +341,7 @@ class DataMatrix implements BarcodeIO
          ++index;
       }
       text = new String(arrayOfChars);
-      System.out.println(arrayOfChars.length);
+      //System.out.println(arrayOfChars.length);
       return false;
    }
 
@@ -501,7 +501,7 @@ class DataMatrix implements BarcodeIO
       //System.out.println("Height " + computeSignalHeight());
 
       //System.out.println("Width " + computeSignalWidth());
-      displayRawImage();
+      //displayRawImage();
       if (getBottomLineOfImage() < BarcodeImage.MAX_HEIGHT-1)
       {
          System.out.println("Shifting Down");
@@ -509,13 +509,15 @@ class DataMatrix implements BarcodeIO
          System.out.println("Done Shifting");
       }
 
-      displayRawImage();
-      while (getLeftColumn() > 0)
+      //displayRawImage();
+      System.out.println("left col " + getLeftColumn());
+      if (getLeftColumn() > 0)
       {
+         System.out.println("Left");
          shiftImageLeft();
       }
       System.out.println("Shifted Left");
-      displayRawImage();
+      //displayRawImage();
 
    }
 
@@ -648,17 +650,23 @@ class DataMatrix implements BarcodeIO
       {
          int endingColumn = startingColumn + computeSignalWidth();
 
-         for (int x = startingColumn; x < endingColumn; ++x)
+         System.out.println("End " + endingColumn);
+         System.out.println("Start " + startingColumn);
+         System.out.println("height " + actualWidth);
+
+         for (int x = startingColumn; x < endingColumn + 1; ++x)
          {
             for (int y = 0; y < BarcodeImage.MAX_HEIGHT; ++y)
             {
-               image.setPixel(y, x, image.getPixel(y, x + 1));
+               //drop image all the way to the bottom
+               boolean pixel = image.getPixel(y, x);
+               //clear current pixel
+               image.setPixel(y, x, false);
+               //add 2 for the borders
+               int shift = x - startingColumn;
+               //System.out.println("Shift " + shift);
+               image.setPixel(y, shift, pixel);
             }
-         }
-
-         for (int y = 0; y < BarcodeImage.MAX_WIDTH; ++y)
-         {
-            image.setPixel(y, endingColumn, false);
          }
       }
    }
@@ -729,6 +737,7 @@ public class Main
 {
    public static void main(String[] args)
    {
+      /*
       //not used right now can be used for testing decoding
       String[] scanForText =
          {
@@ -756,6 +765,7 @@ public class Main
       //test.displayRawImage();
       //test.displayImageToConsole();
       test.displayTextToConsole();
+      */
 
 
       //his main to be implemented later when functions are more complete
@@ -811,7 +821,7 @@ public class Main
       // First secret message
       System.out.println();
       System.out.println("First secret message");
-      dm.displayRawImage();
+      //dm.displayRawImage();
       dm.translateImageToText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
@@ -832,9 +842,6 @@ public class Main
       dm.generateImageFromText();
       dm.displayTextToConsole();
       dm.displayImageToConsole();
-
-
-
    }
 }
 
