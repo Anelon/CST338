@@ -19,12 +19,12 @@ public class Main
          {
             String filename = turnIntIntoCardValue(cardNum) +
                turnIntIntoCardSuit(suitNum) + ".gif";
-            ImageIcon cardPic = new ImageIcon(filename);
+            ImageIcon cardPic = new ImageIcon("images\\"+filename);
             icon[iconIndex] = cardPic;
             ++iconIndex;
          }
       }
-      icon[NUM_CARD_IMAGES-1] = new ImageIcon("BK.gif");
+      icon[NUM_CARD_IMAGES-1] = new ImageIcon("images\\BK.gif");
    }
 
    // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
