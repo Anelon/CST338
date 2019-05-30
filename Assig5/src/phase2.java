@@ -13,7 +13,6 @@ public class Main
 {
 
 
-   // a simple main to throw all the JLabels out there for the world to see
    public static void main(String[] args)
    {
 
