@@ -1,12 +1,16 @@
+/*
+* Team SAGA - Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado
+* 5-30-2019
+*
+*
+*
+* The following program is built to produce a specific output per
+* assignment specifications.
+*/
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.text.DecimalFormat;
 import java.util.Random;
-import java.lang.IllegalArgumentException;
 
 
 public class Main
@@ -16,31 +20,293 @@ public class Main
    public static void main(String[] args)
    {
 
+      Card card = new Card('A', Card.Suit.spades);
+
+      // prepare the image icon array
+
+      // establish main frame in which program will run
+      JFrame frmMyWindow = new JFrame("Card Room");
+      frmMyWindow.setSize(1150, 650);
+      frmMyWindow.setLocationRelativeTo(null);
+      frmMyWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+      // set up layout which will control placement of buttons, etc.
+      FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);
+      frmMyWindow.setLayout(layout);
+
+      JLabel label = new JLabel(GUICard.getIcon(card));
+
+      frmMyWindow.add(label);
+
+      // show everything to the user
+      frmMyWindow.setVisible(true);
+
+      /*  Main from phase 2 assignment spec
+      
+      int k;
+      Icon tempIcon;
+      
+      // establish main frame in which program will run
+      CardTable myCardTable 
+         = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
+      myCardTable.setSize(800, 600);
+      myCardTable.setLocationRelativeTo(null);
+      myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+      // show everything to the user
+      myCardTable.setVisible(true);
+
+      // CREATE LABELS ----------------------------------------------------
+      code goes here ...
+  
+      // ADD LABELS TO PANELS -----------------------------------------
+      code goes here ...
+      
+      // and two random cards in the play region (simulating a computer/hum ply)
+      code goes here ...
+
+      // show everything to the user
+      myCardTable.setVisible(true);
+      */
    }
 }
 
 
+
+
+
+
+/**
+ * The following class acts a static controller for the
+ * interaction with the card images, implemented as ImageIcons.
+ *
+ * Note that this class is designed to be used in conjunction with
+ * a card class that implements 'char card.getValue' and
+ * 'Card.suit card.getSuit()'
+ *
+ * Icon[][] iconCards - Core 2d array to hold the images for the cards
+ *    as ImageIcons
+ * Icon iconBack - Individual IconImage to hold the "back of card" image
+ * NUM_CARD_VALUES - corresponds to the number of traditional playing card
+ *    values, joker included
+ * NUM_CARD_SUITES - corresponds to the number of traditional playinc card
+ *    suites (i.e., Spades, Clubs, Diamonds, Hearts)
+ */
 class GUICard
 {
    private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
    private static Icon iconBack;
-   static boolean iconsLoaded = false;
+   private static final int NUM_CARD_VALUES = 14;
+   private static final int NUM_CARD_SUITES = 4;
 
-   static void loadCardIcons()
+
+   /**
+    * Loads iconCards with the relevant ImageIcons, initialized to their
+    * corresponding images.
+    *
+    * Preconditions: Images must be locally located in a folder
+    * named "images" and adhere to a specific naming structure per
+    * the assignment specification.
+    */
+   private static void loadCardIcons()
    {
-
+      if (iconCards[0][0] ==null)
+      {
+         for (int cardNum = 1; cardNum <= NUM_CARD_VALUES; ++cardNum)
+         {
+            for (int suitNum = 0; suitNum < NUM_CARD_SUITES; ++suitNum)
+            {
+               String filename = turnIntIntoCardValue(cardNum) +
+                  turnIntIntoCardSuit(suitNum) + ".gif";
+               iconCards[cardNum-1][suitNum] = new ImageIcon("images\\"+filename);
+            }
+         }
+         iconBack = new ImageIcon("images\\BK.gif");
+      }
    }
 
+
+
+
+
+
+   /**
+    * Retrieves a card's "face" image as an Icon based
+    * off of the given card value. If loadCardIcons() preconditions
+    * are fulfilled, cards will always be initialized before retrieval.
+    *
+    * @param card Card for which the "face" image is desired.
+    * @return Icon holding the card's "face" image.
+    */
    public static Icon getIcon(Card card)
    {
-
+      loadCardIcons();
+      return iconCards[turnCardValueIntoInt(card.getValue())-1][turnSuitIntoInt(card.getSuit())];
    }
 
+
+
+
+
+
+   /**
+    * Retrieves the "Back of card" image. If loadCardIcons() preconditions
+    * are fulfilled, cards will always be initialized before retrieval.
+    *
+    * @return Icon holding the "Back of card" image
+    */
    public static Icon getBackCardIcon()
    {
-
+      loadCardIcons();
+      return iconBack;
    }
 
+
+
+
+
+
+   /**
+    * Converts a number from 1-14 into the appropriate
+    * playing card value as a one-character string.
+    * If an invalid number is passed, "A" is returned.
+    *
+    * @param cardNum An integer to be converted into
+    *                a one-character string representation
+    * @return A one-character string representation that
+    *                corresponds to a playing card value
+    */
+   private static String turnIntIntoCardValue(int cardNum)
+   {
+      char cardValue;
+
+      if (cardNum >= 1 && cardNum <= 14)
+      {
+         switch (cardNum) {
+            case 1: {
+               cardValue = 'A';
+               break;
+            }
+            case 10: {
+               cardValue = 'T';
+               break;
+            }
+            case 11: {
+               cardValue = 'J';
+               break;
+            }
+            case 12: {
+               cardValue = 'Q';
+               break;
+            }
+            case 13: {
+               cardValue = 'K';
+               break;
+            }
+            case 14: {
+               cardValue = 'X';
+               break;
+            }
+            default:
+               cardValue = (char) ('0' + cardNum);
+         }
+      }
+      else
+         cardValue = 'A';
+
+      return new String(new char[]{cardValue});
+   }
+
+
+
+
+
+
+   /**
+    * Converts a playing card value from char form to
+    * an integer. The value must be "valid" in order
+    * for a meaningful return.
+    *
+    * @param cardValue A char from '2'-'9', 'A', 'T', 'J',
+    *                  'Q', 'K', or 'X'. Using other values
+    *                  will result in garbage being returned.
+    * @return An integer representation of cardValue.
+    */
+   private static int turnCardValueIntoInt(char cardValue)
+   {
+      switch (cardValue)
+      {
+         case 'A':
+            return 1;
+         case 'T':
+            return 10;
+         case 'J':
+            return 11;
+         case 'Q':
+            return 12;
+         case 'K':
+            return 13;
+         case 'X':
+            return 14;
+         default:
+            return cardValue - '0';
+      }
+   }
+
+
+
+
+
+
+   /**
+    * Converts an integer to a single-character string
+    * representation of a playing card suite. 0 = Hearts,
+    * 1 = Clubs, 2 = Diamonds, 3 (or a garbage value) = Spades.
+    *
+    * @param toBeConverted A value to be converted to a suite
+    * @return A single-character string representation of a suite.
+    */
+   private static String turnIntIntoCardSuit(int toBeConverted)
+   {
+      switch (toBeConverted) {
+         case 0:
+            return "H";
+         case 1:
+            return "C";
+         case 2:
+            return "D";
+         default:
+            return "S";
+      }
+   }
+
+
+
+
+
+
+   /**
+    * Converts a Card.Suit to an integer value. Simplifies
+    * calculations.  0 = Hearts,
+    * 1 = Clubs, 2 = Diamonds, 3 (or a garbage value) = Spades.
+    *
+    * @param suit Card.Suit desired to be converted to int form.
+    * @return int representation of a Card.Suit
+    */
+   private static int turnSuitIntoInt(Card.Suit suit)
+   {
+      switch (suit)
+      {
+         case hearts:
+            return 0;
+         case clubs:
+            return 1;
+         case diamonds:
+            return 2;
+         default:
+            return 3;
+      }
+   }
 }
 
 
