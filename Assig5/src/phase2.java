@@ -1,12 +1,12 @@
 /*
-* Team SAGA - Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado
-* 5-30-2019
-*
-*
-*
-* The following program is built to produce a specific output per
-* assignment specifications.
-*/
+ * Team SAGA - Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado
+ * 5-30-2019
+ *
+ *
+ *
+ * The following program is built to produce a specific output per
+ * assignment specifications.
+ */
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,13 +42,13 @@ public class Main
       frmMyWindow.setVisible(true);
 
       /*  Main from phase 2 assignment spec
-      
-      int k;
-      Icon tempIcon;
-      
+
+          int k;
+          Icon tempIcon;
+
       // establish main frame in which program will run
       CardTable myCardTable 
-         = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
+      = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
       myCardTable.setSize(800, 600);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,10 +58,10 @@ public class Main
 
       // CREATE LABELS ----------------------------------------------------
       code goes here ...
-  
+
       // ADD LABELS TO PANELS -----------------------------------------
       code goes here ...
-      
+
       // and two random cards in the play region (simulating a computer/hum ply)
       code goes here ...
 
@@ -184,31 +184,31 @@ class GUICard
       {
          switch (cardNum) {
             case 1: {
-               cardValue = 'A';
-               break;
+                       cardValue = 'A';
+                       break;
             }
             case 10: {
-               cardValue = 'T';
-               break;
+                        cardValue = 'T';
+                        break;
             }
             case 11: {
-               cardValue = 'J';
-               break;
+                        cardValue = 'J';
+                        break;
             }
             case 12: {
-               cardValue = 'Q';
-               break;
+                        cardValue = 'Q';
+                        break;
             }
             case 13: {
-               cardValue = 'K';
-               break;
+                        cardValue = 'K';
+                        break;
             }
             case 14: {
-               cardValue = 'X';
-               break;
+                        cardValue = 'X';
+                        break;
             }
             default:
-               cardValue = (char) ('0' + cardNum);
+                     cardValue = (char) ('0' + cardNum);
          }
       }
       else
@@ -327,12 +327,12 @@ class CardTable extends JFrame
    }
 
    public int getNumCardsPerHand() {
-
+      return 0;
    }
 
    public int getNumPlayers()
    {
-
+      return 0;
    }
 }
 
@@ -369,6 +369,33 @@ class Card
       return card.getValue() == value && card.getSuit() == suit;
    }
 
+   //for use in the sorting
+   private boolean lessThan(Card card)
+   {
+      //return true if this is lessThan card
+      return false;
+   }
+
+   static void arraySort(Card[] cards, int arraySize)
+   {
+      for(int i = 0; i < arraySize; i++)
+      {
+         Card max = cards[i];
+         int index = i;
+         for(int j = 0; j < arraySize; j++)
+         {
+            if(max.lessThan(cards[j]))
+            {
+               max = cards[j];
+               index = j;
+            }
+         }
+         //swap max with cards[i]
+         cards[index] = cards[i];
+         cards[i] = max;
+      }
+   }
+
    //default constructor
    public Card()
    {
@@ -380,8 +407,8 @@ class Card
    private boolean isValid(char newValue, Suit newSuit)
    {
       if ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
-         || newValue == ACE || newValue == KING || newValue == QUEEN
-         || newValue == TEN || newValue == JACK)
+            || newValue == ACE || newValue == KING || newValue == QUEEN
+            || newValue == TEN || newValue == JACK)
       {
          return true;
       }
@@ -541,7 +568,7 @@ class Deck
       for (int packNumber = 0; packNumber < numPacks; ++packNumber)
       {
          for (int masterIndex = 0; masterIndex < masterPack.length;
-              ++masterIndex)
+               ++masterIndex)
          {
             cards[totalCardIndex] = new Card(masterPack[masterIndex]);
             ++totalCardIndex;
@@ -672,30 +699,30 @@ class Deck
                switch (cardNum)
                {
                   case 1:
-                  {
-                     cardValue = 'A';
-                     break;
-                  }
+                     {
+                        cardValue = 'A';
+                        break;
+                     }
                   case 10:
-                  {
-                     cardValue = 'T';
-                     break;
-                  }
+                     {
+                        cardValue = 'T';
+                        break;
+                     }
                   case 11:
-                  {
-                     cardValue = 'J';
-                     break;
-                  }
+                     {
+                        cardValue = 'J';
+                        break;
+                     }
                   case 12:
-                  {
-                     cardValue = 'Q';
-                     break;
-                  }
+                     {
+                        cardValue = 'Q';
+                        break;
+                     }
                   case 13:
-                  {
-                     cardValue = 'K';
-                     break;
-                  }
+                     {
+                        cardValue = 'K';
+                        break;
+                     }
                }
 
                masterPack[masterIndex] =
