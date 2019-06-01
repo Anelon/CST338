@@ -20,7 +20,12 @@ public class Main
    public static void main(String[] args)
    {
 
+      /*
+      //testing for lessthan ignore
       Card card = new Card('A', Card.Suit.spades);
+      Card sFive = new Card('A', Card.Suit.hearts);
+      System.out.println(card.lessThan(sFive));
+      */
 
       // prepare the image icon array
 
@@ -232,7 +237,7 @@ class GUICard
     *                  will result in garbage being returned.
     * @return An integer representation of cardValue.
     */
-   private static int turnCardValueIntoInt(char cardValue)
+   public static int turnCardValueIntoInt(char cardValue)
    {
       switch (cardValue)
       {
@@ -293,7 +298,7 @@ class GUICard
     * @param suit Card.Suit desired to be converted to int form.
     * @return int representation of a Card.Suit
     */
-   private static int turnSuitIntoInt(Card.Suit suit)
+   public static int turnSuitIntoInt(Card.Suit suit)
    {
       switch (suit)
       {
@@ -370,10 +375,14 @@ class Card
    }
 
    //for use in the sorting
-   private boolean lessThan(Card card)
+   //return true if this is lessThan card
+   public boolean lessThan(Card card)
    {
-      //return true if this is lessThan card
-      return false;
+      int lhs = GUICard.turnCardValueIntoInt(this.getValue());
+      lhs += GUICard.turnSuitIntoInt(this.getSuit()) * 100;
+      int rhs = GUICard.turnCardValueIntoInt(card.getValue());
+      rhs += GUICard.turnSuitIntoInt(card.getSuit()) * 100;
+      return lhs < rhs; 
    }
 
    static void arraySort(Card[] cards, int arraySize)
