@@ -26,7 +26,7 @@ public class phase2
    public static void main(String[] args)
    {
 
-      Card card = new Card('A', Card.Suit.spades);
+      Card card = new Card('K', Card.Suit.spades);
 
       // prepare the image icon array
 
@@ -40,7 +40,7 @@ public class phase2
       FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);
       frmMyWindow.setLayout(layout);
 
-      JLabel label = new JLabel(GUICard.getIcon(card));
+      JLabel label = new JLabel(GUICard.getBackCardIcon());
 
       frmMyWindow.add(label);
 
@@ -58,14 +58,26 @@ public class phase2
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+
       // show everything to the user
       myCardTable.setVisible(true);
 
       // CREATE LABELS ----------------------------------------------------
-      // code goes here ...
+      for (int i = 0; i < computerLabels.length; ++i)
+      {
+         computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
+      }
 
       // ADD LABELS TO PANELS -----------------------------------------
-      //code goes here ...
+      for (JLabel element:
+           computerLabels)
+      {
+         myCardTable.pnlComputerHand.add(label);
+         myCardTable.pnlComputerHand.add(new JLabel("TEST2"));
+         myCardTable.pnlComputerHand.repaint();
+         myCardTable.repaint();
+         myCardTable.repaint();
+      }
 
       // and two random cards in the play region (simulating a computer/hum ply)
       // code goes here ...
@@ -354,22 +366,20 @@ class CardTable extends JFrame
       /*This creates the card table GUI. */
       //JFrame frame = new JFrame("High Card Game");
 
-      JPanel pnlComputerHand = new JPanel();
-      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
+      pnlComputerHand.setLayout(new FlowLayout());
       JLabel computerHand = new JLabel ("Computer Hand");
       pnlComputerHand.add(computerHand);
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.NORTH,pnlComputerHand);
 
 
-      JPanel pnlPlayArea = new JPanel();
+
       pnlPlayArea.setLayout(new GridLayout(2, 2, 10, 10));
       JLabel playArea = new JLabel ("Play Area");
       pnlPlayArea.add(playArea);
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.CENTER,pnlPlayArea);
 
-      JPanel pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
       JLabel humanHand = new JLabel ("Human Hand");
       pnlHumanHand.add(humanHand);
