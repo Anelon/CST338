@@ -81,16 +81,28 @@ public class phase2
       {
          humanLabels[i] = new JLabel(GUICard.getIcon(myHand.inspectCard(i)));
       }
+
+      for (int i = 0; i < NUM_PLAYERS; ++i)
+      {
+         playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
+         playLabelText[i] = new JLabel("Player " + i+1);
+      }
+
       // ADD LABELS TO PANELS -----------------------------------------
       for (JLabel element:
          computerLabels)
       {
          myCardTable.pnlComputerHand.add(element);
       }
-      for (JLabel element:
-         humanLabels)
+      for (int i = 0; i < myHand.getnumCards(); ++i)
       {
-         myCardTable.pnlHumanHand.add(element);
+         myCardTable.pnlHumanHand.add(humanLabels[i]);
+      }
+
+      for (int i = 0; i < NUM_PLAYERS; ++i)
+      {
+         myCardTable.pnlPlayArea.add(playedCardLabels[i]);
+         myCardTable.pnlPlayArea.add(playLabelText[i]);
       }
       // and two random cards in the play region (simulating a computer/hum ply)
       // code goes here ...
