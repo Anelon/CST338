@@ -181,7 +181,7 @@ class GUICard
     * @return A one-character string representation that
     *                corresponds to a playing card value
     */
-   private static String turnIntIntoCardValue(int cardNum)
+   public static String turnIntIntoCardValue(int cardNum)
    {
       char cardValue;
 
@@ -237,7 +237,7 @@ class GUICard
     *                  will result in garbage being returned.
     * @return An integer representation of cardValue.
     */
-   private static int turnCardValueIntoInt(char cardValue)
+   public static int turnCardValueIntoInt(char cardValue)
    {
       switch (cardValue)
       {
@@ -398,7 +398,7 @@ class Card
 {
    public enum Suit {spades, hearts, clubs, diamonds};
    //Characters to hold the values cards can be
-   private static final char ACE = 'A', KING = 'K', QUEEN = 'Q', JACK = 'J';
+   private static final char ACE = 'A', KING = 'K', QUEEN = 'Q', JACK = 'J', JOKER = 'X';
    private static final char TEN = 'T';
    private static final char MIN_VALUE = '2', MAX_VALUE = '9';
 
@@ -411,6 +411,7 @@ class Card
    //Static finals for default card values
    public static final Suit DEFAULT_SUIT = Suit.spades;
    public static final char DEFAULT_VALUE = ACE;
+   public static char[] valuRanks;
 
    //card to string converter
    public String toString()
@@ -459,6 +460,7 @@ class Card
    {
       value = ACE;
       suit = Suit.spades;
+      setUpValuRanks();
    }
 
    //For use of checking of the values are valid
@@ -466,11 +468,24 @@ class Card
    {
       if ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
          || newValue == ACE || newValue == KING || newValue == QUEEN
-         || newValue == TEN || newValue == JACK)
+         || newValue == TEN || newValue == JACK || newValue == JOKER)
       {
          return true;
       }
       return false;
+   }
+
+   private static void setUpValuRanks()
+   {
+
+      if (valuRanks == null)
+      {
+         valuRanks = new char[15];
+         for (int cardNum = 0; cardNum <= 14; ++cardNum) {
+            char cardValue = GUICard.turnIntIntoCardValue(cardNum).charAt(0);
+            valuRanks[cardNum] = cardValue;
+         }
+      }
    }
 
    //get Number for the card returns if its valid and value was set
@@ -521,6 +536,7 @@ class Card
    //collection of constructors
    public Card(char newValue, Suit newSuit)
    {
+      setUpValuRanks();
       errorFlag = !setValue(newValue);
       setSuit(newSuit);
    }
@@ -537,6 +553,7 @@ class Card
    {
       errorFlag = !setValue(copy.getValue());
       setSuit(copy.getSuit());
+      setUpValuRanks();
 
    }
 }
@@ -562,7 +579,7 @@ class Deck
 {
 
 
-   private static int c = 56;
+   private static int deckSize = 56;
    private Card[] cards;
    private int topCard;
    public final int MAX_CARDS = 6*deckSize;
@@ -735,7 +752,7 @@ class Deck
    {
       int numFound = 0;
       for (Card examine:
-           cards)
+         cards)
       {
          if (examine.equals(card))
             ++numFound;
@@ -766,8 +783,8 @@ class Deck
             }
             else
             {
-              newCards[newCardsIndex] = cards[i];
-              ++newCardsIndex;
+               newCards[newCardsIndex] = cards[i];
+               ++newCardsIndex;
             }
          }
          cards = newCards;
@@ -808,7 +825,7 @@ class Deck
     * @return one of the 4 suits as defined in Card class. 0 = hearts,
     * 1 = clubs, 2 = diamonds, all other ints will return spades
     */
-   private static Card.Suit intToSuit(int toBeConverted)
+   public static Card.Suit intToSuit(int toBeConverted)
    {
       switch (toBeConverted)
       {
@@ -950,20 +967,20 @@ class Hand
       }
       //Decreases numCards.
       Card card = myCards[cardIndex];
-      
+
       numCards--;
       for(int i = cardIndex; i < numCards; i++)
       {
          myCards[i] = myCards[i+1];
       }
-      
-      myCards[numCards] = null;
-      
-      return card;
-    }
 
-   
-   
+      myCards[numCards] = null;
+
+      return card;
+   }
+
+
+
    /*This is a helper function to take a newCard
     * from the table and add to myCards array if
     * there is room in the hand.*/
