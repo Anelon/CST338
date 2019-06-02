@@ -940,6 +940,30 @@ class Hand
 
    }
 
+   //Required by assignment spec
+   public Card playCard(int cardIndex)
+   {
+      if ( numCards == 0 ) //error
+      {
+         //Creates a card that does not work
+         return new Card('M', Card.Suit.spades);
+      }
+      //Decreases numCards.
+      Card card = myCards[cardIndex];
+      
+      numCards--;
+      for(int i = cardIndex; i < numCards; i++)
+      {
+         myCards[i] = myCards[i+1];
+      }
+      
+      myCards[numCards] = null;
+      
+      return card;
+    }
+
+   
+   
    /*This is a helper function to take a newCard
     * from the table and add to myCards array if
     * there is room in the hand.*/
