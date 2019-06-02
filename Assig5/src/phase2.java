@@ -981,6 +981,12 @@ class Hand
 
 
 
+   void sort()
+   {
+      Card.arraySort(myCards, myCards.length);
+   }
+
+
    /*This is a helper function to take a newCard
     * from the table and add to myCards array if
     * there is room in the hand.*/
