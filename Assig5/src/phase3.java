@@ -358,30 +358,39 @@ class CardTable extends JFrame
       /*This creates the card table GUI. */
       //JFrame frame = new JFrame("High Card Game");
       
-      JPanel pnlComputerHand = new JPanel();
-      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
+      pnlComputerHand = new JPanel();
+      pnlComputerHand.setLayout(new FlowLayout());
       JLabel computerHand = new JLabel ("Computer Hand");
       pnlComputerHand.add(computerHand);
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.NORTH,pnlComputerHand);
-    
-      
-      JPanel pnlPlayArea = new JPanel();
+
+      pnlPlayArea = new JPanel();
       pnlPlayArea.setLayout(new GridLayout(2, 2, 10, 10));
       JLabel playArea = new JLabel ("Play Area");
       pnlPlayArea.add(playArea);
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.CENTER,pnlPlayArea);
-      
-      JPanel pnlHumanHand = new JPanel();
+
+      pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
       JLabel humanHand = new JLabel ("Human Hand");
       pnlHumanHand.add(humanHand);
-      pnlHumanHand.setBackground(Color.LIGHT_GRAY);     
+      pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
       
 
    }
+   //Getter for NumCardsPerHand
+   public int getNumCardsPerHand() {
+      return numCardsPerHand;
+   }
+
+   //Getter for getNumPlayers
+   public int getNumPlayers() {
+      return numPlayers;
+   }
+}
 
 
 
