@@ -320,8 +320,6 @@ class GUICard
    }
 }
 
-
-
 /*This class holds creates the GUI for the card table. */
 class CardTable extends JFrame
 {
@@ -382,23 +380,11 @@ class CardTable extends JFrame
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);     
       add(BorderLayout.SOUTH,pnlHumanHand);
       
-      
-      
-      
 
    }
 
 
-   //Getter for NumCardsPerHand
-   public int getNumCardsPerHand() {
-      return numCardsPerHand;
-   }
-   
-   //Getter for getNumPlayers
-   public int getNumPlayers() {
-      return numPlayers;
-   }
-}
+
 
 class Card
 {
