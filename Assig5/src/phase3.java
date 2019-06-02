@@ -11,26 +11,31 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
-import java.awt.GridLayout;
 
 
 
 public class phase3
 {
+   static int NUM_CARDS_PER_HAND = 7;
+   static int  NUM_PLAYERS = 2;
+   static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
+   static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];  
+   static JLabel[] playedCardLabels  = new JLabel[NUM_PLAYERS]; 
+   static JLabel[] playLabelText  = new JLabel[NUM_PLAYERS]; 
 
 
    public static void main(String[] args)
    {
 
-      /*
+      
       //testing for lessthan ignore
       Card card = new Card('A', Card.Suit.spades);
       Card sFive = new Card('A', Card.Suit.hearts);
       System.out.println(card.lessThan(sFive));
-      */
+      
 
       // prepare the image icon array
-
+      
       // establish main frame in which program will run
       JFrame frmMyWindow = new JFrame("Card Room");
       frmMyWindow.setSize(1150, 650);
@@ -47,15 +52,14 @@ public class phase3
 
       // show everything to the user
       frmMyWindow.setVisible(true);
+      
+      //  Main from phase 2 assignment spec
 
-      /*  Main from phase 2 assignment spec
-
-          int k;
-          Icon tempIcon;
+      int k;
+      Icon tempIcon;
 
       // establish main frame in which program will run
-      CardTable myCardTable 
-      = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
+      CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
       myCardTable.setSize(800, 600);
       myCardTable.setLocationRelativeTo(null);
       myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,17 +68,17 @@ public class phase3
       myCardTable.setVisible(true);
 
       // CREATE LABELS ----------------------------------------------------
-      code goes here ...
+      
 
       // ADD LABELS TO PANELS -----------------------------------------
-      code goes here ...
+      //code goes here ...
 
       // and two random cards in the play region (simulating a computer/hum ply)
-      code goes here ...
+      //code goes here ...
 
       // show everything to the user
-      myCardTable.setVisible(true);
-      */
+     
+     
    }
 }
 
@@ -318,21 +322,21 @@ class GUICard
 
 
 
+/*This class holds creates the GUI for the card table. */
 class CardTable extends JFrame
 {
-   static int MAX_CARDS_PER_HAND  = 56;
+  
+   static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2;  // for now, we only allow 2 person games
    // The default information is from the given main.
    static int DEFAULT_NUM_CARDS_PER_HAND = 7;
    static int DEFAULT_NUM_PLAYERS = 2;
-      
+   
    private int numCardsPerHand;
    private int numPlayers;
    
-   
-   
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
-
+  
    CardTable(String title, int numCardsPerHand, int numPlayers)
    {
       super(title);
@@ -353,10 +357,38 @@ class CardTable extends JFrame
          this.numPlayers = numCardsPerHand;
       }
       
+      /*This creates the card table GUI. */
+      //JFrame frame = new JFrame("High Card Game");
+      
+      JPanel pnlComputerHand = new JPanel();
+      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
+      JLabel computerHand = new JLabel ("Computer Hand");
+      pnlComputerHand.add(computerHand);
+      pnlComputerHand.setBackground(Color.LIGHT_GRAY);
+      add(BorderLayout.NORTH,pnlComputerHand);
+    
+      
+      JPanel pnlPlayArea = new JPanel();
+      pnlPlayArea.setLayout(new GridLayout(2, 2, 10, 10));
+      JLabel playArea = new JLabel ("Play Area");
+      pnlPlayArea.add(playArea);
+      pnlPlayArea.setBackground(Color.LIGHT_GRAY);
+      add(BorderLayout.CENTER,pnlPlayArea);
+      
+      JPanel pnlHumanHand = new JPanel();
+      pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
+      JLabel humanHand = new JLabel ("Human Hand");
+      pnlHumanHand.add(humanHand);
+      pnlHumanHand.setBackground(Color.LIGHT_GRAY);     
+      add(BorderLayout.SOUTH,pnlHumanHand);
+      
+      
+      
       
 
    }
-   
+
+
    //Getter for NumCardsPerHand
    public int getNumCardsPerHand() {
       return numCardsPerHand;
@@ -366,8 +398,6 @@ class CardTable extends JFrame
    public int getNumPlayers() {
       return numPlayers;
    }
-
-      
 }
 
 class Card
