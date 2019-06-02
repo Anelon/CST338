@@ -28,6 +28,15 @@ public class phase2
 
       Card card = new Card('K', Card.Suit.spades);
 
+      Deck myDeck = new Deck();
+      Hand myHand = new Hand();
+      myHand.takeCard(myDeck.dealCard());
+      myHand.takeCard(myDeck.dealCard());
+      myHand.takeCard(myDeck.dealCard());
+      myHand.takeCard(myDeck.dealCard());
+      myHand.takeCard(myDeck.dealCard());
+      myHand.takeCard(myDeck.dealCard());
+
       // prepare the image icon array
 
       // establish main frame in which program will run
@@ -68,17 +77,21 @@ public class phase2
          computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
       }
 
+      for (int i = 0; i < myHand.getnumCards(); ++i)
+      {
+         humanLabels[i] = new JLabel(GUICard.getIcon(myHand.inspectCard(i)));
+      }
       // ADD LABELS TO PANELS -----------------------------------------
       for (JLabel element:
-           computerLabels)
+         computerLabels)
       {
-         myCardTable.pnlComputerHand.add(label);
-         myCardTable.pnlComputerHand.add(new JLabel("TEST2"));
-         myCardTable.pnlComputerHand.repaint();
-         myCardTable.repaint();
-         myCardTable.repaint();
+         myCardTable.pnlComputerHand.add(element);
       }
-
+      for (JLabel element:
+         humanLabels)
+      {
+         myCardTable.pnlHumanHand.add(element);
+      }
       // and two random cards in the play region (simulating a computer/hum ply)
       // code goes here ...
 
@@ -947,7 +960,7 @@ class Hand
    /*Keeps track the numbers of cards. */
    private int numCards;
    public static int MAX_CARDS = 100;
-   private Card[] myCards = new Card[MAX_CARDS];
+   private Card[] myCards;
 
    /*Default constructor for the hand class.*/
    public Hand()
