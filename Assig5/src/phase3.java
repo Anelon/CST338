@@ -374,7 +374,7 @@ class CardTable extends JFrame
       //JFrame frame = new JFrame("High Card Game");
       
       pnlComputerHand = new JPanel();
-      pnlComputerHand.setLayout(new FlowLayout());
+      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
       JLabel computerHand = new JLabel ("Computer Hand");
       pnlComputerHand.add(computerHand);
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
