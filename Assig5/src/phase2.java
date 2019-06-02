@@ -108,9 +108,25 @@ public class phase2
       // code goes here ...
 
       // show everything to the user
+      myCardTable.setVisible(true);
 
 
    }
+   //This method generates a Random card;
+    public static Card generateRandomCard()
+      {  
+         Card card = new Card();
+         int suitValue, cardValue;
+         //Converts the card from int to char
+         Random rand = new Random();
+         int randNum = rand.nextInt(52)+2;
+         suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
+         cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
+               
+         
+         return card;
+      
+      }
 }
 
 
@@ -392,25 +408,25 @@ class CardTable extends JFrame
       //JFrame frame = new JFrame("High Card Game");
 
       pnlComputerHand = new JPanel();
-      pnlComputerHand.setLayout(new FlowLayout());
+      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
       JLabel computerHand = new JLabel ("Computer Hand");
       pnlComputerHand.add(computerHand);
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.NORTH,pnlComputerHand);
+      add(BorderLayout.NORTH, pnlComputerHand);
 
       pnlPlayArea = new JPanel();
-      pnlPlayArea.setLayout(new GridLayout(2, 2, 10, 10));
-      JLabel playArea = new JLabel ("Play Area");
+      pnlPlayArea.setLayout(new GridLayout(1,1, 10, 10));
+      JLabel playArea = new JLabel ("Play Area"); 
       pnlPlayArea.add(playArea);
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.CENTER,pnlPlayArea);
-
+      add(BorderLayout.CENTER, pnlPlayArea);
+      
       pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
       JLabel humanHand = new JLabel ("Human Hand");
       pnlHumanHand.add(humanHand);
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.SOUTH,pnlHumanHand);
+      add(BorderLayout.SOUTH, pnlHumanHand);
    }
 
 

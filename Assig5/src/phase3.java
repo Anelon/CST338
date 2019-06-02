@@ -80,6 +80,21 @@ public class phase3
      
      
    }
+    //This method generates a Random card;
+    public static Card generateRandomCard()
+      {  
+         Card card = new Card();
+         int suitValue, cardValue;
+         //Converts the card from int to char
+         Random rand = new Random();
+         int randNum = rand.nextInt(52)+2;
+         suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
+         cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
+               
+         
+         return card;
+      
+      }
 }
 
 
