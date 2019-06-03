@@ -9,6 +9,7 @@
  */
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.Random;
 
@@ -30,6 +31,7 @@ public class phase2
 
       Deck myDeck = new Deck();
       Hand myHand = new Hand();
+      myDeck.shuffle();
       myHand.takeCard(myDeck.dealCard());
       myHand.takeCard(myDeck.dealCard());
       myHand.takeCard(myDeck.dealCard());
@@ -85,7 +87,7 @@ public class phase2
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
          playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
-         playLabelText[i] = new JLabel("Player " + i+1);
+         playLabelText[i] = new JLabel("Player " + (i+1));
       }
 
       // ADD LABELS TO PANELS -----------------------------------------
@@ -102,6 +104,9 @@ public class phase2
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
          myCardTable.pnlPlayArea.add(playedCardLabels[i]);
+      }
+      for (int i = 0; i < NUM_PLAYERS; ++i)
+      {
          myCardTable.pnlPlayArea.add(playLabelText[i]);
       }
       // and two random cards in the play region (simulating a computer/hum ply)
@@ -398,12 +403,19 @@ class CardTable extends JFrame
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.NORTH,pnlComputerHand);
 
+
       pnlPlayArea = new JPanel();
-      pnlPlayArea.setLayout(new GridLayout(2, 2, 10, 10));
+      JPanel labelPanel = new JPanel();
+      JPanel playPanel = new JPanel(new FlowLayout());
+      playPanel.setBackground(Color.LIGHT_GRAY);
+      pnlPlayArea.setLayout(new GridLayout(2, 2, 300, 50));
       JLabel playArea = new JLabel ("Play Area");
-      pnlPlayArea.add(playArea);
+      labelPanel.add(playArea);
+      playPanel.add(labelPanel);
+      playPanel.add(pnlPlayArea);
+      playPanel.setBorder(new TitledBorder("hello"));
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.CENTER,pnlPlayArea);
+      add(BorderLayout.CENTER,playPanel);
 
       pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
@@ -411,6 +423,7 @@ class CardTable extends JFrame
       pnlHumanHand.add(humanHand);
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
+
    }
 
 
