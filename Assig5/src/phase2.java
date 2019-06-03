@@ -181,10 +181,10 @@ class GUICard
             {
                String filename = turnIntIntoCardValue(cardNum) +
                   turnIntIntoCardSuit(suitNum) + ".gif";
-               iconCards[cardNum-1][suitNum] = new ImageIcon("images\\"+filename);
+               iconCards[cardNum-1][suitNum] = new ImageIcon("images/"+filename);
             }
          }
-         iconBack = new ImageIcon("images\\BK.gif");
+         iconBack = new ImageIcon("images/BK.gif");
       }
    }
 
@@ -356,7 +356,7 @@ class GUICard
     * @param suit Card.Suit desired to be converted to int form.
     * @return int representation of a Card.Suit
     */
-   private static int turnSuitIntoInt(Card.Suit suit)
+   public static int turnSuitIntoInt(Card.Suit suit)
    {
       switch (suit)
       {
@@ -491,27 +491,32 @@ class Card
    //for use in the sorting
    private boolean lessThan(Card card)
    {
-      //return true if this is lessThan card
-      return false;
+      int lhs = GUICard.turnCardValueIntoInt(this.getValue());
+      lhs += GUICard.turnSuitIntoInt(this.getSuit()) * 100;
+      int rhs = GUICard.turnCardValueIntoInt(card.getValue());
+      rhs += GUICard.turnSuitIntoInt(card.getSuit()) * 100;
+      return lhs < rhs; 
    }
 
+   //passed an array of cards and the size of the array it sorts
+   //using the bubble sort algorithum
    static void arraySort(Card[] cards, int arraySize)
    {
       for(int i = 0; i < arraySize; i++)
       {
-         Card max = cards[i];
-         int index = i;
-         for(int j = 0; j < arraySize; j++)
+         boolean changed = false;
+         for(int j = 0; j < arraySize - 1; j++)
          {
-            if(max.lessThan(cards[j]))
+            if(cards[j].lessThan(cards[j + 1]))
             {
-               max = cards[j];
-               index = j;
+               Card temp = cards[j];
+               cards[j] = cards[j + 1];
+               cards[j + 1] = temp;
+               changed = true;
             }
          }
-         //swap max with cards[i]
-         cards[index] = cards[i];
-         cards[i] = max;
+         if(!changed)
+            break;
       }
    }
 
