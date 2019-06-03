@@ -7,14 +7,14 @@
  * The following program is built to produce a specific output per
  * assignment specifications.
  */
- 
+
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.*;
 import java.awt.*;
 import java.util.Random;
 
 
-public class phase2
+public class phase3
 {
    static int NUM_CARDS_PER_HAND = 7;
    static int  NUM_PLAYERS = 2;
@@ -88,6 +88,7 @@ public class phase2
       {
          playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
          playLabelText[i] = new JLabel("Player " + (i+1));
+         playLabelText[i].setHorizontalAlignment(SwingConstants.CENTER);
       }
 
       // ADD LABELS TO PANELS -----------------------------------------
@@ -118,20 +119,20 @@ public class phase2
 
    }
    //This method generates a Random card;
-    public static Card generateRandomCard()
-      {  
-         Card card = new Card();
-         int suitValue, cardValue;
-         //Converts the card from int to char
-         Random rand = new Random();
-         int randNum = rand.nextInt(52)+2;
-         suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
-         cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
-               
-         
-         return card;
-      
-      }
+   public static Card generateRandomCard()
+   {
+      Card card = new Card();
+      int suitValue, cardValue;
+      //Converts the card from int to char
+      Random rand = new Random();
+      int randNum = rand.nextInt(52)+2;
+      suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
+      cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
+
+
+      return card;
+
+   }
 }
 
 
@@ -417,7 +418,7 @@ class CardTable extends JFrame
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
       Border textColor = new LineBorder(Color.BLACK);
       pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
-      
+
       add(BorderLayout.NORTH, pnlComputerHand);
 
 
@@ -490,7 +491,7 @@ class Card
       lhs += GUICard.turnSuitIntoInt(this.getSuit()) * 100;
       int rhs = GUICard.turnCardValueIntoInt(card.getValue());
       rhs += GUICard.turnSuitIntoInt(card.getSuit()) * 100;
-      return lhs < rhs; 
+      return lhs < rhs;
    }
 
    //passed an array of cards and the size of the array it sorts
