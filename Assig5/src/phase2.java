@@ -6,6 +6,8 @@
  *
  * The following program is built to produce a specific output per
  * assignment specifications.
+ */
+ 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
