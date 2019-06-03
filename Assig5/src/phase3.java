@@ -34,25 +34,25 @@ public class phase3
       int numJokersPerPack = 2;
       int numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
-      
-            
+
+
       //Part of phase 3 specification
-      CardGameFramework highCardGame = new CardGameFramework( 
-            numPacksPerDeck, numJokersPerPack,  
-            numUnusedCardsPerPack, unusedCardsPerPack, 
-            NUM_PLAYERS, NUM_CARDS_PER_HAND);
-      
+      CardGameFramework highCardGame = new CardGameFramework(
+         numPacksPerDeck, numJokersPerPack,
+         numUnusedCardsPerPack, unusedCardsPerPack,
+         NUM_PLAYERS, NUM_CARDS_PER_HAND);
+
       Deck myDeck = new Deck();
       Hand myHand = new Hand();
-      
+
       highCardGame.deal();
       myHand = highCardGame.getHand(firstCard);
-  
 
-     // Card card = new Card('K', Card.Suit.spades);
 
-      
-   /*  Phase 2 removed for testing, will remove permanently 
+      // Card card = new Card('K', Card.Suit.spades);
+
+
+   /*  Phase 2 removed for testing, will remove permanently
       myDeck.shuffle();
       myHand.takeCard(myDeck.dealCard());
       myHand.takeCard(myDeck.dealCard());
@@ -62,7 +62,7 @@ public class phase3
       myHand.takeCard(myDeck.dealCard());
 
       // prepare the image icon array
-*/ 
+*/
       // establish main frame in which program will run
       JFrame frmMyWindow = new JFrame("Card Room");
       frmMyWindow.setSize(1150, 650);
@@ -140,20 +140,20 @@ public class phase3
 
    }
    //This method generates a Random card;
-    public static Card generateRandomCard()
-      {  
-         Card card = new Card();
-         int suitValue, cardValue;
-         //Converts the card from int to char
-         Random rand = new Random();
-         int randNum = rand.nextInt(52)+2;
-         suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
-         cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
-               
-         
-         return card;
-      
-      }
+   public static Card generateRandomCard()
+   {
+      Card card = new Card();
+      int suitValue, cardValue;
+      //Converts the card from int to char
+      Random rand = new Random();
+      int randNum = rand.nextInt(52)+2;
+      suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
+      cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
+
+
+      return card;
+
+   }
 }
 
 
@@ -436,29 +436,20 @@ class CardTable extends JFrame
 
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
-      JLabel computerHand = new JLabel ("Computer Hand");
-      pnlComputerHand.add(computerHand);
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
+      pnlComputerHand.setBorder(new TitledBorder("Computer Hand"));
       add(BorderLayout.NORTH, pnlComputerHand);
 
 
       pnlPlayArea = new JPanel();
-      JPanel labelPanel = new JPanel();
-      JPanel playPanel = new JPanel(new FlowLayout());
-      playPanel.setBackground(Color.LIGHT_GRAY);
       pnlPlayArea.setLayout(new GridLayout(2, 2, 300, 50));
-      JLabel playArea = new JLabel ("Play Area");
-      labelPanel.add(playArea);
-      playPanel.add(labelPanel);
-      playPanel.add(pnlPlayArea);
-      //playPanel.setBorder(new TitledBorder("hello"));
+      pnlPlayArea.setBorder(new TitledBorder("Play Area"));
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.CENTER,playPanel);
+      add(BorderLayout.CENTER,pnlPlayArea);
 
       pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
-      JLabel humanHand = new JLabel ("Human Hand");
-      pnlHumanHand.add(humanHand);
+      pnlHumanHand.setBorder(new TitledBorder("Human Hand"));
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
 
@@ -1122,7 +1113,7 @@ class Hand
       }
       return new Card('T', Card.Suit.hearts);
    }
-   
+
 }
 
 //class CardGameFramework  ----------------------------------------------------
@@ -1132,20 +1123,20 @@ class CardGameFramework
 
    private int numPlayers;
    private int numPacks;            // # standard 52-card packs per deck
-                                    // ignoring jokers or unused cards
+   // ignoring jokers or unused cards
    private int numJokersPerPack;    // if 2 per pack & 3 packs per deck, get 6
    private int numUnusedCardsPerPack;  // # cards removed from each pack
    private int numCardsPerHand;        // # cards to deal each player
    private Deck deck;               // holds the initial full deck and gets
-                                    // smaller (usually) during play
+   // smaller (usually) during play
    private Hand[] hand;             // one Hand for each player
    private Card[] unusedCardsPerPack;   // an array holding the cards not used
-                                        // in the game.  e.g. pinochle does not
-                                        // use cards 2-8 of any suit
+   // in the game.  e.g. pinochle does not
+   // use cards 2-8 of any suit
 
    public CardGameFramework( int numPacks, int numJokersPerPack,
-         int numUnusedCardsPerPack,  Card[] unusedCardsPerPack,
-         int numPlayers, int numCardsPerHand)
+                             int numUnusedCardsPerPack,  Card[] unusedCardsPerPack,
+                             int numPlayers, int numCardsPerHand)
    {
       int k;
 
@@ -1160,7 +1151,7 @@ class CardGameFramework
          numPlayers = 4;
       // one of many ways to assure at least one full deal to all players
       if  (numCardsPerHand < 1 ||
-            numCardsPerHand >  numPacks * (52 - numUnusedCardsPerPack)
+         numCardsPerHand >  numPacks * (52 - numUnusedCardsPerPack)
             / numPlayers )
          numCardsPerHand = numPacks * (52 - numUnusedCardsPerPack) / numPlayers;
 
@@ -1267,15 +1258,15 @@ class CardGameFramework
    {
       // returns bad card if either argument is bad
       if (playerIndex < 0 ||  playerIndex > numPlayers - 1 ||
-          cardIndex < 0 || cardIndex > numCardsPerHand - 1)
+         cardIndex < 0 || cardIndex > numCardsPerHand - 1)
       {
          //Creates a card that does not work
-         return new Card('M', Card.Suit.spades);      
+         return new Card('M', Card.Suit.spades);
       }
-   
+
       // return the card played
       return hand[playerIndex].playCard(cardIndex);
-   
+
    }
 
 
@@ -1284,12 +1275,12 @@ class CardGameFramework
       // returns false if either argument is bad
       if (playerIndex < 0 || playerIndex > numPlayers - 1)
          return false;
-     
-       // Are there enough Cards?
-       if (deck.getNumCards() <= 0)
-          return false;
 
-       return hand[playerIndex].takeCard(deck.dealCard());
+      // Are there enough Cards?
+      if (deck.getNumCards() <= 0)
+         return false;
+
+      return hand[playerIndex].takeCard(deck.dealCard());
    }
 
 }
