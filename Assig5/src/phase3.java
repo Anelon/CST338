@@ -112,6 +112,7 @@ public class phase3
       {
          playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
          playLabelText[i] = new JLabel("Player " + (i+1));
+         playLabelText[i].setHorizontalAlignment(SwingConstants.CENTER);
       }
 
       // ADD LABELS TO PANELS -----------------------------------------
