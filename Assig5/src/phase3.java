@@ -14,6 +14,8 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.Random;
+import javax.swing.border.LineBorder;
+import javax.swing.border.Border;
 
 
 public class phase3
@@ -437,19 +439,23 @@ class CardTable extends JFrame
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
-      pnlComputerHand.setBorder(new TitledBorder("Computer Hand"));
+      Border textColor = new LineBorder(Color.BLACK);
+      pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
+      
       add(BorderLayout.NORTH, pnlComputerHand);
 
 
       pnlPlayArea = new JPanel();
       pnlPlayArea.setLayout(new GridLayout(2, 2, 300, 50));
-      pnlPlayArea.setBorder(new TitledBorder("Play Area"));
+      Border textColorPlayArea = new LineBorder(Color.BLACK);
+      pnlPlayArea.setBorder(new TitledBorder(textColorPlayArea, "Play Area"));
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.CENTER,pnlPlayArea);
 
       pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
-      pnlHumanHand.setBorder(new TitledBorder("Human Hand"));
+      Border textColorHumanHand= new LineBorder(Color.BLACK);
+      pnlHumanHand.setBorder(new TitledBorder(textColorHumanHand, "Human Hand"));
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
 
