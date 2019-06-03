@@ -414,29 +414,20 @@ class CardTable extends JFrame
 
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
-      JLabel computerHand = new JLabel ("Computer Hand");
-      pnlComputerHand.add(computerHand);
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
+      pnlComputerHand.setBorder(new TitledBorder("Computer Hand"));
       add(BorderLayout.NORTH, pnlComputerHand);
 
 
       pnlPlayArea = new JPanel();
-      JPanel labelPanel = new JPanel();
-      JPanel playPanel = new JPanel(new FlowLayout());
-      playPanel.setBackground(Color.LIGHT_GRAY);
       pnlPlayArea.setLayout(new GridLayout(2, 2, 300, 50));
-      JLabel playArea = new JLabel ("Play Area");
-      labelPanel.add(playArea);
-      playPanel.add(labelPanel);
-      playPanel.add(pnlPlayArea);
-      playPanel.setBorder(new TitledBorder("hello"));
+      pnlPlayArea.setBorder(new TitledBorder("Play Area"));
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.CENTER,playPanel);
+      add(BorderLayout.CENTER,pnlPlayArea);
 
       pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
-      JLabel humanHand = new JLabel ("Human Hand");
-      pnlHumanHand.add(humanHand);
+      pnlHumanHand.setBorder(new TitledBorder("Human Hand"));
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
 
