@@ -14,7 +14,7 @@ import java.awt.*;
 import java.util.Random;
 
 
-public class phase3
+public class phase2
 {
    static int NUM_CARDS_PER_HAND = 7;
    static int  NUM_PLAYERS = 2;
