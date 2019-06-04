@@ -13,7 +13,11 @@
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 import java.util.Random;
+import javax.swing.border.LineBorder;
+import javax.swing.border.Border;
 
 
 public class phase3
@@ -22,48 +26,44 @@ public class phase3
    static int  NUM_PLAYERS = 2;
    static int firstCard = 0;
    static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
-   static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];
    static JLabel[] playedCardLabels  = new JLabel[NUM_PLAYERS];
    static JLabel[] playLabelText  = new JLabel[NUM_PLAYERS];
+   
+   
+   
+   //Replaced standard labels with buttons
+   static JButton[] humanLabels = new JButton[NUM_CARDS_PER_HAND]; 
 
 
    public static void main(String[] args)
    {
+      
+      int playerScore = 0;
+      int cpuScore = 0;
+      String playerString = ("Human Player"+ "    " +"Score:" + playerScore );
+      String cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
+      
       //Part of phase 3 specification
       int numPacksPerDeck = 1;
       int numJokersPerPack = 2;
       int numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
-      
-            
+
+
       //Part of phase 3 specification
-      CardGameFramework highCardGame = new CardGameFramework( 
-            numPacksPerDeck, numJokersPerPack,  
-            numUnusedCardsPerPack, unusedCardsPerPack, 
-            NUM_PLAYERS, NUM_CARDS_PER_HAND);
-      
+      CardGameFramework highCardGame = new CardGameFramework(
+         numPacksPerDeck, numJokersPerPack,
+         numUnusedCardsPerPack, unusedCardsPerPack,
+         NUM_PLAYERS, NUM_CARDS_PER_HAND);
+
       Deck myDeck = new Deck();
       Hand myHand = new Hand();
-      
+
       highCardGame.deal();
       myHand = highCardGame.getHand(firstCard);
-  
 
-     // Card card = new Card('K', Card.Suit.spades);
-
-      
-   /*  Phase 2 removed for testing, will remove permanently 
-      myDeck.shuffle();
-      myHand.takeCard(myDeck.dealCard());
-      myHand.takeCard(myDeck.dealCard());
-      myHand.takeCard(myDeck.dealCard());
-      myHand.takeCard(myDeck.dealCard());
-      myHand.takeCard(myDeck.dealCard());
-      myHand.takeCard(myDeck.dealCard());
-
-      // prepare the image icon array
-*/ 
       // establish main frame in which program will run
+     
       JFrame frmMyWindow = new JFrame("Card Room");
       frmMyWindow.setSize(1150, 650);
       frmMyWindow.setLocationRelativeTo(null);
@@ -100,17 +100,61 @@ public class phase3
       {
          computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
       }
-
-      for (int i = 0; i < myHand.getnumCards(); ++i)
-      {
-         humanLabels[i] = new JLabel(GUICard.getIcon(myHand.inspectCard(i)));
+      
+     
+ 
+      
+      //Loop that creates the card buttons
+      //Assign ActionCommand and ActionListeners with each button
+      for(int i= 0;  i <myHand.getnumCards(); i ++) {
+        humanLabels[i] = new JButton(GUICard.getIcon(highCardGame.getHand(0).inspectCard(i)));
+        humanLabels[i].setActionCommand(String.valueOf(i));
+        humanLabels[i].addActionListener(new ActionListener() {
+           
+              public void actionPerformed(ActionEvent cardClick) {
+            //    gameLogic(Integer.valueOf(cardClick.getActionCommand()));  
+                
+                
+                
+                
+              }
+         });
+        
       }
-
+      
+      
+      
+      
+      /* unsuccessful button version, will delete
+      
+      for (int i = 0; i < myHand.getnumCards(); i++) {
+         
+         humanLabels[i] = new JButton(GUICard.getIcon(myHand.inspectCard(i)));
+         humanLabels[i].addActionListener(new cardChooser());
+         humanLabels[i].setActionCommand(String.valueOf(i));
+         myCardTable.pnlHumanHand.add(humanLabels[i]);
+      }
+      
+      */
+      
+      
+      playedCardLabels[0] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
+      playLabelText[0] = new JLabel(playerString);
+      playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);    
+      
+      playedCardLabels[1] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
+      playLabelText[1] = new JLabel(cpuString);
+      playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);   
+      
+ /* Going to hard code scoring
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
          playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
-         playLabelText[i] = new JLabel("Player " + (i+1));
+         playLabelText[i] = new JLabel("Player " + (i+1) + "    " +"Score:" + playerScore );
+         playLabelText[i].setHorizontalAlignment(SwingConstants.CENTER);
       }
+      
+   */
 
       // ADD LABELS TO PANELS -----------------------------------------
       for (JLabel element:
@@ -130,6 +174,7 @@ public class phase3
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
          myCardTable.pnlPlayArea.add(playLabelText[i]);
+         
       }
       // and two random cards in the play region (simulating a computer/hum ply)
       // code goes here ...
@@ -139,21 +184,46 @@ public class phase3
 
 
    }
-   //This method generates a Random card;
-    public static Card generateRandomCard()
-      {  
-         Card card = new Card();
-         int suitValue, cardValue;
-         //Converts the card from int to char
-         Random rand = new Random();
-         int randNum = rand.nextInt(52)+2;
-         suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
-         cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
-               
-         
-         return card;
+   
+   /*
+   //Total gamelogic for high card
+   public static void gameLogic (int chosenCardPosition) {
       
-      }
+   int cardLocationPlayer = chosenCardPosition;
+  System.out.println (chosenCardPosition); // test
+  
+  
+  
+  
+  //Remove card from player Hand and get value
+  //Resort CPU hand (optional)
+  //Remove card from CPU hand and get value (randomized?)
+  //Comparison
+  //Activate win/lose pop up
+  //Increment wins, use int playerScore and cpuScore
+  //Redraw the table
+   
+   
+   
+   }
+   
+*/
+   
+   //This method generates a Random card;
+   public static Card generateRandomCard()
+   {
+      Card card = new Card();
+      int suitValue, cardValue;
+      //Converts the card from int to char
+      Random rand = new Random();
+      int randNum = rand.nextInt(52)+2;
+      suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
+      cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
+
+
+      return card;
+
+   }
 }
 
 
@@ -378,7 +448,7 @@ class GUICard
     * @param suit Card.Suit desired to be converted to int form.
     * @return int representation of a Card.Suit
     */
-   private static int turnSuitIntoInt(Card.Suit suit)
+   public static int turnSuitIntoInt(Card.Suit suit)
    {
       switch (suit)
       {
@@ -425,7 +495,7 @@ class CardTable extends JFrame
          this.numCardsPerHand= numCardsPerHand;
       }
 
-      if(numPlayers<MAX_PLAYERS) {
+      if(numPlayers<=MAX_PLAYERS) {
          this.numPlayers = DEFAULT_NUM_PLAYERS;
       }else {
          this.numPlayers = numCardsPerHand;
@@ -436,29 +506,24 @@ class CardTable extends JFrame
 
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
-      JLabel computerHand = new JLabel ("Computer Hand");
-      pnlComputerHand.add(computerHand);
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
+      Border textColor = new LineBorder(Color.BLACK);
+      pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
+      
       add(BorderLayout.NORTH, pnlComputerHand);
 
 
       pnlPlayArea = new JPanel();
-      JPanel labelPanel = new JPanel();
-      JPanel playPanel = new JPanel(new FlowLayout());
-      playPanel.setBackground(Color.LIGHT_GRAY);
       pnlPlayArea.setLayout(new GridLayout(2, 2, 300, 50));
-      JLabel playArea = new JLabel ("Play Area");
-      labelPanel.add(playArea);
-      playPanel.add(labelPanel);
-      playPanel.add(pnlPlayArea);
-      //playPanel.setBorder(new TitledBorder("hello"));
+      Border textColorPlayArea = new LineBorder(Color.BLACK);
+      pnlPlayArea.setBorder(new TitledBorder(textColorPlayArea, "Play Area"));
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.CENTER,playPanel);
+      add(BorderLayout.CENTER,pnlPlayArea);
 
       pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
-      JLabel humanHand = new JLabel ("Human Hand");
-      pnlHumanHand.add(humanHand);
+      Border textColorHumanHand= new LineBorder(Color.BLACK);
+      pnlHumanHand.setBorder(new TitledBorder(textColorHumanHand, "Human Hand"));
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
 
@@ -511,32 +576,38 @@ class Card
    }
 
    //for use in the sorting
+   //for use in the sorting
    private boolean lessThan(Card card)
    {
-      //return true if this is lessThan card
-      return false;
+      int lhs = GUICard.turnCardValueIntoInt(this.getValue());
+      lhs += GUICard.turnSuitIntoInt(this.getSuit()) * 100;
+      int rhs = GUICard.turnCardValueIntoInt(card.getValue());
+      rhs += GUICard.turnSuitIntoInt(card.getSuit()) * 100;
+      return lhs < rhs;
    }
-
+   
+   //passed an array of cards and the size of the array it sorts
+   //using the bubble sort algorithum
    static void arraySort(Card[] cards, int arraySize)
    {
       for(int i = 0; i < arraySize; i++)
       {
-         Card max = cards[i];
-         int index = i;
-         for(int j = 0; j < arraySize; j++)
+         boolean changed = false;
+         for(int j = 0; j < arraySize - 1; j++)
          {
-            if(max.lessThan(cards[j]))
+            if(cards[j].lessThan(cards[j + 1]))
             {
-               max = cards[j];
-               index = j;
+               Card temp = cards[j];
+               cards[j] = cards[j + 1];
+               cards[j + 1] = temp;
+               changed = true;
             }
          }
-         //swap max with cards[i]
-         cards[index] = cards[i];
-         cards[i] = max;
+         if(!changed)
+            break;
       }
    }
-
+   
    //default constructor
    public Card()
    {
@@ -544,6 +615,9 @@ class Card
       suit = Suit.spades;
       setUpValuRanks();
    }
+   
+
+
 
    //For use of checking of the values are valid
    private boolean isValid(char newValue, Suit newSuit)
@@ -1122,8 +1196,14 @@ class Hand
       }
       return new Card('T', Card.Suit.hearts);
    }
-   
+
 }
+
+
+
+
+
+
 
 //class CardGameFramework  ----------------------------------------------------
 class CardGameFramework
@@ -1132,20 +1212,20 @@ class CardGameFramework
 
    private int numPlayers;
    private int numPacks;            // # standard 52-card packs per deck
-                                    // ignoring jokers or unused cards
+   // ignoring jokers or unused cards
    private int numJokersPerPack;    // if 2 per pack & 3 packs per deck, get 6
    private int numUnusedCardsPerPack;  // # cards removed from each pack
    private int numCardsPerHand;        // # cards to deal each player
    private Deck deck;               // holds the initial full deck and gets
-                                    // smaller (usually) during play
+   // smaller (usually) during play
    private Hand[] hand;             // one Hand for each player
    private Card[] unusedCardsPerPack;   // an array holding the cards not used
-                                        // in the game.  e.g. pinochle does not
-                                        // use cards 2-8 of any suit
+   // in the game.  e.g. pinochle does not
+   // use cards 2-8 of any suit
 
    public CardGameFramework( int numPacks, int numJokersPerPack,
-         int numUnusedCardsPerPack,  Card[] unusedCardsPerPack,
-         int numPlayers, int numCardsPerHand)
+                             int numUnusedCardsPerPack,  Card[] unusedCardsPerPack,
+                             int numPlayers, int numCardsPerHand)
    {
       int k;
 
@@ -1160,7 +1240,7 @@ class CardGameFramework
          numPlayers = 4;
       // one of many ways to assure at least one full deal to all players
       if  (numCardsPerHand < 1 ||
-            numCardsPerHand >  numPacks * (52 - numUnusedCardsPerPack)
+         numCardsPerHand >  numPacks * (52 - numUnusedCardsPerPack)
             / numPlayers )
          numCardsPerHand = numPacks * (52 - numUnusedCardsPerPack) / numPlayers;
 
@@ -1267,15 +1347,15 @@ class CardGameFramework
    {
       // returns bad card if either argument is bad
       if (playerIndex < 0 ||  playerIndex > numPlayers - 1 ||
-          cardIndex < 0 || cardIndex > numCardsPerHand - 1)
+         cardIndex < 0 || cardIndex > numCardsPerHand - 1)
       {
          //Creates a card that does not work
-         return new Card('M', Card.Suit.spades);      
+         return new Card('M', Card.Suit.spades);
       }
-   
+
       // return the card played
       return hand[playerIndex].playCard(cardIndex);
-   
+
    }
 
 
@@ -1284,14 +1364,16 @@ class CardGameFramework
       // returns false if either argument is bad
       if (playerIndex < 0 || playerIndex > numPlayers - 1)
          return false;
-     
-       // Are there enough Cards?
-       if (deck.getNumCards() <= 0)
-          return false;
 
-       return hand[playerIndex].takeCard(deck.dealCard());
+      // Are there enough Cards?
+      if (deck.getNumCards() <= 0)
+         return false;
+
+      return hand[playerIndex].takeCard(deck.dealCard());
    }
 
+   
+   
 }
 
 

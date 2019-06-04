@@ -9,7 +9,7 @@
  */
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.*;
 import java.awt.*;
 import java.util.Random;
 
@@ -86,8 +86,9 @@ public class phase2
 
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
-         playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
+         playedCardLabels[i] = new JLabel(GUICard.getIcon(generateRandomCard()));
          playLabelText[i] = new JLabel("Player " + (i+1));
+         playLabelText[i].setHorizontalAlignment(SwingConstants.CENTER);
       }
 
       // ADD LABELS TO PANELS -----------------------------------------
@@ -109,8 +110,7 @@ public class phase2
       {
          myCardTable.pnlPlayArea.add(playLabelText[i]);
       }
-      // and two random cards in the play region (simulating a computer/hum ply)
-      // code goes here ...
+
 
       // show everything to the user
       myCardTable.setVisible(true);
@@ -118,20 +118,40 @@ public class phase2
 
    }
    //This method generates a Random card;
-    public static Card generateRandomCard()
-      {  
-         Card card = new Card();
-         int suitValue, cardValue;
-         //Converts the card from int to char
-         Random rand = new Random();
-         int randNum = rand.nextInt(52)+2;
-         suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
-         cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
-               
-         
-         return card;
-      
+   public static Card generateRandomCard()
+   {
+      Card card = new Card();
+      Card.Suit suitValue;
+      char cardValue;
+
+      //This would select a random card vaule for char cardValue.
+      String randChar = "23456789TJQKAX";
+      Random rand = new Random();
+      cardValue = randChar.charAt(rand.nextInt(14));
+
+      //This selects a random card from the Card.Suit enumeration.
+      Random randNumber = new Random();
+      int randNum = randNumber.nextInt(4)+1;
+
+      switch(randNum){
+         case 1:
+            card.set(cardValue, Card.Suit.spades);
+            break;
+         case 2:
+            card.set(cardValue, Card.Suit.hearts);
+            break;
+         case 3:
+            card.set(cardValue, Card.Suit.clubs);
+            break;
+         case 4:
+            card.set(cardValue, Card.Suit.diamonds);
+            break;
+
       }
+
+      return card;
+
+   }
 }
 
 
@@ -403,7 +423,7 @@ class CardTable extends JFrame
          this.numCardsPerHand= numCardsPerHand;
       }
 
-      if(numPlayers<MAX_PLAYERS) {
+      if(numPlayers<=MAX_PLAYERS) {
          this.numPlayers = DEFAULT_NUM_PLAYERS;
       }else {
          this.numPlayers = numCardsPerHand;
@@ -414,29 +434,24 @@ class CardTable extends JFrame
 
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
-      JLabel computerHand = new JLabel ("Computer Hand");
-      pnlComputerHand.add(computerHand);
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
+      Border textColor = new LineBorder(Color.BLACK);
+      pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
+
       add(BorderLayout.NORTH, pnlComputerHand);
 
 
       pnlPlayArea = new JPanel();
-      JPanel labelPanel = new JPanel();
-      JPanel playPanel = new JPanel(new FlowLayout());
-      playPanel.setBackground(Color.LIGHT_GRAY);
       pnlPlayArea.setLayout(new GridLayout(2, 2, 300, 50));
-      JLabel playArea = new JLabel ("Play Area");
-      labelPanel.add(playArea);
-      playPanel.add(labelPanel);
-      playPanel.add(pnlPlayArea);
-      playPanel.setBorder(new TitledBorder("hello"));
+      Border textColorPlayArea = new LineBorder(Color.BLACK);
+      pnlPlayArea.setBorder(new TitledBorder(textColorPlayArea, "Play Area"));
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.CENTER,playPanel);
+      add(BorderLayout.CENTER,pnlPlayArea);
 
       pnlHumanHand = new JPanel();
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
-      JLabel humanHand = new JLabel ("Human Hand");
-      pnlHumanHand.add(humanHand);
+      Border textColorHumanHand= new LineBorder(Color.BLACK);
+      pnlHumanHand.setBorder(new TitledBorder(textColorHumanHand, "Human Hand"));
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
 
@@ -495,7 +510,7 @@ class Card
       lhs += GUICard.turnSuitIntoInt(this.getSuit()) * 100;
       int rhs = GUICard.turnCardValueIntoInt(card.getValue());
       rhs += GUICard.turnSuitIntoInt(card.getSuit()) * 100;
-      return lhs < rhs; 
+      return lhs < rhs;
    }
 
    //passed an array of cards and the size of the array it sorts
