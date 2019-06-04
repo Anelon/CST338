@@ -141,17 +141,21 @@ public class phase3
                //Testing number       
                int cpuCardPosition = randomNumber.nextInt(6);
                
+               System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition)); 
+               System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3)); 
+               
                //Generates cards for comparison
                Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
                Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
                
+               //Testing
+               System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3)); 
                
                for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
                   humanLabels[i] = humanLabels[i+1];
                   if (humanLabels[i] != null){
                      humanLabels[i].setActionCommand(Integer.toString(i));
-                     //Testing
-                     System.out.println(highCardGame.getHand(0).inspectCard(3)); 
+              
             
                      
                   }
