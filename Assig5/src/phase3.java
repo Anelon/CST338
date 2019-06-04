@@ -112,7 +112,7 @@ public class phase3
         humanLabels[i].addActionListener(new ActionListener() {
            
               public void actionPerformed(ActionEvent cardClick) {
-                gameLogic(Integer.valueOf(cardClick.getActionCommand()));  
+            //    gameLogic(Integer.valueOf(cardClick.getActionCommand()));  
                 
                 
                 
@@ -185,11 +185,11 @@ public class phase3
 
    }
    
+   /*
    //Total gamelogic for high card
    public static void gameLogic (int chosenCardPosition) {
       
    int cardLocationPlayer = chosenCardPosition;
-  // Card playedHumanCard = new Card(highCardGame.playCard(0,humanCardPosition));
   System.out.println (chosenCardPosition); // test
   
   
@@ -207,7 +207,7 @@ public class phase3
    
    }
    
-
+*/
    
    //This method generates a Random card;
    public static Card generateRandomCard()
