@@ -203,10 +203,10 @@ class GUICard
             {
                String filename = turnIntIntoCardValue(cardNum) +
                   turnIntIntoCardSuit(suitNum) + ".gif";
-               iconCards[cardNum-1][suitNum] = new ImageIcon("images\\"+filename);
+               iconCards[cardNum-1][suitNum] = new ImageIcon("images/"+filename);
             }
          }
-         iconBack = new ImageIcon("images\\BK.gif");
+         iconBack = new ImageIcon("images/BK.gif");
       }
    }
 
