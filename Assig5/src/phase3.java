@@ -247,21 +247,42 @@ public class phase3
    
 
    
-   //This method generates a Random card;
+  //This method generates a Random card;
    public static Card generateRandomCard()
    {
       Card card = new Card();
-      int suitValue, cardValue;
-      //Converts the card from int to char
-      Random rand = new Random();
-      int randNum = rand.nextInt(52)+2;
-      suitValue = (char)Integer.parseInt(String.valueOf(card.getValue()))*randNum;
-      cardValue =  (char)Integer.parseInt(String.valueOf(card.getSuit()))*randNum;
+      Card.Suit suitValue;
+      char cardValue;
 
+      //This would select a random card vaule for char cardValue.
+      String randChar = "23456789TJQKAX";
+      Random rand = new Random();
+      cardValue = randChar.charAt(rand.nextInt(14));
+
+      //This selects a random card from the Card.Suit enumeration.
+      Random randNumber = new Random();
+      int randNum = randNumber.nextInt(4)+1;
+
+      switch(randNum){
+         case 1:
+            card.set(cardValue, Card.Suit.spades);
+            break;
+         case 2:
+            card.set(cardValue, Card.Suit.hearts);
+            break;
+         case 3:
+            card.set(cardValue, Card.Suit.clubs);
+            break;
+         case 4:
+            card.set(cardValue, Card.Suit.diamonds);
+            break;
+
+      }
 
       return card;
 
    }
+
 }
 
 
