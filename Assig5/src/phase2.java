@@ -110,8 +110,6 @@ public class phase2
       {
          myCardTable.pnlPlayArea.add(playLabelText[i]);
       }
-      // and two random cards in the play region (simulating a computer/hum ply)
-      // code goes here ...
 
 
       // show everything to the user
