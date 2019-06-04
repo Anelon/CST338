@@ -39,11 +39,13 @@ public class phase3
    {
       
       //Added variables for score, player cardLocation, and strings
+      
       int playerScore = 0;
       int cpuScore = 0;
       int cardLocation = 0;
+      int cpuCard = 0;
       
-      
+ 
       String playerString = ("Human Player"+ "    " +"Score:" + playerScore );
       String cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
       
@@ -116,18 +118,47 @@ public class phase3
         
         //System.out.println(highCardGame.getHand(0).inspectCard(i).getValue()); //for testing, displays player card
         //System.out.println(highCardGame.getHand(1).inspectCard(i).getValue());// for testing, displays cpu card
-        
        //System.out.println(highCardGame.getHand(0).inspectCard(i)); //for testing, displays player card object
        //System.out.println(highCardGame.getHand(1).inspectCard(i));// for testing, displays cpu card object
         
         humanLabels[i].addActionListener(new ActionListener() {
-           
+
+           //Remove card from player Hand and get value
+           //Resort CPU hand (optional)
+           //Remove card from CPU hand and get value (randomized?)
+           //Comparison
+           //Activate win/lose pop up
+           //Increment wins, use int playerScore and cpuScore
+           //Redraw the table
+            
               public void actionPerformed(ActionEvent cardClick) {
-                 gameLogic (playerCardPosition(Integer.valueOf(cardClick.getActionCommand())));        
+                 gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));        
               }
 
-            public void gameLogic(int playerCardPosition) {
-               System.out.println(highCardGame.getHand(0).inspectCard(playerCardPosition)); 
+            public void gameLogic(int humanCardPosition) {
+               //CPU decides card choice at random
+               Random randomNumber = new Random();
+               //Testing number       
+               int cpuCardPosition = randomNumber.nextInt(6);
+               
+               //Generates cards for comparison
+               Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
+               Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
+               
+               
+               for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
+                  humanLabels[i] = humanLabels[i+1];
+                  if (humanLabels[i] != null){
+                     humanLabels[i].setActionCommand(Integer.toString(i));
+                     //Testing
+                     System.out.println(highCardGame.getHand(0).inspectCard(3)); 
+            
+                     
+                  }
+        
+                  
+               }
+               
                
             }
          }          
@@ -198,25 +229,15 @@ public class phase3
    }
    
    
-   //action
-   public static int playerCardPosition (int chosenCardPosition) {
+   //Button action returns position of card that player chose
+   public static int humanCardPosition (int chosenCardPosition) {
       
-   int cardLocationPlayer = chosenCardPosition;
-  System.out.println (chosenCardPosition); // test
-return cardLocationPlayer;
+   int cardLocation = chosenCardPosition;
+      return cardLocation;
   
   
   
   
-  //Remove card from player Hand and get value
-  //Resort CPU hand (optional)
-  //Remove card from CPU hand and get value (randomized?)
-  //Comparison
-  //Activate win/lose pop up
-  //Increment wins, use int playerScore and cpuScore
-  //Redraw the table
-   
-   
    
    }
    
