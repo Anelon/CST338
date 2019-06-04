@@ -28,6 +28,10 @@ public class phase3
    static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
    static JLabel[] playedCardLabels  = new JLabel[NUM_PLAYERS];
    static JLabel[] playLabelText  = new JLabel[NUM_PLAYERS];
+   static int humanScore = 0;
+   static int cpuScore = 0;
+   static String humanString = ("Human Player"+ "    " +"Score:" + humanScore );
+   static String cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
    
    
    
@@ -40,14 +44,12 @@ public class phase3
       
       //Added variables for score, player cardLocation, and strings
       
-      int playerScore = 0;
-      int cpuScore = 0;
+
       int cardLocation = 0;
       int cpuCard = 0;
       
  
-      String playerString = ("Human Player"+ "    " +"Score:" + playerScore );
-      String cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
+      
       
       //Part of phase 3 specification
       int numPacksPerDeck = 1;
@@ -116,10 +118,6 @@ public class phase3
         humanLabels[i] = new JButton(GUICard.getIcon(highCardGame.getHand(0).inspectCard(i)));
         humanLabels[i].setActionCommand(String.valueOf(i));
         
-        //System.out.println(highCardGame.getHand(0).inspectCard(i).getValue()); //for testing, displays player card
-        //System.out.println(highCardGame.getHand(1).inspectCard(i).getValue());// for testing, displays cpu card
-       //System.out.println(highCardGame.getHand(0).inspectCard(i)); //for testing, displays player card object
-       //System.out.println(highCardGame.getHand(1).inspectCard(i));// for testing, displays cpu card object
         
         humanLabels[i].addActionListener(new ActionListener() {
 
@@ -128,7 +126,7 @@ public class phase3
            //Remove card from CPU hand and get value (randomized?)
            //Comparison
            //Activate win/lose pop up
-           //Increment wins, use int playerScore and cpuScore
+           //Increment wins, use int humanScore and cpuScore
            //Redraw the table
             
               public void actionPerformed(ActionEvent cardClick) {
@@ -146,17 +144,38 @@ public class phase3
                
                //Generates cards for comparison
                Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
-               Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
+              
+               //CPU card disabled for now
+               //Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
+               
+           
+              /*
+              
+              playLabelText[0] = new JLabel(humanString);
+              playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
+              myCardTable.pnlHumanHand.revalidate();
+              myCardTable.pnlHumanHand.repaint();
+              */
+             
                
                //Testing
                System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3)); 
                
+               humanScore++;
+               cpuScore++;
+               humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
+               cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
+               System.out.println(humanString);
+               System.out.println(cpuString);
+               
+               
+               //Handles the arrangement of cards
                for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
                   humanLabels[i] = humanLabels[i+1];
                   if (humanLabels[i] != null){
                      humanLabels[i].setActionCommand(Integer.toString(i));
               
-            
+               
                      
                   }
         
@@ -186,7 +205,7 @@ public class phase3
       
       //Labels for played cards and text for scoring
       playedCardLabels[0] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
-      playLabelText[0] = new JLabel(playerString);
+      playLabelText[0] = new JLabel(humanString);
       playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);    
       
       playedCardLabels[1] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
@@ -197,7 +216,7 @@ public class phase3
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
          playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
-         playLabelText[i] = new JLabel("Player " + (i+1) + "    " +"Score:" + playerScore );
+         playLabelText[i] = new JLabel("Player " + (i+1) + "    " +"Score:" + humanScore );
          playLabelText[i].setHorizontalAlignment(SwingConstants.CENTER);
       }
       
