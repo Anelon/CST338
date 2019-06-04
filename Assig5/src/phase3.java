@@ -38,8 +38,12 @@ public class phase3
    public static void main(String[] args)
    {
       
+      //Added variables for score, player cardLocation, and strings
       int playerScore = 0;
       int cpuScore = 0;
+      int cardLocation = 0;
+      
+      
       String playerString = ("Human Player"+ "    " +"Score:" + playerScore );
       String cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
       
@@ -109,20 +113,28 @@ public class phase3
       for(int i= 0;  i <myHand.getnumCards(); i ++) {
         humanLabels[i] = new JButton(GUICard.getIcon(highCardGame.getHand(0).inspectCard(i)));
         humanLabels[i].setActionCommand(String.valueOf(i));
+        
+        //System.out.println(highCardGame.getHand(0).inspectCard(i).getValue()); //for testing, displays player card
+        //System.out.println(highCardGame.getHand(1).inspectCard(i).getValue());// for testing, displays cpu card
+        
+       //System.out.println(highCardGame.getHand(0).inspectCard(i)); //for testing, displays player card object
+       //System.out.println(highCardGame.getHand(1).inspectCard(i));// for testing, displays cpu card object
+        
         humanLabels[i].addActionListener(new ActionListener() {
            
               public void actionPerformed(ActionEvent cardClick) {
-            //    gameLogic(Integer.valueOf(cardClick.getActionCommand()));  
-                
-                
-                
-                
+                 gameLogic (playerCardPosition(Integer.valueOf(cardClick.getActionCommand())));        
               }
-         });
-        
+
+            public void gameLogic(int playerCardPosition) {
+               System.out.println(highCardGame.getHand(0).inspectCard(playerCardPosition)); 
+               
+            }
+         }          
+              );       
       }
       
-      
+ 
       
       
       /* unsuccessful button version, will delete
@@ -137,7 +149,7 @@ public class phase3
       
       */
       
-      
+      //Labels for played cards and text for scoring
       playedCardLabels[0] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
       playLabelText[0] = new JLabel(playerString);
       playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);    
@@ -185,12 +197,13 @@ public class phase3
 
    }
    
-   /*
-   //Total gamelogic for high card
-   public static void gameLogic (int chosenCardPosition) {
+   
+   //action
+   public static int playerCardPosition (int chosenCardPosition) {
       
    int cardLocationPlayer = chosenCardPosition;
   System.out.println (chosenCardPosition); // test
+return cardLocationPlayer;
   
   
   
@@ -207,7 +220,7 @@ public class phase3
    
    }
    
-*/
+
    
    //This method generates a Random card;
    public static Card generateRandomCard()
