@@ -423,7 +423,7 @@ class CardTable extends JFrame
          this.numCardsPerHand= numCardsPerHand;
       }
 
-      if(numPlayers<MAX_PLAYERS) {
+      if(numPlayers<=MAX_PLAYERS) {
          this.numPlayers = DEFAULT_NUM_PLAYERS;
       }else {
          this.numPlayers = numCardsPerHand;
