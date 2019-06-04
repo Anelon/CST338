@@ -149,22 +149,31 @@ public class phase3
                //Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
                
            
-              /*
-              
+             
+               for(int i= 0;  i <2; i ++) {
+                  myCardTable.pnlPlayArea.remove(playLabelText[i]);
+               }
+         
+               humanScore++;
+               humanString = ("Human Player"+ "    " +"Score:" + humanScore );
               playLabelText[0] = new JLabel(humanString);
               playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
-              myCardTable.pnlHumanHand.revalidate();
-              myCardTable.pnlHumanHand.repaint();
-              */
+              for(int i= 0;  i <2; i ++) {
+                 myCardTable.pnlPlayArea.add(playLabelText[i]);
+              }
+                 
+             
+              myCardTable.pnlPlayArea.revalidate();
+              myCardTable.pnlPlayArea.repaint();
+             
              
                
                //Testing
                System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3)); 
                
-               humanScore++;
-               cpuScore++;
-               humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
-               cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
+         
+              // humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
+             //  cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
                System.out.println(humanString);
                System.out.println(cpuString);
                
