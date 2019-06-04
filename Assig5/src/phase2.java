@@ -86,7 +86,7 @@ public class phase2
 
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
-         playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
+         playedCardLabels[i] = new JLabel(GUICard.getIcon(generateRandomCard()));
          playLabelText[i] = new JLabel("Player " + (i+1));
          playLabelText[i].setHorizontalAlignment(SwingConstants.CENTER);
       }
@@ -112,43 +112,43 @@ public class phase2
       }
       // and two random cards in the play region (simulating a computer/hum ply)
       // code goes here ...
-     
+
 
       // show everything to the user
       myCardTable.setVisible(true);
 
 
    }
-     //This method generates a Random card;
-     public static Card generateRandomCard()
-     {
-        Card card = new Card();
-        Card.Suit suitValue;
-        char cardValue;
-      
-        //This would select a random card vaule for char cardValue.
-        String randChar = "23456789TJQKAX";
-        Random rand = new Random();
-        cardValue = randChar.charAt(rand.nextInt(14));
-      
-        //This selects a random card from the Card.Suit enumeration.
-        Random randNumber = new Random();
-        int randNum = randNumber.nextInt(4)+1;
-     
-        switch(randNum){
-           case 1: 
-             card.set(cardValue, Card.Suit.spades);
-             break;
-           case 2: 
-             card.set(cardValue, Card.Suit.hearts);
-             break;
-          case 3:
-             card.set(cardValue, Card.Suit.clubs);
-             break;
-          case 4:
-             card.set(cardValue, Card.Suit.diamonds);
-             break;          
-          
+   //This method generates a Random card;
+   public static Card generateRandomCard()
+   {
+      Card card = new Card();
+      Card.Suit suitValue;
+      char cardValue;
+
+      //This would select a random card vaule for char cardValue.
+      String randChar = "23456789TJQKAX";
+      Random rand = new Random();
+      cardValue = randChar.charAt(rand.nextInt(14));
+
+      //This selects a random card from the Card.Suit enumeration.
+      Random randNumber = new Random();
+      int randNum = randNumber.nextInt(4)+1;
+
+      switch(randNum){
+         case 1:
+            card.set(cardValue, Card.Suit.spades);
+            break;
+         case 2:
+            card.set(cardValue, Card.Suit.hearts);
+            break;
+         case 3:
+            card.set(cardValue, Card.Suit.clubs);
+            break;
+         case 4:
+            card.set(cardValue, Card.Suit.diamonds);
+            break;
+
       }
 
       return card;
