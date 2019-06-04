@@ -128,23 +128,23 @@ public class phase3
            //Activate win/lose pop up
            //Increment wins, use int humanScore and cpuScore
            //Redraw the table
-            
-              public void actionPerformed(ActionEvent cardClick) {
-                 gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));        
-              }
 
-            public void gameLogic(int humanCardPosition) {
-               //CPU decides card choice at random
-               Random randomNumber = new Random();
-               //Testing number       
-               int cpuCardPosition = randomNumber.nextInt(6);
-               
-               System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition)); 
-               System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3)); 
-               
-               //Generates cards for comparison
-               Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
-              
+           public void actionPerformed(ActionEvent cardClick) {
+              gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));        
+           }
+
+           public void gameLogic(int humanCardPosition) {
+              //CPU decides card choice at random
+              Random randomNumber = new Random();
+              //Testing number       
+              int cpuCardPosition = randomNumber.nextInt(6);
+
+              System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition)); 
+              System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3)); 
+
+              //Generates cards for comparison
+              Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
+
                //CPU card disabled for now
                //Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
                
@@ -156,13 +156,15 @@ public class phase3
          
                humanScore++;
                humanString = ("Human Player"+ "    " +"Score:" + humanScore );
-              playLabelText[0] = new JLabel(humanString);
-              playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
-              for(int i= 0;  i <2; i ++) {
-                 myCardTable.pnlPlayArea.add(playLabelText[i]);
-              }
-                 
+               playLabelText[0] = new JLabel(humanString);
+               playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
+               for(int i= 0;  i <2; i ++) {
+                  myCardTable.pnlPlayArea.add(playLabelText[i]);
+               }
+               myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
+
              
+
               myCardTable.pnlPlayArea.revalidate();
               myCardTable.pnlPlayArea.repaint();
              
@@ -171,34 +173,34 @@ public class phase3
                //Testing
                System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3)); 
                
-         
-              // humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
-             //  cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
+
+               // humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
+               //  cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
                System.out.println(humanString);
                System.out.println(cpuString);
-               
-               
+
+
                //Handles the arrangement of cards
                for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
                   humanLabels[i] = humanLabels[i+1];
                   if (humanLabels[i] != null){
                      humanLabels[i].setActionCommand(Integer.toString(i));
-              
-               
-                     
+
+
+
                   }
-        
-                  
+
+
                }
-               
-               
-            }
-         }          
-              );       
+
+
+           }
+        }          
+        );       
       }
-      
- 
-      
+
+
+
       
       /* unsuccessful button version, will delete
       
