@@ -155,6 +155,22 @@ public class phase3
                                                 System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
 
 
+                                                for (Object i:
+                                                   myCardTable.pnlPlayArea.getComponents()) {
+                                                   myCardTable.pnlPlayArea.remove((JLabel)i);
+                                                }
+
+
+
+                                                System.out.println("INDEX IS " + humanCurrentCard);
+                                                myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(humanCurrentCard)));
+                                                myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(cpuCurrentCard)));
+                                                myCardTable.revalidate();
+                                                myCardTable.repaint();
+
+                                                //myCardTable.pnlPlayArea.add(playLabelText[0]);
+                                                // myCardTable.pnlPlayArea.add(playLabelText[1]);
+
                                                 System.out.println("checking player hand overall");
                                                 {
                                                    for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i)
@@ -164,6 +180,7 @@ public class phase3
                                                    }
                                                    System.out.println("INDEX SELECTED IS: " + humanCardPosition);
                                                 }
+
                                                 for(int i= 0;  i <2; i ++) {
                                                    myCardTable.pnlPlayArea.remove(playLabelText[i]);
                                                 }
@@ -206,11 +223,14 @@ public class phase3
                                                       humanLabels[i].setActionCommand(Integer.toString(i));
                                                    }
                                                 }
-                                                if (highCardGame.getHand(0).getnumCards() == 1)
+                                                if (highCardGame.getHand(0).getnumCards() ==1)
                                                 {
                                                    gameLogic(0);
                                                 }
                                              }
+
+
+
                                           }
          );
       }
