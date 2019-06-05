@@ -64,11 +64,11 @@ public class phase3
          numUnusedCardsPerPack, unusedCardsPerPack,
          NUM_PLAYERS, NUM_CARDS_PER_HAND);
 
-      Deck myDeck = new Deck();
-      Hand myHand = new Hand();
+
 
       highCardGame.deal();
-      myHand = highCardGame.getHand(firstCard);
+      Hand myHand = highCardGame.getHand(firstCard);
+      Hand computerHand = highCardGame.getHand(1);
 
       // establish main frame in which program will run
 
@@ -81,17 +81,10 @@ public class phase3
       FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);
       frmMyWindow.setLayout(layout);
 
-      JLabel label = new JLabel(GUICard.getBackCardIcon());
-
-      frmMyWindow.add(label);
 
       // show everything to the user
       frmMyWindow.setVisible(true);
 
-      // Main from phase 2 assignment spec
-
-      int k;
-      Icon tempIcon;
 
       // establish main frame in which program will run
       CardTable myCardTable = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
@@ -153,14 +146,29 @@ public class phase3
                                                 System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition));
                                                 System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3));
 
-                                                //Generates cards for comparison
+
                                                 Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
 
-                                                //CPU card disabled for now
+
                                                 Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
 
                                                 System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
 
+                                                for (Object i:
+                                                     myCardTable.pnlPlayArea.getComponents()) {
+                                                   myCardTable.pnlPlayArea.remove((JLabel)i);
+                                                }
+
+                                                playedCardLabels[0].setIcon(GUICard.getIcon(humanCurrentCard));
+                                                playedCardLabels[1] = new JLabel(GUICard.getIcon(cpuCurrentCard));
+
+                                                   myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(humanCurrentCard)));
+                                                   myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(cpuCurrentCard)));
+                                                   myCardTable.revalidate();
+                                                   myCardTable.repaint();
+
+                                                //myCardTable.pnlPlayArea.add(playLabelText[0]);
+                                               // myCardTable.pnlPlayArea.add(playLabelText[1]);
 
                                                 for(int i= 0;  i <2; i ++) {
                                                    myCardTable.pnlPlayArea.remove(playLabelText[i]);
@@ -174,9 +182,6 @@ public class phase3
                                                    myCardTable.pnlPlayArea.add(playLabelText[i]);
                                                 }
                                                 myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
-
-
-
                                                 myCardTable.pnlPlayArea.revalidate();
                                                 myCardTable.pnlPlayArea.repaint();
 
@@ -205,8 +210,16 @@ public class phase3
 
                                                 }
 
+                                                for (int i = 0; i < NUM_PLAYERS; ++i)
+                                                {
+                                                   myCardTable.pnlPlayArea.remove(playedCardLabels[i]);
+                                                }
+
 
                                              }
+
+
+
                                           }
          );
       }
