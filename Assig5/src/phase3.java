@@ -111,178 +111,151 @@ public class phase3
          humanLabels[i] = new JButton(GUICard.getIcon(highCardGame.getHand(0).inspectCard(i)));
          humanLabels[i].setActionCommand(String.valueOf(i));
 
-
          humanLabels[i].addActionListener(new ActionListener() {
 
-                                             //Remove card from player Hand and get value
-                                             //Resort CPU hand (optional)
-                                             //Remove card from CPU hand and get value (randomized?)
-                                             //Comparison
-                                             //Activate win/lose pop up
-                                             //Increment wins, use int humanScore and cpuScore
-                                             //Redraw the table
+            // Remove card from player Hand and get value
+            // Resort CPU hand (optional)
+            // Remove card from CPU hand and get value (randomized?)
+            // Comparison
+            // Activate win/lose pop up
+            // Increment wins, use int humanScore and cpuScore
+            // Redraw the table
 
-                                             public void actionPerformed(ActionEvent cardClick) {
-                                                gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));
-                                             }
+            public void actionPerformed(ActionEvent cardClick) {
+               gameLogic(humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));
+            }
 
-                                             public void gameLogic(int humanCardPosition) {
-                                                //CPU decides card choice at random
-                                                Random randomNumber = new Random();
-                                                //Testing number
-                                                int cpuCardPosition = 0;
-                                                if (highCardGame.getHand(1).getnumCards() == 1)
-                                                {
-                                                   cpuCardPosition = 0;
-                                                }
-                                                else if (highCardGame.getHand(1).getnumCards() == 0)
-                                                {
+            public void gameLogic(int humanCardPosition) {
+               // CPU decides card choice at random
+               Random randomNumber = new Random();
+               // Testing number
+               int cpuCardPosition = 0;
+               if (highCardGame.getHand(1).getnumCards() == 1) {
+                  cpuCardPosition = 0;
+               } else if (highCardGame.getHand(1).getnumCards() == 0) {
 
-                                                }
-                                                else
-                                                   cpuCardPosition = randomNumber.nextInt(highCardGame.getHand(1).getnumCards()-1);
+               } else
+                  cpuCardPosition = randomNumber.nextInt(highCardGame.getHand(1).getnumCards() - 1);
 
-                                                System.out.println("Cards left " + highCardGame.getHand(0));
-                                                System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition));
-                                                //System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3));
+               System.out.println("Cards left " + highCardGame.getHand(0));
+               System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition));
+               // System.out.println("Checking position four before card draw: " +
+               // highCardGame.getHand(0).inspectCard(3));
 
-                                                //Generates cards for comparison
-                                                Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
+               // Generates cards for comparison
+               Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
 
-                                                //CPU card disabled for now
-                                                Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
+               // CPU card disabled for now
+               Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
 
-                                                System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
+               System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
 
+               for (Object i : myCardTable.pnlPlayArea.getComponents()) {
+                  myCardTable.pnlPlayArea.remove((JLabel) i);
+               }
 
-                                                for (Object i:
-                                                   myCardTable.pnlPlayArea.getComponents()) {
-                                                   myCardTable.pnlPlayArea.remove((JLabel)i);
-                                                }
+               System.out.println("INDEX IS " + humanCurrentCard);
+               myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(humanCurrentCard)));
+               myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(cpuCurrentCard)));
+               myCardTable.revalidate();
+               myCardTable.repaint();
 
+               // myCardTable.pnlPlayArea.add(playLabelText[0]);
+               // myCardTable.pnlPlayArea.add(playLabelText[1]);
 
+               System.out.println("checking player hand overall");
+               {
+                  for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i) {
+                     System.out.println(highCardGame.getHand(0).inspectCard(i));
 
-                                                System.out.println("INDEX IS " + humanCurrentCard);
-                                                myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(humanCurrentCard)));
-                                                myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(cpuCurrentCard)));
-                                                myCardTable.revalidate();
-                                                myCardTable.repaint();
+                  }
+                  System.out.println("INDEX SELECTED IS: " + humanCardPosition);
+               }
 
-                                                //myCardTable.pnlPlayArea.add(playLabelText[0]);
-                                                // myCardTable.pnlPlayArea.add(playLabelText[1]);
+               for (int i = 0; i < 2; i++) {
+                  myCardTable.pnlPlayArea.remove(playLabelText[i]);
+               }
 
-                                                System.out.println("checking player hand overall");
-                                                {
-                                                   for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i)
-                                                   {
-                                                      System.out.println(highCardGame.getHand(0).inspectCard(i));
+               // Win Lose
+               // converts cards into ints for comparison
+               int humanValue = GUICard.turnCardValueIntoInt(humanCurrentCard.getValue());
+               int cpuValue = GUICard.turnCardValueIntoInt(cpuCurrentCard.getValue());
 
-                                                   }
-                                                   System.out.println("INDEX SELECTED IS: " + humanCardPosition);
-                                                }
+               if (humanValue > cpuValue) {
+                  humanScore++;
+                  humanString = ("Human Player" + "    " + "Score:" + humanScore + "    You WON!");
 
-                                                for(int i= 0;  i <2; i ++) {
-                                                   myCardTable.pnlPlayArea.remove(playLabelText[i]);
-                                                }
+               } else {
+                  cpuScore++;
+                  humanString = ("Human Player" + "    " + "Score:" + humanScore + "    You LOST!");
+                  cpuString = ("CPU Player" + "    " + "Score:" + cpuScore);
 
-                                                //Win Lose
-                                                //converts cards into ints for comparison
-                                                int humanValue = GUICard.turnCardValueIntoInt(humanCurrentCard.getValue());
-                                                int cpuValue = GUICard.turnCardValueIntoInt(cpuCurrentCard.getValue());
-                                     
-                                                if (humanValue > cpuValue) {
-                                                   humanScore++;
-                                                   humanString = ("Human Player"+ "    " +"Score:" + humanScore +"    You WON!" );
-                                                   
-                                                   
-                                                }
-                                                else {
-                                                   cpuScore++;
-                                                   humanString = ("Human Player"+ "    " +"Score:" + humanScore +"    You LOST!" );
-                                                   cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
-                                                   
-                                                   
-                                                }
-                                                
-                                                if (highCardGame.getHand(0).getnumCards() == 0) {
-                                                   if(humanScore> cpuScore){
-                                                      humanString = ("Final Score: " + humanScore +" *YOU WON THE GAME*");
-                                                      cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
-                                                            }
-                                                      
-                                                   
-                           
-                                                   else {humanString = ("Final Score: " + humanScore +" *YOU LOST THE GAME*");
-                                                cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
-                                                }
-                                                }
+               }
 
-                                                System.out.println("checking player hand overall");
-                                                {
-                                                   for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i)
-                                                   {
-                                                      System.out.println(highCardGame.getHand(0).inspectCard(i));
+               if (highCardGame.getHand(0).getnumCards() == 0) {
+                  if (humanScore > cpuScore) {
+                     humanString = ("Final Score: " + humanScore + " *YOU WON THE GAME*");
+                     cpuString = ("CPU Player" + "    " + "Score:" + cpuScore);
+                  }
 
-                                                   }
-                                                   System.out.println("INDEX SELECTED IS: " + humanCardPosition);
-                                                }
-                                                for(int i= 0;  i <2; i ++) {
-                                                   myCardTable.pnlPlayArea.remove(playLabelText[i]);
-                                                }
+                  else {
+                     humanString = ("Final Score: " + humanScore + " *YOU LOST THE GAME*");
+                     cpuString = ("CPU Player" + "    " + "Score:" + cpuScore);
+                  }
+               }
 
-                                     
-                                              
-                                                playLabelText[0] = new JLabel(humanString);
-                                                playLabelText[1] = new JLabel(cpuString);
-                                                playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
-                                                for(int i= 0;  i <2; i ++) {
-                                                   myCardTable.pnlPlayArea.add(playLabelText[i]);
-                                                }
-                                                myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
-                                                myCardTable.pnlComputerHand.remove(0);
+               System.out.println("checking player hand overall");
+               {
+                  for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i) {
+                     System.out.println(highCardGame.getHand(0).inspectCard(i));
 
+                  }
+                  System.out.println("INDEX SELECTED IS: " + humanCardPosition);
+               }
+               for (int i = 0; i < 2; i++) {
+                  myCardTable.pnlPlayArea.remove(playLabelText[i]);
+               }
 
-                                                myCardTable.pnlPlayArea.revalidate();
-                                                myCardTable.pnlPlayArea.repaint();
+               playLabelText[0] = new JLabel(humanString);
+               playLabelText[1] = new JLabel(cpuString);
+               playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
+               for (int i = 0; i < 2; i++) {
+                  myCardTable.pnlPlayArea.add(playLabelText[i]);
+               }
+               myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
+               myCardTable.pnlComputerHand.remove(0);
 
+               myCardTable.pnlPlayArea.revalidate();
+               myCardTable.pnlPlayArea.repaint();
 
-                                                //Testing
-                                                System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3));
+               // Testing
+               System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3));
 
+               // humanString = ("TEST SCORING: " + "Human Player"+ " " +"Score:" + humanScore
+               // );
+               // cpuString = ("TEST SCORING: " + "Computer Player"+ " " +"Score:" + cpuScore
+               // );
+               System.out.println(humanString);
+               System.out.println(cpuString);
 
-                                                // humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
-                                                //  cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
-                                                System.out.println(humanString);
-                                                System.out.println(cpuString);
+               for (int i = 0; i < NUM_PLAYERS; ++i) {
+                  myCardTable.pnlPlayArea.remove(playedCardLabels[i]);
+               }
 
-                                                for (int i = 0; i < NUM_PLAYERS; ++i)
-                                                {
-                                                   myCardTable.pnlPlayArea.remove(playedCardLabels[i]);
-                                                }
+               // Handles the arrangement of cards
+               for (int i = humanCardPosition; i < humanLabels.length - 1; i++) {
+                  humanLabels[i] = humanLabels[i + 1];
+                  if (humanLabels[i] != null) {
+                     humanLabels[i].setActionCommand(Integer.toString(i));
+                  }
+               }
+               if (highCardGame.getHand(0).getnumCards() == 1) {
+                  gameLogic(0);
+               }
+            }
 
-
-                                                //Handles the arrangement of cards
-                                                for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
-                                                   humanLabels[i] = humanLabels[i+1];
-                                                   if (humanLabels[i] != null){
-                                                      humanLabels[i].setActionCommand(Integer.toString(i));
-                                                   }
-                                                }
-                                                if (highCardGame.getHand(0).getnumCards() ==1)
-                                                {
-                                                   gameLogic(0);
-                                                }
-                                             }
-
-
-
-                                          }
-         );
+         });
       }
-
-
-
-
 
       //Labels for played cards and text for scoring
       playedCardLabels[0] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
