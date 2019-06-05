@@ -6,6 +6,8 @@
  *
  * The following program is built to produce a specific output per
  * assignment specifications.
+ *
+ * Note**  The last card is played automatically.
  */
 
 
@@ -219,7 +221,17 @@ public class phase3
                }
                if (highCardGame.getHand(0).getnumCards() == 1)
                {
-                  gameLogic(0);
+
+                  try {
+                     Thread.sleep(500);
+                     gameLogic(0);
+                  }
+                  catch (InterruptedException e)
+                  {
+                     /*not multithreading, sleeping intentionally
+                     to notify the player of auto-complete
+                     with 1 card remaining*/
+                  }
                }
             }
          });
