@@ -18,7 +18,7 @@ public class Main
          for (int suitNum = 0; suitNum < 4; ++suitNum)
          {
             String filename = turnIntIntoCardValue(cardNum) +
-                              turnIntIntoCardSuit(suitNum) + ".gif";
+               turnIntIntoCardSuit(suitNum) + ".gif";
             ImageIcon cardPic = new ImageIcon("images\\"+filename);
             icon[iconIndex] = cardPic;
             ++iconIndex;
@@ -31,40 +31,33 @@ public class Main
    static String turnIntIntoCardValue(int cardNum)
    {
       char cardValue = (char)('0' + cardNum);
-      switch (cardNum)
-      {
-      case 1:
-      {
-         cardValue = 'A';
-         break;
+      switch (cardNum) {
+         case 1: {
+            cardValue = 'A';
+            break;
+         }
+         case 10: {
+            cardValue = 'T';
+            break;
+         }
+         case 11: {
+            cardValue = 'J';
+            break;
+         }
+         case 12: {
+            cardValue = 'Q';
+            break;
+         }
+         case 13: {
+            cardValue = 'K';
+            break;
+         }
+         case 14: {
+            cardValue = 'X';
+            break;
+         }
       }
-      case 10:
-      {
-         cardValue = 'T';
-         break;
-      }
-      case 11:
-      {
-         cardValue = 'J';
-         break;
-      }
-      case 12:
-      {
-         cardValue = 'Q';
-         break;
-      }
-      case 13:
-      {
-         cardValue = 'K';
-         break;
-      }
-      case 14:
-      {
-         cardValue = 'X';
-         break;
-      }
-      }
-      return new String(new char[] {cardValue});
+      return new String(new char[]{cardValue});
    }
 
    // turns 0 - 3 into "C", "D", "H", "S"
@@ -72,16 +65,15 @@ public class Main
    {
       switch (toBeConverted)
       {
-      case 0:
-         return "H";
-      case 1:
-         return "C";
-      case 2:
-         return "D";
-      default:
-         return "S";
-      }
-   }
+         case 0:
+            return "H";
+         case 1:
+            return "C";
+         case 2:
+            return "D";
+         default:
+            return "S";
+      }   }
 
    // a simple main to throw all the JLabels out there for the world to see
    public static void main(String[] args)

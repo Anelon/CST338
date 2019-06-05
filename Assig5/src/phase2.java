@@ -93,7 +93,7 @@ public class phase2
 
       // ADD LABELS TO PANELS -----------------------------------------
       for (JLabel element:
-         computerLabels)
+            computerLabels)
       {
          myCardTable.pnlComputerHand.add(element);
       }
@@ -133,19 +133,20 @@ public class phase2
       Random randNumber = new Random();
       int randNum = randNumber.nextInt(4)+1;
 
-      switch(randNum){
-         case 1:
-            card.set(cardValue, Card.Suit.spades);
-            break;
-         case 2:
-            card.set(cardValue, Card.Suit.hearts);
-            break;
-         case 3:
-            card.set(cardValue, Card.Suit.clubs);
-            break;
-         case 4:
-            card.set(cardValue, Card.Suit.diamonds);
-            break;
+      switch(randNum)
+      {
+      case 1:
+         card.set(cardValue, Card.Suit.spades);
+         break;
+      case 2:
+         card.set(cardValue, Card.Suit.hearts);
+         break;
+      case 3:
+         card.set(cardValue, Card.Suit.clubs);
+         break;
+      case 4:
+         card.set(cardValue, Card.Suit.diamonds);
+         break;
 
       }
 
@@ -200,7 +201,7 @@ class GUICard
             for (int suitNum = 0; suitNum < NUM_CARD_SUITES; ++suitNum)
             {
                String filename = turnIntIntoCardValue(cardNum) +
-                  turnIntIntoCardSuit(suitNum) + ".gif";
+                                 turnIntIntoCardSuit(suitNum) + ".gif";
                iconCards[cardNum-1][suitNum] = new ImageIcon("images/"+filename);
             }
          }
@@ -265,39 +266,46 @@ class GUICard
 
       if (cardNum >= 1 && cardNum <= 14)
       {
-         switch (cardNum) {
-            case 1: {
-               cardValue = 'A';
-               break;
-            }
-            case 10: {
-               cardValue = 'T';
-               break;
-            }
-            case 11: {
-               cardValue = 'J';
-               break;
-            }
-            case 12: {
-               cardValue = 'Q';
-               break;
-            }
-            case 13: {
-               cardValue = 'K';
-               break;
-            }
-            case 14: {
-               cardValue = 'X';
-               break;
-            }
-            default:
-               cardValue = (char) ('0' + cardNum);
+         switch (cardNum)
+         {
+         case 1:
+         {
+            cardValue = 'A';
+            break;
+         }
+         case 10:
+         {
+            cardValue = 'T';
+            break;
+         }
+         case 11:
+         {
+            cardValue = 'J';
+            break;
+         }
+         case 12:
+         {
+            cardValue = 'Q';
+            break;
+         }
+         case 13:
+         {
+            cardValue = 'K';
+            break;
+         }
+         case 14:
+         {
+            cardValue = 'X';
+            break;
+         }
+         default:
+            cardValue = (char) ('0' + cardNum);
          }
       }
       else
          cardValue = 'A';
 
-      return new String(new char[]{cardValue});
+      return new String(new char[] {cardValue});
    }
 
 
@@ -319,20 +327,20 @@ class GUICard
    {
       switch (cardValue)
       {
-         case 'A':
-            return 1;
-         case 'T':
-            return 10;
-         case 'J':
-            return 11;
-         case 'Q':
-            return 12;
-         case 'K':
-            return 13;
-         case 'X':
-            return 14;
-         default:
-            return cardValue - '0';
+      case 'A':
+         return 1;
+      case 'T':
+         return 10;
+      case 'J':
+         return 11;
+      case 'Q':
+         return 12;
+      case 'K':
+         return 13;
+      case 'X':
+         return 14;
+      default:
+         return cardValue - '0';
       }
    }
 
@@ -351,15 +359,16 @@ class GUICard
     */
    private static String turnIntIntoCardSuit(int toBeConverted)
    {
-      switch (toBeConverted) {
-         case 0:
-            return "H";
-         case 1:
-            return "C";
-         case 2:
-            return "D";
-         default:
-            return "S";
+      switch (toBeConverted)
+      {
+      case 0:
+         return "H";
+      case 1:
+         return "C";
+      case 2:
+         return "D";
+      default:
+         return "S";
       }
    }
 
@@ -380,14 +389,14 @@ class GUICard
    {
       switch (suit)
       {
-         case hearts:
-            return 0;
-         case clubs:
-            return 1;
-         case diamonds:
-            return 2;
-         default:
-            return 3;
+      case hearts:
+         return 0;
+      case clubs:
+         return 1;
+      case diamonds:
+         return 2;
+      default:
+         return 3;
       }
    }
 }
@@ -417,15 +426,21 @@ class CardTable extends JFrame
        * and the player.
        */
 
-      if(numCardsPerHand<=MAX_CARDS_PER_HAND ) {
+      if(numCardsPerHand<=MAX_CARDS_PER_HAND )
+      {
          this.numCardsPerHand= DEFAULT_NUM_CARDS_PER_HAND;
-      }else {
+      }
+      else
+      {
          this.numCardsPerHand= numCardsPerHand;
       }
 
-      if(numPlayers<=MAX_PLAYERS) {
+      if(numPlayers<=MAX_PLAYERS)
+      {
          this.numPlayers = DEFAULT_NUM_PLAYERS;
-      }else {
+      }
+      else
+      {
          this.numPlayers = numCardsPerHand;
       }
 
@@ -459,12 +474,14 @@ class CardTable extends JFrame
 
 
    //Getter for NumCardsPerHand
-   public int getNumCardsPerHand() {
+   public int getNumCardsPerHand()
+   {
       return numCardsPerHand;
    }
 
    //Getter for getNumPlayers
-   public int getNumPlayers() {
+   public int getNumPlayers()
+   {
       return numPlayers;
    }
 }
@@ -547,8 +564,8 @@ class Card
    private boolean isValid(char newValue, Suit newSuit)
    {
       if ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
-         || newValue == ACE || newValue == KING || newValue == QUEEN
-         || newValue == TEN || newValue == JACK || newValue == JOKER)
+            || newValue == ACE || newValue == KING || newValue == QUEEN
+            || newValue == TEN || newValue == JACK || newValue == JOKER)
       {
          return true;
       }
@@ -561,7 +578,8 @@ class Card
       if (valuRanks == null)
       {
          valuRanks = new char[15];
-         for (int cardNum = 0; cardNum <= 14; ++cardNum) {
+         for (int cardNum = 0; cardNum <= 14; ++cardNum)
+         {
             char cardValue = GUICard.turnIntIntoCardValue(cardNum).charAt(0);
             valuRanks[cardNum] = cardValue;
          }
@@ -724,7 +742,7 @@ class Deck
       for (int packNumber = 0; packNumber < numPacks; ++packNumber)
       {
          for (int masterIndex = 0; masterIndex < masterPack.length;
-              ++masterIndex)
+               ++masterIndex)
          {
             cards[totalCardIndex] = new Card(masterPack[masterIndex]);
             ++totalCardIndex;
@@ -832,7 +850,7 @@ class Deck
    {
       int numFound = 0;
       for (Card examine:
-         cards)
+            cards)
       {
          if (examine.equals(card))
             ++numFound;
@@ -909,14 +927,14 @@ class Deck
    {
       switch (toBeConverted)
       {
-         case 0:
-            return Card.Suit.hearts;
-         case 1:
-            return Card.Suit.clubs;
-         case 2:
-            return Card.Suit.diamonds;
-         default:
-            return Card.Suit.spades;
+      case 0:
+         return Card.Suit.hearts;
+      case 1:
+         return Card.Suit.clubs;
+      case 2:
+         return Card.Suit.diamonds;
+      default:
+         return Card.Suit.spades;
       }
 
    }
@@ -942,36 +960,36 @@ class Deck
                char cardValue = (char)('0' + cardNum);
                switch (cardNum)
                {
-                  case 1:
-                  {
-                     cardValue = 'A';
-                     break;
-                  }
-                  case 10:
-                  {
-                     cardValue = 'T';
-                     break;
-                  }
-                  case 11:
-                  {
-                     cardValue = 'J';
-                     break;
-                  }
-                  case 12:
-                  {
-                     cardValue = 'Q';
-                     break;
-                  }
-                  case 13:
-                  {
-                     cardValue = 'K';
-                     break;
-                  }
-                  case 14:
-                  {
-                     cardValue = 'X';
-                     break;
-                  }
+               case 1:
+               {
+                  cardValue = 'A';
+                  break;
+               }
+               case 10:
+               {
+                  cardValue = 'T';
+                  break;
+               }
+               case 11:
+               {
+                  cardValue = 'J';
+                  break;
+               }
+               case 12:
+               {
+                  cardValue = 'Q';
+                  break;
+               }
+               case 13:
+               {
+                  cardValue = 'K';
+                  break;
+               }
+               case 14:
+               {
+                  cardValue = 'X';
+                  break;
+               }
                }
                masterPack[masterIndex] =
                   new Card(cardValue, intToSuit(suitInt));
@@ -1030,7 +1048,8 @@ class Hand
    }
 
    /*This function remove all cards from the hand. */
-   public void resetHand() {
+   public void resetHand()
+   {
 
       myCards = new Card[MAX_CARDS];
       numCards = 0;
@@ -1072,7 +1091,8 @@ class Hand
     * there is room in the hand.*/
    public boolean takeCard(Card newCard)
    {
-      if(numCards >=MAX_CARDS) {
+      if(numCards >=MAX_CARDS)
+      {
          return false;
       }
 
@@ -1095,17 +1115,20 @@ class Hand
 
    /*This function is used prior to displaying
     *the entire hand.*/
-   public String toString() {
+   public String toString()
+   {
 
       String cards = "";
-      for(int i = 0; i<numCards; i++) {
+      for(int i = 0; i<numCards; i++)
+      {
          cards += myCards[i].getValue() + " of " + myCards[i].getSuit() + ", ";
       }
       return "Hand = (" + cards + ") ";
    }
    /* This is the accessor method for numCards. */
 
-   public int getnumCards() {
+   public int getnumCards()
+   {
 
       return numCards;
    }
@@ -1113,9 +1136,11 @@ class Hand
    /* This is accessor for an individual card and
     * it returns a card with errorFalg if K is not valid.*/
 
-   public Card inspectCard(int k) {
+   public Card inspectCard(int k)
+   {
 
-      if (k<=MAX_CARDS && k>=0){
+      if (k<=MAX_CARDS && k>=0)
+      {
          return myCards[k];
       }
       return new Card('T', Card.Suit.hearts);

@@ -52,7 +52,7 @@ public class Main
           Icon tempIcon;
 
       // establish main frame in which program will run
-      CardTable myCardTable
+      CardTable myCardTable 
       = new CardTable("CardTable", NUM_CARDS_PER_HAND, NUM_PLAYERS);
       myCardTable.setSize(800, 600);
       myCardTable.setLocationRelativeTo(null);
@@ -122,7 +122,7 @@ class GUICard
             for (int suitNum = 0; suitNum < NUM_CARD_SUITES; ++suitNum)
             {
                String filename = turnIntIntoCardValue(cardNum) +
-                                 turnIntIntoCardSuit(suitNum) + ".gif";
+                  turnIntIntoCardSuit(suitNum) + ".gif";
                iconCards[cardNum-1][suitNum] = new ImageIcon("images\\"+filename);
             }
          }
@@ -187,46 +187,39 @@ class GUICard
 
       if (cardNum >= 1 && cardNum <= 14)
       {
-         switch (cardNum)
-         {
-         case 1:
-         {
-            cardValue = 'A';
-            break;
-         }
-         case 10:
-         {
-            cardValue = 'T';
-            break;
-         }
-         case 11:
-         {
-            cardValue = 'J';
-            break;
-         }
-         case 12:
-         {
-            cardValue = 'Q';
-            break;
-         }
-         case 13:
-         {
-            cardValue = 'K';
-            break;
-         }
-         case 14:
-         {
-            cardValue = 'X';
-            break;
-         }
-         default:
-            cardValue = (char) ('0' + cardNum);
+         switch (cardNum) {
+            case 1: {
+                       cardValue = 'A';
+                       break;
+            }
+            case 10: {
+                        cardValue = 'T';
+                        break;
+            }
+            case 11: {
+                        cardValue = 'J';
+                        break;
+            }
+            case 12: {
+                        cardValue = 'Q';
+                        break;
+            }
+            case 13: {
+                        cardValue = 'K';
+                        break;
+            }
+            case 14: {
+                        cardValue = 'X';
+                        break;
+            }
+            default:
+                     cardValue = (char) ('0' + cardNum);
          }
       }
       else
          cardValue = 'A';
 
-      return new String(new char[] {cardValue});
+      return new String(new char[]{cardValue});
    }
 
 
@@ -248,20 +241,20 @@ class GUICard
    {
       switch (cardValue)
       {
-      case 'A':
-         return 1;
-      case 'T':
-         return 10;
-      case 'J':
-         return 11;
-      case 'Q':
-         return 12;
-      case 'K':
-         return 13;
-      case 'X':
-         return 14;
-      default:
-         return cardValue - '0';
+         case 'A':
+            return 1;
+         case 'T':
+            return 10;
+         case 'J':
+            return 11;
+         case 'Q':
+            return 12;
+         case 'K':
+            return 13;
+         case 'X':
+            return 14;
+         default:
+            return cardValue - '0';
       }
    }
 
@@ -280,16 +273,15 @@ class GUICard
     */
    private static String turnIntIntoCardSuit(int toBeConverted)
    {
-      switch (toBeConverted)
-      {
-      case 0:
-         return "H";
-      case 1:
-         return "C";
-      case 2:
-         return "D";
-      default:
-         return "S";
+      switch (toBeConverted) {
+         case 0:
+            return "H";
+         case 1:
+            return "C";
+         case 2:
+            return "D";
+         default:
+            return "S";
       }
    }
 
@@ -310,14 +302,14 @@ class GUICard
    {
       switch (suit)
       {
-      case hearts:
-         return 0;
-      case clubs:
-         return 1;
-      case diamonds:
-         return 2;
-      default:
-         return 3;
+         case hearts:
+            return 0;
+         case clubs:
+            return 1;
+         case diamonds:
+            return 2;
+         default:
+            return 3;
       }
    }
 }
@@ -339,8 +331,7 @@ class CardTable extends JFrame
 
    }
 
-   public int getNumCardsPerHand()
-   {
+   public int getNumCardsPerHand() {
       return 0;
    }
 
@@ -391,7 +382,7 @@ class Card
       lhs += GUICard.turnSuitIntoInt(this.getSuit()) * 100;
       int rhs = GUICard.turnCardValueIntoInt(card.getValue());
       rhs += GUICard.turnSuitIntoInt(card.getSuit()) * 100;
-      return lhs < rhs;
+      return lhs < rhs; 
    }
 
    static void arraySort(Card[] cards, int arraySize)
@@ -683,14 +674,14 @@ class Deck
    {
       switch (toBeConverted)
       {
-      case 0:
-         return Card.Suit.hearts;
-      case 1:
-         return Card.Suit.clubs;
-      case 2:
-         return Card.Suit.diamonds;
-      default:
-         return Card.Suit.spades;
+         case 0:
+            return Card.Suit.hearts;
+         case 1:
+            return Card.Suit.clubs;
+         case 2:
+            return Card.Suit.diamonds;
+         default:
+            return Card.Suit.spades;
       }
 
    }
@@ -716,31 +707,31 @@ class Deck
                char cardValue = (char)('0' + cardNum);
                switch (cardNum)
                {
-               case 1:
-               {
-                  cardValue = 'A';
-                  break;
-               }
-               case 10:
-               {
-                  cardValue = 'T';
-                  break;
-               }
-               case 11:
-               {
-                  cardValue = 'J';
-                  break;
-               }
-               case 12:
-               {
-                  cardValue = 'Q';
-                  break;
-               }
-               case 13:
-               {
-                  cardValue = 'K';
-                  break;
-               }
+                  case 1:
+                     {
+                        cardValue = 'A';
+                        break;
+                     }
+                  case 10:
+                     {
+                        cardValue = 'T';
+                        break;
+                     }
+                  case 11:
+                     {
+                        cardValue = 'J';
+                        break;
+                     }
+                  case 12:
+                     {
+                        cardValue = 'Q';
+                        break;
+                     }
+                  case 13:
+                     {
+                        cardValue = 'K';
+                        break;
+                     }
                }
 
                masterPack[masterIndex] =
@@ -800,8 +791,7 @@ class Hand
    }
 
    /*This function remove all cards from the hand. */
-   public void resetHand()
-   {
+   public void resetHand() {
 
       myCards = new Card[MAX_CARDS];
       numCards = 0;
@@ -813,8 +803,7 @@ class Hand
     * there is room in the hand.*/
    public boolean takeCard(Card newCard)
    {
-      if(numCards >=MAX_CARDS)
-      {
+      if(numCards >=MAX_CARDS) {
          return false;
       }
 
@@ -837,20 +826,17 @@ class Hand
 
    /*This function is used prior to displaying
     *the entire hand.*/
-   public String toString()
-   {
+   public String toString() {
 
       String cards = "";
-      for(int i = 0; i<numCards; i++)
-      {
+      for(int i = 0; i<numCards; i++) {
          cards += myCards[i].getValue() + " of " + myCards[i].getSuit() + ", ";
       }
       return "Hand = (" + cards + ") ";
    }
    /* This is the accessor method for numCards. */
 
-   public int getnumCards()
-   {
+   public int getnumCards() {
 
       return numCards;
    }
@@ -858,11 +844,9 @@ class Hand
    /* This is accessor for an individual card and
     * it returns a card with errorFalg if K is not valid.*/
 
-   public Card inspectCard(int k)
-   {
+   public Card inspectCard(int k) {
 
-      if (k<=MAX_CARDS && k>=0)
-      {
+      if (k<=MAX_CARDS && k>=0){
          return myCards[k];
       }
       return new Card('T', Card.Suit.hearts);
