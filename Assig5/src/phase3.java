@@ -60,9 +60,9 @@ public class phase3
 
       //Part of phase 3 specification
       CardGameFramework highCardGame = new CardGameFramework(
-         numPacksPerDeck, numJokersPerPack,
-         numUnusedCardsPerPack, unusedCardsPerPack,
-         NUM_PLAYERS, NUM_CARDS_PER_HAND);
+            numPacksPerDeck, numJokersPerPack,
+            numUnusedCardsPerPack, unusedCardsPerPack,
+            NUM_PLAYERS, NUM_CARDS_PER_HAND);
 
       Deck myDeck = new Deck();
       Hand myHand = new Hand();
@@ -121,93 +121,87 @@ public class phase3
 
          humanLabels[i].addActionListener(new ActionListener() {
 
-                                             //Remove card from player Hand and get value
-                                             //Resort CPU hand (optional)
-                                             //Remove card from CPU hand and get value (randomized?)
-                                             //Comparison
-                                             //Activate win/lose pop up
-                                             //Increment wins, use int humanScore and cpuScore
-                                             //Redraw the table
+            //Remove card from player Hand and get value
+            //Resort CPU hand (optional)
+            //Remove card from CPU hand and get value (randomized?)
+            //Comparison
+            //Activate win/lose pop up
+            //Increment wins, use int humanScore and cpuScore
+            //Redraw the table
 
-                                             public void actionPerformed(ActionEvent cardClick) {
-                                                gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));
-                                             }
+            public void actionPerformed(ActionEvent cardClick) {
+               gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));
+            }
 
-                                             public void gameLogic(int humanCardPosition) {
-                                                //CPU decides card choice at random
-                                                Random randomNumber = new Random();
-                                                //Testing number
-                                                int cpuCardPosition = 0;
-                                                if (highCardGame.getHand(1).getnumCards() == 1)
-                                                {
-                                                   cpuCardPosition = 0;
+            public void gameLogic(int humanCardPosition) {
+               //CPU decides card choice at random
+               Random randomNumber = new Random();
+               //Testing number
+               int cpuCardPosition = 0;
+               if (highCardGame.getHand(1).getnumCards() == 1)
+               {
+                  cpuCardPosition = 0;
 
-                                                }
-                                                else if (highCardGame.getHand(1).getnumCards() == 0)
-                                                {
+               }
+               else if (highCardGame.getHand(1).getnumCards() == 0)
+               {
 
-                                                }
-                                                else
-                                                   cpuCardPosition = randomNumber.nextInt(highCardGame.getHand(1).getnumCards()-1);
+               }
+               else
+                  cpuCardPosition = randomNumber.nextInt(highCardGame.getHand(1).getnumCards()-1);
 
-                                                System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition));
-                                                System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3));
+               System.out.println("Cards left " + highCardGame.getHand(0));
+               System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition));
+               //System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3));
 
-                                                //Generates cards for comparison
-                                                Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
+               //Generates cards for comparison
+               Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
 
-                                                //CPU card disabled for now
-                                                Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
+               //CPU card disabled for now
+               Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
 
-                                                System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
-
-
-                                                for(int i= 0;  i <2; i ++) {
-                                                   myCardTable.pnlPlayArea.remove(playLabelText[i]);
-                                                }
-
-                                                humanScore++;
-                                                humanString = ("Human Player"+ "    " +"Score:" + humanScore );
-                                                playLabelText[0] = new JLabel(humanString);
-                                                playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
-                                                for(int i= 0;  i <2; i ++) {
-                                                   myCardTable.pnlPlayArea.add(playLabelText[i]);
-                                                }
-                                                myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
+               System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
 
 
+               for(int i= 0;  i <2; i ++) {
+                  myCardTable.pnlPlayArea.remove(playLabelText[i]);
+               }
 
-                                                myCardTable.pnlPlayArea.revalidate();
-                                                myCardTable.pnlPlayArea.repaint();
+               humanScore++;
+               humanString = ("Human Player"+ "    " +"Score:" + humanScore );
+               playLabelText[0] = new JLabel(humanString);
+               playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
+               for(int i= 0;  i <2; i ++) {
+                  myCardTable.pnlPlayArea.add(playLabelText[i]);
+               }
+               myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
 
 
 
-                                                //Testing
-                                                System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3));
-
-
-                                                // humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
-                                                //  cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
-                                                System.out.println(humanString);
-                                                System.out.println(cpuString);
-
-
-                                                //Handles the arrangement of cards
-                                                for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
-                                                   humanLabels[i] = humanLabels[i+1];
-                                                   if (humanLabels[i] != null){
-                                                      humanLabels[i].setActionCommand(Integer.toString(i));
+               myCardTable.pnlPlayArea.revalidate();
+               myCardTable.pnlPlayArea.repaint();
 
 
 
-                                                   }
+               //Testing
+               System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3));
 
 
-                                                }
+               // humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
+               //  cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
+               System.out.println(humanString);
+               System.out.println(cpuString);
 
 
-                                             }
-                                          }
+               //Handles the arrangement of cards
+               for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
+                  humanLabels[i] = humanLabels[i+1];
+                  if (humanLabels[i] != null){
+                     humanLabels[i].setActionCommand(Integer.toString(i));
+                  }
+               }
+            }
+         }
          );
       }
 
@@ -224,19 +218,19 @@ public class phase3
       playLabelText[1] = new JLabel(cpuString);
       playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
 
- /* Going to hard code scoring
-      for (int i = 0; i < NUM_PLAYERS; ++i)
-      {
+      /* Going to hard code scoring
+         for (int i = 0; i < NUM_PLAYERS; ++i)
+         {
          playedCardLabels[i] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
          playLabelText[i] = new JLabel("Player " + (i+1) + "    " +"Score:" + humanScore );
          playLabelText[i].setHorizontalAlignment(SwingConstants.CENTER);
-      }
+         }
 
-   */
+*/
 
       // ADD LABELS TO PANELS -----------------------------------------
       for (JLabel element:
-         computerLabels)
+            computerLabels)
       {
          myCardTable.pnlComputerHand.add(element);
       }
@@ -429,31 +423,31 @@ class GUICard
       {
          switch (cardNum) {
             case 1: {
-               cardValue = 'A';
-               break;
+                       cardValue = 'A';
+                       break;
             }
             case 10: {
-               cardValue = 'T';
-               break;
+                        cardValue = 'T';
+                        break;
             }
             case 11: {
-               cardValue = 'J';
-               break;
+                        cardValue = 'J';
+                        break;
             }
             case 12: {
-               cardValue = 'Q';
-               break;
+                        cardValue = 'Q';
+                        break;
             }
             case 13: {
-               cardValue = 'K';
-               break;
+                        cardValue = 'K';
+                        break;
             }
             case 14: {
-               cardValue = 'X';
-               break;
+                        cardValue = 'X';
+                        break;
             }
             default:
-               cardValue = (char) ('0' + cardNum);
+                     cardValue = (char) ('0' + cardNum);
          }
       }
       else
@@ -713,8 +707,8 @@ class Card
    private boolean isValid(char newValue, Suit newSuit)
    {
       if ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
-         || newValue == ACE || newValue == KING || newValue == QUEEN
-         || newValue == TEN || newValue == JACK || newValue == JOKER)
+            || newValue == ACE || newValue == KING || newValue == QUEEN
+            || newValue == TEN || newValue == JACK || newValue == JOKER)
       {
          return true;
       }
@@ -890,7 +884,7 @@ class Deck
       for (int packNumber = 0; packNumber < numPacks; ++packNumber)
       {
          for (int masterIndex = 0; masterIndex < masterPack.length;
-              ++masterIndex)
+               ++masterIndex)
          {
             cards[totalCardIndex] = new Card(masterPack[masterIndex]);
             ++totalCardIndex;
@@ -998,7 +992,7 @@ class Deck
    {
       int numFound = 0;
       for (Card examine:
-         cards)
+            cards)
       {
          if (examine.equals(card))
             ++numFound;
@@ -1109,35 +1103,35 @@ class Deck
                switch (cardNum)
                {
                   case 1:
-                  {
-                     cardValue = 'A';
-                     break;
-                  }
+                     {
+                        cardValue = 'A';
+                        break;
+                     }
                   case 10:
-                  {
-                     cardValue = 'T';
-                     break;
-                  }
+                     {
+                        cardValue = 'T';
+                        break;
+                     }
                   case 11:
-                  {
-                     cardValue = 'J';
-                     break;
-                  }
+                     {
+                        cardValue = 'J';
+                        break;
+                     }
                   case 12:
-                  {
-                     cardValue = 'Q';
-                     break;
-                  }
+                     {
+                        cardValue = 'Q';
+                        break;
+                     }
                   case 13:
-                  {
-                     cardValue = 'K';
-                     break;
-                  }
+                     {
+                        cardValue = 'K';
+                        break;
+                     }
                   case 14:
-                  {
-                     cardValue = 'X';
-                     break;
-                  }
+                     {
+                        cardValue = 'X';
+                        break;
+                     }
                }
                masterPack[masterIndex] =
                   new Card(cardValue, intToSuit(suitInt));
@@ -1213,6 +1207,7 @@ class Hand
       }
       //Decreases numCards.
       Card card = myCards[cardIndex];
+      System.out.println(card);
 
       numCards--;
       for(int i = cardIndex; i < numCards; i++)
@@ -1314,8 +1309,8 @@ class CardGameFramework
    // use cards 2-8 of any suit
 
    public CardGameFramework( int numPacks, int numJokersPerPack,
-                             int numUnusedCardsPerPack,  Card[] unusedCardsPerPack,
-                             int numPlayers, int numCardsPerHand)
+         int numUnusedCardsPerPack,  Card[] unusedCardsPerPack,
+         int numPlayers, int numCardsPerHand)
    {
       int k;
 
@@ -1330,7 +1325,7 @@ class CardGameFramework
          numPlayers = 4;
       // one of many ways to assure at least one full deal to all players
       if  (numCardsPerHand < 1 ||
-         numCardsPerHand >  numPacks * (52 - numUnusedCardsPerPack)
+            numCardsPerHand >  numPacks * (52 - numUnusedCardsPerPack)
             / numPlayers )
          numCardsPerHand = numPacks * (52 - numUnusedCardsPerPack) / numPlayers;
 
@@ -1437,7 +1432,7 @@ class CardGameFramework
    {
       // returns bad card if either argument is bad
       if (playerIndex < 0 ||  playerIndex > numPlayers - 1 ||
-         cardIndex < 0 || cardIndex > numCardsPerHand - 1)
+            cardIndex < 0 || cardIndex > hand[playerIndex].getnumCards() - 1)
       {
          //Creates a card that does not work
          return new Card('M', Card.Suit.spades);
