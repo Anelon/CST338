@@ -499,8 +499,24 @@ class GUICard
             return 13;
          case 'X':
             return 14;
+         case '2':
+            return 2;
+         case '3':
+            return 3;
+         case '4':
+            return 4;
+         case '5':
+            return 5;
+         case '6':
+            return 6;
+         case '7':
+            return 7;
+         case '8':
+            return 8;
+         case '9':
+            return 9;
          default:
-            return cardValue - '0';
+            return 14;
       }
    }
 
@@ -1104,10 +1120,10 @@ class Deck
    }
 
 
-   
-   
-   
-   
+
+
+
+
    /**
     * Adds a card to the deck if it is legal to do so,
     * illegal if more than 1 copy per deck used
@@ -1134,10 +1150,10 @@ class Deck
    }
 
 
-   
-   
-   
-   
+
+
+
+
    /**
     * Determines the number of copies of a card in the deck
     * @param card card to be searched for
@@ -1156,10 +1172,10 @@ class Deck
       return numFound;
    }
 
-   
-   
-   
-   
+
+
+
+
 
    /**
     * Removes the card from the deck
@@ -1198,10 +1214,10 @@ class Deck
    }
 
 
-   
-   
-   
-   
+
+
+
+
    /**
     * Determines whether a given card is in the deck still.
     * @param findMe Card to be searched for
@@ -1217,11 +1233,11 @@ class Deck
       return false;
    }
 
-   
-   
-   
-   
-   
+
+
+
+
+
    void sort()
    {
       Card.arraySort(cards, cards.length);
