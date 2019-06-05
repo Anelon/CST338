@@ -122,6 +122,7 @@ public class phase3
             //Increment wins, use int humanScore and cpuScore
             //Redraw the table
 
+<<<<<<< HEAD
             public void actionPerformed(ActionEvent cardClick) {
                gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));
             }
@@ -134,10 +135,61 @@ public class phase3
                if (highCardGame.getHand(1).getnumCards() == 1)
                {
                   cpuCardPosition = 0;
+=======
+                                             public void actionPerformed(ActionEvent cardClick) {
+                                                gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));
+                                             }
+
+                                             public void gameLogic(int humanCardPosition) {
+                                                //CPU decides card choice at random
+                                                Random randomNumber = new Random();
+                                                //Testing number
+                                                int cpuCardPosition = 0;
+                                                if (highCardGame.getHand(1).getnumCards() == 1)
+                                                {
+                                                   cpuCardPosition = 0;
+
+                                                }
+                                                else if (highCardGame.getHand(1).getnumCards() == 0)
+                                                {
+
+                                                }
+                                                else
+                                                   cpuCardPosition = randomNumber.nextInt(highCardGame.getHand(1).getnumCards()-1);
+
+                                                System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition));
+                                                System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3));
+
+
+                                                Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
+
+
+                                                Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
+
+                                                System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
+
+                                                for (Object i:
+                                                     myCardTable.pnlPlayArea.getComponents()) {
+                                                   myCardTable.pnlPlayArea.remove((JLabel)i);
+                                                }
+
+                                                playedCardLabels[0].setIcon(GUICard.getIcon(humanCurrentCard));
+                                                playedCardLabels[1] = new JLabel(GUICard.getIcon(cpuCurrentCard));
+
+                                                   myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(humanCurrentCard)));
+                                                   myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(cpuCurrentCard)));
+                                                   myCardTable.revalidate();
+                                                   myCardTable.repaint();
+
+                                                //myCardTable.pnlPlayArea.add(playLabelText[0]);
+                                               // myCardTable.pnlPlayArea.add(playLabelText[1]);
+>>>>>>> f36cc1257aad12f1890bfa97d049b8d24db493ee
+
                }
                else if (highCardGame.getHand(1).getnumCards() == 0)
                {
 
+<<<<<<< HEAD
                }
                else
                   cpuCardPosition = randomNumber.nextInt(highCardGame.getHand(1).getnumCards()-1);
@@ -151,6 +203,18 @@ public class phase3
 
                //CPU card disabled for now
                Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
+=======
+                                                humanScore++;
+                                                humanString = ("Human Player"+ "    " +"Score:" + humanScore );
+                                                playLabelText[0] = new JLabel(humanString);
+                                                playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
+                                                for(int i= 0;  i <2; i ++) {
+                                                   myCardTable.pnlPlayArea.add(playLabelText[i]);
+                                                }
+                                                myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
+                                                myCardTable.pnlPlayArea.revalidate();
+                                                myCardTable.pnlPlayArea.repaint();
+>>>>>>> f36cc1257aad12f1890bfa97d049b8d24db493ee
 
                System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
 
