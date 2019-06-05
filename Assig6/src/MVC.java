@@ -46,8 +46,6 @@ public class phase3
       int numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
 
-      Thread clock = new Thread(new Clock());
-      clock.start();
       //Part of phase 3 specification
       CardGameFramework highCardGame = new CardGameFramework(
          numPacksPerDeck, numJokersPerPack,
@@ -334,21 +332,65 @@ public class phase3
 
 class Model
 {
+   /*
+   +playerHand: Hand
+
++computerHand: Hand
+
++deck: Deck
+
++numPlayers: int
+
++LastPlayedComputerCard: Card
+
++LastPlayedPlayerCard: Card
+
++playerScore: int
+
++computerScore: int
+
++playerHandChanged: boolean
+
++ computerHandChanged: boolean
+
++ playAreaChanged: boolean
+
+
+    */
+
+   /*
+   updateComputerSide(): void
+
+updatePlayerSide(): void
+
+updatePlayArea(): void
+
+updateScore(): void
+    */
 
 }
 
+
+//temporary, should have model initialize the view based on controller input
 class View
 {
    static CardTable table = new CardTable("Card Table", 7, 2);
+   
    View()
    {
       table.setSize(800, 600);
+      table.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+      Thread clock = new Thread(new Clock());
+      clock.start();
    }
 
 
 
 }
 
+
+//temporary, need to implement controller functions
 class Controller
 {
    CardGameFramework highCardGame;
@@ -364,11 +406,12 @@ class Controller
 class Clock implements Runnable
 {
 
-   JFrame display;
-   long timeInSeconds = -1;
-   String timeDisplay = "TIME WILL GO HERE";
-   JPanel lcdPanel;
-   JLabel timeLabel;
+   private JFrame display;
+   private long timeInSeconds = -1;
+   private String timeDisplay = "TIME WILL GO HERE";
+   private JPanel lcdPanel;
+   private JLabel timeLabel;
+   public boolean clockCountingDown = true;
 
    Clock()
    {
@@ -386,7 +429,7 @@ class Clock implements Runnable
    public void run() {
       long startingTime = System.currentTimeMillis()/1000;
       long currentTimerTime = (System.currentTimeMillis()/1000)-startingTime;
-      while (true)
+      while (clockCountingDown)
       {
          timeInSeconds = (System.currentTimeMillis() / 1000) - startingTime;
          if (timeInSeconds != currentTimerTime)
@@ -401,15 +444,19 @@ class Clock implements Runnable
             currentTimerTime = timeInSeconds;
          }
       }
-
    }
 
-   String convertTimeToString()
+   private String convertTimeToString()
    {
       long hours = timeInSeconds/60;
       long minutes = timeInSeconds%60;
       DecimalFormat format = new DecimalFormat("00");
       return format.format(hours) + ":" + format.format(minutes);
+   }
+   
+   public void resetClock()
+   {
+      run();
    }
 
 
