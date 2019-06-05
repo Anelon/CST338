@@ -16,6 +16,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
 import java.util.Random;
 import javax.swing.border.LineBorder;
 import javax.swing.border.Border;
@@ -45,6 +46,8 @@ public class phase3
       int numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
 
+      Thread clock = new Thread(new Clock());
+      clock.start();
       //Part of phase 3 specification
       CardGameFramework highCardGame = new CardGameFramework(
          numPacksPerDeck, numJokersPerPack,
@@ -329,6 +332,88 @@ public class phase3
 
 
 
+class Model
+{
+
+}
+
+class View
+{
+   static CardTable table = new CardTable("Card Table", 7, 2);
+   View()
+   {
+      table.setSize(800, 600);
+   }
+
+
+
+}
+
+class Controller
+{
+   CardGameFramework highCardGame;
+   Controller()
+   {
+      highCardGame= new CardGameFramework(1, 4, 0,
+         null, 2, 7);
+   }
+
+}
+
+
+class Clock implements Runnable
+{
+
+   JFrame display;
+   long timeInSeconds = -1;
+   String timeDisplay = "TIME WILL GO HERE";
+   JPanel lcdPanel;
+   JLabel timeLabel;
+
+   Clock()
+   {
+      display = new JFrame("Timer");
+      display.setSize(150, 90);
+      display.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      timeLabel = new JLabel(timeDisplay);
+      lcdPanel = new JPanel();
+      lcdPanel.add(timeLabel);
+      display.add(lcdPanel);
+      display.setVisible(true);
+   }
+
+   @Override
+   public void run() {
+      long startingTime = System.currentTimeMillis()/1000;
+      long currentTimerTime = (System.currentTimeMillis()/1000)-startingTime;
+      while (true)
+      {
+         timeInSeconds = (System.currentTimeMillis() / 1000) - startingTime;
+         if (timeInSeconds != currentTimerTime)
+         {
+            System.out.println(timeDisplay);
+            lcdPanel.remove(timeLabel);
+            timeDisplay = convertTimeToString();
+            timeLabel = new JLabel(timeDisplay);
+            lcdPanel.add(timeLabel);
+            lcdPanel.revalidate();
+            lcdPanel.repaint();
+            currentTimerTime = timeInSeconds;
+         }
+      }
+
+   }
+
+   String convertTimeToString()
+   {
+      long hours = timeInSeconds/60;
+      long minutes = timeInSeconds%60;
+      DecimalFormat format = new DecimalFormat("00");
+      return format.format(hours) + ":" + format.format(minutes);
+   }
+
+
+}
 
 
 /**
@@ -1549,9 +1634,9 @@ class CardGameFramework
          numPlayers = 4;
       // one of many ways to assure at least one full deal to all players
       if  (numCardsPerHand < 1 ||
-         numCardsPerHand >  numPacks * (52 - numUnusedCardsPerPack)
+         numCardsPerHand >  numPacks * (56 - numUnusedCardsPerPack)
             / numPlayers )
-         numCardsPerHand = numPacks * (52 - numUnusedCardsPerPack) / numPlayers;
+         numCardsPerHand = numPacks * (56 - numUnusedCardsPerPack) / numPlayers;
 
       // allocate
       this.unusedCardsPerPack = new Card[numUnusedCardsPerPack];
