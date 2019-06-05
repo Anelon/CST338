@@ -185,9 +185,42 @@ public class phase3
                                                    myCardTable.pnlPlayArea.remove(playLabelText[i]);
                                                 }
 
-                                                humanScore++;
-                                                humanString = ("Human Player"+ "    " +"Score:" + humanScore );
+                                                //Win Lose
+                                                //converts cards into ints for comparison
+                                                int humanValue = GUICard.turnCardValueIntoInt(humanCurrentCard.getValue());
+                                                int cpuValue = GUICard.turnCardValueIntoInt(cpuCurrentCard.getValue());
+                                     
+                                                if (humanValue > cpuValue) {
+                                                   humanScore++;
+                                                   humanString = ("Human Player"+ "    " +"Score:" + humanScore +"    You WON!" );
+                                                   
+                                                   
+                                                }
+                                                else {
+                                                   cpuScore++;
+                                                   humanString = ("Human Player"+ "    " +"Score:" + humanScore +"    You LOST!" );
+                                                   cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
+                                                   
+                                                   
+                                                }
+
+                                                System.out.println("checking player hand overall");
+                                                {
+                                                   for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i)
+                                                   {
+                                                      System.out.println(highCardGame.getHand(0).inspectCard(i));
+
+                                                   }
+                                                   System.out.println("INDEX SELECTED IS: " + humanCardPosition);
+                                                }
+                                                for(int i= 0;  i <2; i ++) {
+                                                   myCardTable.pnlPlayArea.remove(playLabelText[i]);
+                                                }
+
+                                     
+                                              
                                                 playLabelText[0] = new JLabel(humanString);
+                                                playLabelText[1] = new JLabel(cpuString);
                                                 playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
                                                 for(int i= 0;  i <2; i ++) {
                                                    myCardTable.pnlPlayArea.add(playLabelText[i]);
@@ -198,7 +231,6 @@ public class phase3
 
                                                 myCardTable.pnlPlayArea.revalidate();
                                                 myCardTable.pnlPlayArea.repaint();
-
 
 
                                                 //Testing
