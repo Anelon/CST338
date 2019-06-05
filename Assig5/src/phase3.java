@@ -203,6 +203,19 @@ public class phase3
                                                    
                                                    
                                                 }
+                                                
+                                                if (highCardGame.getHand(0).getnumCards() == 0) {
+                                                   if(humanScore> cpuScore){
+                                                      humanString = ("Final Score: " + humanScore +" *YOU WON THE GAME*");
+                                                      cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
+                                                            }
+                                                      
+                                                   
+                           
+                                                   else {humanString = ("Final Score: " + humanScore +" *YOU LOST THE GAME*");
+                                                cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
+                                                }
+                                                }
 
                                                 System.out.println("checking player hand overall");
                                                 {
