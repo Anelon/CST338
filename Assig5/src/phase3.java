@@ -32,25 +32,25 @@ public class phase3
    static int cpuScore = 0;
    static String humanString = ("Human Player"+ "    " +"Score:" + humanScore );
    static String cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
-   
-   
-   
+
+
+
    //Replaced standard labels with buttons
-   static JButton[] humanLabels = new JButton[NUM_CARDS_PER_HAND]; 
+   static JButton[] humanLabels = new JButton[NUM_CARDS_PER_HAND];
 
 
    public static void main(String[] args)
    {
-      
+
       //Added variables for score, player cardLocation, and strings
-      
+
 
       int cardLocation = 0;
       int cpuCard = 0;
-      
- 
-      
-      
+
+
+
+
       //Part of phase 3 specification
       int numPacksPerDeck = 1;
       int numJokersPerPack = 2;
@@ -71,7 +71,7 @@ public class phase3
       myHand = highCardGame.getHand(firstCard);
 
       // establish main frame in which program will run
-     
+
       JFrame frmMyWindow = new JFrame("Card Room");
       frmMyWindow.setSize(1150, 650);
       frmMyWindow.setLocationRelativeTo(null);
@@ -108,121 +108,122 @@ public class phase3
       {
          computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
       }
-      
-     
- 
-      
+
+
+
+
       //Loop that creates the card buttons
       //Assign ActionCommand and ActionListeners with each button
       for(int i= 0;  i <myHand.getnumCards(); i ++) {
-        humanLabels[i] = new JButton(GUICard.getIcon(highCardGame.getHand(0).inspectCard(i)));
-        humanLabels[i].setActionCommand(String.valueOf(i));
-        
-        
-        humanLabels[i].addActionListener(new ActionListener() {
-
-           //Remove card from player Hand and get value
-           //Resort CPU hand (optional)
-           //Remove card from CPU hand and get value (randomized?)
-           //Comparison
-           //Activate win/lose pop up
-           //Increment wins, use int humanScore and cpuScore
-           //Redraw the table
-
-           public void actionPerformed(ActionEvent cardClick) {
-              gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));        
-           }
-
-           public void gameLogic(int humanCardPosition) {
-              //CPU decides card choice at random
-              Random randomNumber = new Random();
-              //Testing number       
-              int cpuCardPosition = randomNumber.nextInt(6);
-
-              System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition)); 
-              System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3)); 
-
-              //Generates cards for comparison
-              Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
-
-               //CPU card disabled for now
-               //Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
-               
-           
-             
-               for(int i= 0;  i <2; i ++) {
-                  myCardTable.pnlPlayArea.remove(playLabelText[i]);
-               }
-         
-               humanScore++;
-               humanString = ("Human Player"+ "    " +"Score:" + humanScore );
-               playLabelText[0] = new JLabel(humanString);
-               playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
-               for(int i= 0;  i <2; i ++) {
-                  myCardTable.pnlPlayArea.add(playLabelText[i]);
-               }
-               myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
-
-             
-
-              myCardTable.pnlPlayArea.revalidate();
-              myCardTable.pnlPlayArea.repaint();
-             
-             
-               
-               //Testing
-               System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3)); 
-               
-
-               // humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
-               //  cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
-               System.out.println(humanString);
-               System.out.println(cpuString);
-
-
-               //Handles the arrangement of cards
-               for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
-                  humanLabels[i] = humanLabels[i+1];
-                  if (humanLabels[i] != null){
-                     humanLabels[i].setActionCommand(Integer.toString(i));
-
-
-
-                  }
-
-
-               }
-
-
-           }
-        }          
-        );       
-      }
-
-
-
-      
-      /* unsuccessful button version, will delete
-      
-      for (int i = 0; i < myHand.getnumCards(); i++) {
-         
-         humanLabels[i] = new JButton(GUICard.getIcon(myHand.inspectCard(i)));
-         humanLabels[i].addActionListener(new cardChooser());
+         humanLabels[i] = new JButton(GUICard.getIcon(highCardGame.getHand(0).inspectCard(i)));
          humanLabels[i].setActionCommand(String.valueOf(i));
-         myCardTable.pnlHumanHand.add(humanLabels[i]);
+
+
+         humanLabels[i].addActionListener(new ActionListener() {
+
+                                             //Remove card from player Hand and get value
+                                             //Resort CPU hand (optional)
+                                             //Remove card from CPU hand and get value (randomized?)
+                                             //Comparison
+                                             //Activate win/lose pop up
+                                             //Increment wins, use int humanScore and cpuScore
+                                             //Redraw the table
+
+                                             public void actionPerformed(ActionEvent cardClick) {
+                                                gameLogic (humanCardPosition(Integer.valueOf(cardClick.getActionCommand())));
+                                             }
+
+                                             public void gameLogic(int humanCardPosition) {
+                                                //CPU decides card choice at random
+                                                Random randomNumber = new Random();
+                                                //Testing number
+                                                int cpuCardPosition = 0;
+                                                if (highCardGame.getHand(1).getnumCards() == 1)
+                                                {
+                                                   cpuCardPosition = 0;
+
+                                                }
+                                                else if (highCardGame.getHand(1).getnumCards() == 0)
+                                                {
+
+                                                }
+                                                else
+                                                   cpuCardPosition = randomNumber.nextInt(highCardGame.getHand(1).getnumCards()-1);
+
+                                                System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition));
+                                                System.out.println("Checking position four before card draw: " + highCardGame.getHand(0).inspectCard(3));
+
+                                                //Generates cards for comparison
+                                                Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
+
+                                                //CPU card disabled for now
+                                                Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
+
+                                                System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
+
+
+                                                for(int i= 0;  i <2; i ++) {
+                                                   myCardTable.pnlPlayArea.remove(playLabelText[i]);
+                                                }
+
+                                                humanScore++;
+                                                humanString = ("Human Player"+ "    " +"Score:" + humanScore );
+                                                playLabelText[0] = new JLabel(humanString);
+                                                playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
+                                                for(int i= 0;  i <2; i ++) {
+                                                   myCardTable.pnlPlayArea.add(playLabelText[i]);
+                                                }
+                                                myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
+
+
+
+                                                myCardTable.pnlPlayArea.revalidate();
+                                                myCardTable.pnlPlayArea.repaint();
+
+
+
+                                                //Testing
+                                                System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3));
+
+
+                                                // humanString = ("TEST SCORING: " + "Human Player"+ "    " +"Score:" + humanScore );
+                                                //  cpuString = ("TEST SCORING: " + "Computer Player"+ "    " +"Score:" + cpuScore );
+                                                System.out.println(humanString);
+                                                System.out.println(cpuString);
+
+
+                                                //Handles the arrangement of cards
+                                                for (int i = humanCardPosition; i < humanLabels.length-1; i++) {
+                                                   humanLabels[i] = humanLabels[i+1];
+                                                   if (humanLabels[i] != null){
+                                                      humanLabels[i].setActionCommand(Integer.toString(i));
+
+
+
+                                                   }
+
+
+                                                }
+
+
+                                             }
+                                          }
+         );
       }
-      
-      */
-      
+
+
+
+
+
       //Labels for played cards and text for scoring
       playedCardLabels[0] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
       playLabelText[0] = new JLabel(humanString);
-      playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);    
-      
+      playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
+
       playedCardLabels[1] = new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades)));
       playLabelText[1] = new JLabel(cpuString);
-      playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);   
-      
+      playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
+
  /* Going to hard code scoring
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
@@ -230,7 +231,7 @@ public class phase3
          playLabelText[i] = new JLabel("Player " + (i+1) + "    " +"Score:" + humanScore );
          playLabelText[i].setHorizontalAlignment(SwingConstants.CENTER);
       }
-      
+
    */
 
       // ADD LABELS TO PANELS -----------------------------------------
@@ -251,7 +252,7 @@ public class phase3
       for (int i = 0; i < NUM_PLAYERS; ++i)
       {
          myCardTable.pnlPlayArea.add(playLabelText[i]);
-         
+
       }
       // and two random cards in the play region (simulating a computer/hum ply)
       // code goes here ...
@@ -261,23 +262,23 @@ public class phase3
 
 
    }
-   
-   
+
+
    //Button action returns position of card that player chose
    public static int humanCardPosition (int chosenCardPosition) {
-      
-   int cardLocation = chosenCardPosition;
-      return cardLocation;
-  
-  
-  
-  
-   
-   }
-   
 
-   
-  //This method generates a Random card;
+      int cardLocation = chosenCardPosition;
+      return cardLocation;
+
+
+
+
+
+   }
+
+
+
+   //This method generates a Random card;
    public static Card generateRandomCard()
    {
       Card card = new Card();
@@ -598,7 +599,7 @@ class CardTable extends JFrame
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
       Border textColor = new LineBorder(Color.BLACK);
       pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
-      
+
       add(BorderLayout.NORTH, pnlComputerHand);
 
 
@@ -674,7 +675,7 @@ class Card
       rhs += GUICard.turnSuitIntoInt(card.getSuit()) * 100;
       return lhs < rhs;
    }
-   
+
    //passed an array of cards and the size of the array it sorts
    //using the bubble sort algorithum
    static void arraySort(Card[] cards, int arraySize)
@@ -696,7 +697,7 @@ class Card
             break;
       }
    }
-   
+
    //default constructor
    public Card()
    {
@@ -704,7 +705,7 @@ class Card
       suit = Suit.spades;
       setUpValuRanks();
    }
-   
+
 
 
 
@@ -1461,8 +1462,8 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 
-   
-   
+
+
 }
 
 
