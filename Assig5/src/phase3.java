@@ -100,6 +100,12 @@ public class phase3
 
             void gameLogic(int humanCardPosition)
             {
+               //attempt to fix null bug where humanCardPosition is more
+               //than the remaining cards in the hand
+               int cardsLeft = highCardGame.getHand(0).getnumCards() - 1;
+               if(humanCardPosition > cardsLeft)
+                  humanCardPosition = cardsLeft;
+
                // CPU decides card choice at random
                Random randomNumber = new Random();
                // Testing number
