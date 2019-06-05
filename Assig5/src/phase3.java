@@ -155,6 +155,15 @@ public class phase3
                                                 System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
 
 
+                                                System.out.println("checking player hand overall");
+                                                {
+                                                   for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i)
+                                                   {
+                                                      System.out.println(highCardGame.getHand(0).inspectCard(i));
+
+                                                   }
+                                                   System.out.println("INDEX SELECTED IS: " + humanCardPosition);
+                                                }
                                                 for(int i= 0;  i <2; i ++) {
                                                    myCardTable.pnlPlayArea.remove(playLabelText[i]);
                                                 }
@@ -196,6 +205,10 @@ public class phase3
                                                    if (humanLabels[i] != null){
                                                       humanLabels[i].setActionCommand(Integer.toString(i));
                                                    }
+                                                }
+                                                if (highCardGame.getHand(0).getnumCards() == 1)
+                                                {
+                                                   gameLogic(0);
                                                 }
                                              }
                                           }
