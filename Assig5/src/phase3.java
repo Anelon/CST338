@@ -137,24 +137,17 @@ public class phase3
                } else
                   cpuCardPosition = randomNumber.nextInt(highCardGame.getHand(1).getnumCards() - 1);
 
-               System.out.println("Cards left " + highCardGame.getHand(0));
-               System.out.println("Checking player choice: " + highCardGame.getHand(0).inspectCard(humanCardPosition));
-               // System.out.println("Checking position four before card draw: " +
-               // highCardGame.getHand(0).inspectCard(3));
-
                // Generates cards for comparison
                Card humanCurrentCard = new Card(highCardGame.playCard(0, humanCardPosition));
 
                // CPU card disabled for now
                Card cpuCurrentCard = new Card(highCardGame.playCard(1, cpuCardPosition));
 
-               System.out.println("Checking CPU choice: " + highCardGame.getHand(1).inspectCard(cpuCardPosition));
 
                for (Object i : myCardTable.pnlPlayArea.getComponents()) {
                   myCardTable.pnlPlayArea.remove((JLabel) i);
                }
 
-               System.out.println("INDEX IS " + humanCurrentCard);
                myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(humanCurrentCard)));
                myCardTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(cpuCurrentCard)));
                myCardTable.revalidate();
@@ -163,14 +156,6 @@ public class phase3
                // myCardTable.pnlPlayArea.add(playLabelText[0]);
                // myCardTable.pnlPlayArea.add(playLabelText[1]);
 
-               System.out.println("checking player hand overall");
-               {
-                  for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i) {
-                     System.out.println(highCardGame.getHand(0).inspectCard(i));
-
-                  }
-                  System.out.println("INDEX SELECTED IS: " + humanCardPosition);
-               }
 
                for (int i = 0; i < 2; i++) {
                   myCardTable.pnlPlayArea.remove(playLabelText[i]);
@@ -204,14 +189,6 @@ public class phase3
                   }
                }
 
-               System.out.println("checking player hand overall");
-               {
-                  for (int i = 0; i < highCardGame.getHand(0).getnumCards(); ++i) {
-                     System.out.println(highCardGame.getHand(0).inspectCard(i));
-
-                  }
-                  System.out.println("INDEX SELECTED IS: " + humanCardPosition);
-               }
                for (int i = 0; i < 2; i++) {
                   myCardTable.pnlPlayArea.remove(playLabelText[i]);
                }
@@ -228,15 +205,6 @@ public class phase3
                myCardTable.pnlPlayArea.revalidate();
                myCardTable.pnlPlayArea.repaint();
 
-               // Testing
-               System.out.println("Checking position four after card draw: " + highCardGame.getHand(0).inspectCard(3));
-
-               // humanString = ("TEST SCORING: " + "Human Player"+ " " +"Score:" + humanScore
-               // );
-               // cpuString = ("TEST SCORING: " + "Computer Player"+ " " +"Score:" + cpuScore
-               // );
-               System.out.println(humanString);
-               System.out.println(cpuString);
 
                for (int i = 0; i < NUM_PLAYERS; ++i) {
                   myCardTable.pnlPlayArea.remove(playedCardLabels[i]);
@@ -1255,7 +1223,6 @@ class Hand
       }
       //Decreases numCards.
       Card card = myCards[cardIndex];
-      System.out.println(card);
 
       numCards--;
       for(int i = cardIndex; i < numCards; i++)
