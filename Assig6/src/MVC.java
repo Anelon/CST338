@@ -332,13 +332,8 @@ public class phase3
 
 class Model
 {
-   /*
-   +playerHand: Hand
-
-+computerHand: Hand
-
-+deck: Deck
-
+   CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
+      null, 2, 7 );/*
 +numPlayers: int
 
 +LastPlayedComputerCard: Card
@@ -397,12 +392,6 @@ class View
 //temporary, need to implement controller functions
 class Controller
 {
-   CardGameFramework highCardGame;
-   Controller()
-   {
-      highCardGame= new CardGameFramework(1, 4, 0,
-         null, 2, 7);
-   }
 
 }
 
