@@ -332,35 +332,59 @@ public class phase3
 
 class Model
 {
+   public enum Direction 
+   {
+      LEFT, RIGHT
+}
    CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
-      null, 2, 7 );/*
+      null, 2, 7 );
+   Model()
+   {
+      
+   }
+   
+   void playCard()
+   {
+      //playcard for 2p games
+      //play to left area
+      //send updated data to view
+      //request view to update
+   }
+   
+   void playCard(Direction leftOrRight)
+   {
+      //play card to left or right stack for new game
+      //send updated data to view
+      //request view to update
+   }
+   /*
+      
 +numPlayers: int
 
-+LastPlayedComputerCard: Card
++lastPlayedLeftCard: Card
 
-+LastPlayedPlayerCard: Card
++lastPlayedRightCard: Card
 
 +playerScore: int
 
 +computerScore: int
 
-+playerHandChanged: boolean
-
-+ computerHandChanged: boolean
-
-+ playAreaChanged: boolean
 
 
-    */
-
-   /*
    updateComputerSide(): void
+   update computer hand and send request to view
 
 updatePlayerSide(): void
+update player hand and send request to view
 
 updatePlayArea(): void
+update played cards and send request to view
 
 updateScore(): void
+update internal score variable and send request to view
+
+computerTurn(): void
+Handle logic for computer's turn
     */
 
 }
@@ -385,6 +409,27 @@ class View
    {
       //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
    }
+   
+   void updatePlayerCardImages(Hand playerHand)
+   {
+      //need this to send updates from Model
+   }
+   
+   void updateComputerHand(Hand computerHand)
+   {
+      //need this to send updates from model, should update the number of BackOfCard images to match computerHand passed
+   }
+   
+   void updatePlayedCards(Card[] twoCardArray)
+   {
+      //need this to send updates from model, should update the two cards in playArea; left card is 0, right card is 1
+   }
+   
+   void updateScores(String[] scores)
+   {
+      //need this to send updates from model, should update the two scores; left score/label is 0, right is 1
+   }
+   
 
 }
 
@@ -1516,7 +1561,10 @@ class Deck
 
 
 
-/*This is the hand class. It holds data for the player's hand.*/
+/*This is the hand class. It holds data for the player's hand.
+* NEEDS TO UPDATE VIEW
+* */
+
 class Hand
 {
 
@@ -1559,6 +1607,7 @@ class Hand
 
       myCards[numCards] = null;
 
+      
       return card;
    }
 
