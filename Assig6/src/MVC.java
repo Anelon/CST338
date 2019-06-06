@@ -375,7 +375,7 @@ updateScore(): void
 class View
 {
    static CardTable table = new CardTable("Card Table", 7, 2);
-   
+
    View()
    {
       table.setSize(800, 600);
@@ -386,6 +386,10 @@ class View
    }
 
 
+   void update()
+   {
+      //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
+   }
 
 }
 
@@ -453,7 +457,7 @@ class Clock implements Runnable
       DecimalFormat format = new DecimalFormat("00");
       return format.format(hours) + ":" + format.format(minutes);
    }
-   
+
    public void resetClock()
    {
       run();
