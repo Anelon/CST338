@@ -124,6 +124,7 @@ class Model
 
    public enum Direction
    {
+      //right will probably be unused, left here to clarify intent
       LEFT, RIGHT
    }
 
@@ -145,6 +146,10 @@ class Model
       computer = new Player(null, framework.getHand(1), Entity.COMPUTER);
       attachedView = new View();
       framework.deal();
+      updateScore();
+      updatePlayedCardArea();
+      updateCardArea(Entity.PLAYER);
+      updateCardArea(Entity.COMPUTER);
    }
 
 
@@ -193,9 +198,9 @@ class Model
    }
 
 
-   
-   
-   
+
+
+
 
    void turnPass()
    {
@@ -301,7 +306,7 @@ class Model
 
 
 
-
+//untested but trivial
    void calculateBuildScore()
    {
       if (human.skippedTurn)
@@ -375,12 +380,6 @@ class Player
    {
       return playerHand.getPlayableCards(left, right);
    }
-
-
-
-
-
-
 }
 
 
