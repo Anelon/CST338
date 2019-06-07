@@ -330,36 +330,70 @@ public class phase3
 
 
 
+
 class Model
 {
-   public enum Direction 
+   Player human;
+   Player computer;
+   Card lastPlayedLeftCard;
+   Card lastPlayedRightCard;
+   
+   public enum Direction
    {
       LEFT, RIGHT
-}
+   }
+   
+   public enum Entity
+   {
+      PLAYER, COMPUTER
+   }
+   
    CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
    Model()
    {
-      
+      human = new Player(null, highCardGame.getHand(0), Entity.PLAYER);
+      computer = new Player(null, highCardGame.getHand(1), Entity.COMPUTER);
    }
-   
-   void playCard()
+
+   void playCard(Player playerOrComputer, int cardIndex, Direction locationToPlay)
    {
+      
+      if (locationToPlay == Direction.LEFT)
+         lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
+      else
+         lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
+      
+      View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+      
       //playcard for 2p games
       //play to left area
       //send updated data to view
       //request view to update
    }
-   
+
    void playCard(Direction leftOrRight)
    {
       //play card to left or right stack for new game
       //send updated data to view
       //request view to update
    }
+
+
+   void updateCardArea(Entity entityType)
+   {
+      if (entityType == Model.Entity.PLAYER)
+         View.updateComputerHandImagesArray(computer.playerHand);
+      else
+         View.updatePlayerCardImagesArray(human.playerHand);
+   }
+   
+   void updatePlayedCardArea()
+   {
+      View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+   }
    /*
-      
-+numPlayers: int
+
 
 +lastPlayedLeftCard: Card
 
@@ -390,6 +424,26 @@ Handle logic for computer's turn
 }
 
 
+class Player
+{
+   Hand playerHand;
+   JLabel playerPlayedCard;
+   int score;
+   Model.Entity entityType;
+   
+   Player(JLabel playedCard, Hand hand, Model.Entity computerOrHuman)
+   {
+    playerHand = hand;
+    entityType = computerOrHuman;
+    playerPlayedCard = playedCard;
+   }
+   
+   
+   
+
+}
+
+
 //temporary, should have model initialize the view based on controller input
 class View
 {
@@ -399,6 +453,7 @@ class View
    {
       table.setSize(800, 600);
       table.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      table.setVisible(true);
 
       Thread clock = new Thread(new Clock());
       clock.start();
@@ -409,27 +464,48 @@ class View
    {
       //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
    }
-   
-   void updatePlayerCardImages(Hand playerHand)
+
+   static void updatePlayerCardImagesArray(Hand playerHand)
    {
-      //need this to send updates from Model
+      
    }
-   
-   void updateComputerHand(Hand computerHand)
+
+   static void updateComputerHandImagesArray(Hand computerHand)
    {
       //need this to send updates from model, should update the number of BackOfCard images to match computerHand passed
    }
-   
-   void updatePlayedCards(Card[] twoCardArray)
+
+   static void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
       //need this to send updates from model, should update the two cards in playArea; left card is 0, right card is 1
    }
-   
-   void updateScores(String[] scores)
+
+   static void updateScores(String[] scores)
    {
       //need this to send updates from model, should update the two scores; left score/label is 0, right is 1
    }
+
+   static void hideAllPlayerCardButtons()
+   {
+      //need this to send updates from model
+   }
+
+   static void showAllPlayerCardButtons()
+   {
+      //need this...
+   }
+
+   static void turnPlayedCardsIntoButtons()
+   {
+      //need this...
+   }
+
+   static void turnPlayedCardsIntoJLabels()
+   {
+      //need this...
+   }
    
+
 
 }
 
@@ -438,6 +514,14 @@ class View
 class Controller
 {
 
+   /*
+     suggested functions:
+     skipTurn()
+
+     playCardAtPosition(int position, Model.Direction sideToPlayTo)
+     
+     
+    */
 }
 
 
@@ -1562,8 +1646,8 @@ class Deck
 
 
 /*This is the hand class. It holds data for the player's hand.
-* NEEDS TO UPDATE VIEW
-* */
+ * NEEDS TO UPDATE VIEW
+ * */
 
 class Hand
 {
@@ -1607,7 +1691,7 @@ class Hand
 
       myCards[numCards] = null;
 
-      
+
       return card;
    }
 
