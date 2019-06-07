@@ -193,6 +193,9 @@ class Model
    }
 
 
+   
+   
+   
 
    void turnPass()
    {
@@ -200,9 +203,9 @@ class Model
       {
          // wait for player to do something
       }
-      else if (human.usedTurn && !computer.usedTurn)
+      else if (!computer.usedTurn)
          computerTurn();
-      else if (human.usedTurn && computer.usedTurn)
+      else
       {
          calculateScore(currentGameType);
          updateScore();
@@ -210,7 +213,6 @@ class Model
          human.skippedTurn = false;
          computer.usedTurn = false;
          computer.skippedTurn = false;
-
       }
    }
 
@@ -232,11 +234,9 @@ class Model
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
             updateCardArea(Entity.COMPUTER);
          }
-
          updatePlayedCardArea();
          playerOrComputer.usedTurn = true;
          turnPass();
-         //pass turn?
       }
    }
 
@@ -324,7 +324,7 @@ class Model
 
 
 
-   
+
    void computerTurn()
    {
       //find playable cards
