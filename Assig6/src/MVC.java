@@ -38,6 +38,7 @@ public class MVC
    static JButton[] humanLabels = new JButton[NUM_CARDS_PER_HAND];
 
 
+   
    public static void main(String[] args)
    {
       //Part of phase 3 specification
@@ -274,6 +275,11 @@ public class MVC
    }
 
 
+   public static void endGame()
+   {
+      //logic for ending of game
+   }
+   
 
 
 
@@ -356,21 +362,63 @@ class Model
       computer = new Player(null, highCardGame.getHand(1), Entity.COMPUTER);
    }
 
+   
+   
+   
+   
+   
    void playCard(Player playerOrComputer, int cardIndex, Direction locationToPlay)
    {
 
-      if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null) 
+      boolean gameGoodToGo = true;
+      
+      if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
-         if (locationToPlay == Direction.LEFT)
+         if (locationToPlay == Direction.LEFT) 
+         {
+            lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
+            gameGoodToGo = highCardGame.takeCard(getPlayerIndex(playerOrComputer));
+         }
+         else 
+         {
+            lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
+            gameGoodToGo = highCardGame.takeCard(getPlayerIndex(playerOrComputer));
+         }
+
+         View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+         if (!gameGoodToGo)
+            MVC.endGame();
+         //pass turn?
+      }
+      if (!gameGoodToGo)
+         MVC.endGame();
+   }
+   
+   
+   int getPlayerIndex(Player playerOrComputer)
+   {
+      if (playerOrComputer.entityType == Entity.PLAYER)
+         return 0;
+      else
+         return 1;
+   }
+   
+   
+   
+   
+   void playCard(Player playerOrComputer, int cardIndex) 
+   {
+      if (playerOrComputer == null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getnumCards()) 
+      {
+         if (playerOrComputer.entityType == Entity.PLAYER)
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
          else
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
 
          View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+         //pass turn?
       }
-      //pass turn?
    }
-
 
 
    void updateCardArea(Entity entityType)
@@ -441,6 +489,9 @@ class Player
       return playerHand.getPlayableCards(left, right);
    }
 
+   
+   
+   
 
 
 }
@@ -2008,6 +2059,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
