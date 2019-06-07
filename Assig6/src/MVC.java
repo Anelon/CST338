@@ -38,240 +38,10 @@ public class MVC
    static JButton[] humanLabels = new JButton[NUM_CARDS_PER_HAND];
 
 
-   
+
    public static void main(String[] args)
    {
-      //Part of phase 3 specification
-      int numPacksPerDeck = 1;
-      int numJokersPerPack = 2;
-      int numUnusedCardsPerPack = 0;
-      Card[] unusedCardsPerPack = null;
-
-      //Part of phase 3 specification
-      CardGameFramework highCardGame = new CardGameFramework(
-         numPacksPerDeck, numJokersPerPack,
-         numUnusedCardsPerPack, unusedCardsPerPack,
-         NUM_PLAYERS, NUM_CARDS_PER_HAND);
-
-      highCardGame.deal();
-      Hand myHand = highCardGame.getHand(firstCard);
-
-      // establish main frame in which program will run
-      JFrame frmMyWindow = new JFrame("Card Room");
-      frmMyWindow.setSize(1150, 650);
-      frmMyWindow.setLocationRelativeTo(null);
-      frmMyWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-      // set up layout which will control placement of buttons, etc.
-      FlowLayout layout = new FlowLayout(FlowLayout.CENTER, 5, 20);
-      frmMyWindow.setLayout(layout);
-
-      // show everything to the user
-      frmMyWindow.setVisible(true);
-
-      // establish main frame in which program will run
-      CardTable myCardTable = new CardTable("CardTable",
-         NUM_CARDS_PER_HAND, NUM_PLAYERS);
-      myCardTable.setSize(800, 600);
-      myCardTable.setLocationRelativeTo(null);
-      myCardTable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-      // show everything to the user
-      myCardTable.setVisible(true);
-
-      // CREATE LABELS ----------------------------------------------------
-      for (int i = 0; i < computerLabels.length; ++i)
-      {
-         computerLabels[i] = new JLabel(GUICard.getBackCardIcon());
-      }
-
-
-      //Loop that creates the card buttons
-      //Assign ActionCommand and ActionListeners with each button
-      for(int i= 0;  i <myHand.getnumCards(); i ++)
-      {
-         humanLabels[i] = new JButton(GUICard.getIcon(highCardGame.getHand(0)
-            .inspectCard(i)));
-         humanLabels[i].setActionCommand(String.valueOf(i));
-
-         humanLabels[i].addActionListener(new ActionListener()
-         {
-            public void actionPerformed(ActionEvent cardClick)
-            {
-               gameLogic(humanCardPosition(Integer.valueOf
-                  (cardClick.getActionCommand())));
-            }
-
-            void gameLogic(int humanCardPosition)
-            {
-               //attempt to fix null bug where humanCardPosition is more
-               //than the remaining cards in the hand
-               int cardsLeft = highCardGame.getHand(0).getnumCards() - 1;
-               if(humanCardPosition > cardsLeft)
-                  humanCardPosition = cardsLeft;
-
-               // CPU decides card choice at random
-               Random randomNumber = new Random();
-               // Testing number
-               int cpuCardPosition = 0;
-               if (highCardGame.getHand(1).getnumCards() == 1)
-               {
-                  cpuCardPosition = 0;
-               }
-               else if (highCardGame.getHand(1).getnumCards() == 0)
-               {
-                  //doNothing
-               }
-               else
-                  cpuCardPosition = randomNumber.nextInt
-                     (highCardGame.getHand(1).getnumCards() - 1);
-
-               // Generates cards for comparison
-               Card humanCurrentCard = new Card(highCardGame.playCard(0,
-                  humanCardPosition));
-
-               // CPU card disabled for now
-               Card cpuCurrentCard = new Card(highCardGame.playCard(1,
-                  cpuCardPosition));
-
-               //clear out playArea for repopulation
-               for (Object i : myCardTable.pnlPlayArea.getComponents())
-               {
-                  myCardTable.pnlPlayArea.remove((JLabel) i);
-               }
-               //repopulate playArea cards
-               myCardTable.pnlPlayArea.add(new
-                  JLabel(GUICard.getIcon(humanCurrentCard)));
-               myCardTable.pnlPlayArea.add(new
-                  JLabel(GUICard.getIcon(cpuCurrentCard)));
-               myCardTable.revalidate();
-               myCardTable.repaint();
-
-               for (int i = 0; i < 2; i++)
-               {
-                  myCardTable.pnlPlayArea.remove(playLabelText[i]);
-               }
-
-               // Win Lose
-               // converts cards into ints for comparison
-               int humanValue =
-                  GUICard.turnCardValueIntoInt(humanCurrentCard.getValue());
-               int cpuValue =
-                  GUICard.turnCardValueIntoInt(cpuCurrentCard.getValue());
-
-               if (humanValue > cpuValue)
-               {
-                  humanScore++;
-                  humanString = ("Human Player" + "    " + "Score:"
-                     + humanScore + "    You WON!");
-               }
-               else
-               {
-                  cpuScore++;
-                  humanString = ("Human Player" + "    " + "Score:"
-                     + humanScore + "    You LOST!");
-                  cpuString = ("CPU Player" + "    " + "Score:" + cpuScore);
-               }
-
-               if (highCardGame.getHand(0).getnumCards() == 0)
-               {
-                  if (humanScore > cpuScore)
-                  {
-                     humanString = ("Final Score: " + humanScore
-                        + " *YOU WON THE GAME*");
-                     cpuString = ("CPU Player" + "    " + "Score:" + cpuScore);
-                  }
-                  else
-                  {
-                     humanString = ("Final Score: " + humanScore
-                        + " *YOU LOST THE GAME*");
-                     cpuString = ("CPU Player" + "    " + "Score:" + cpuScore);
-                  }
-               }
-
-               for (int i = 0; i < 2; i++)
-               {
-                  myCardTable.pnlPlayArea.remove(playLabelText[i]);
-               }
-
-               playLabelText[0] = new JLabel(humanString);
-               playLabelText[1] = new JLabel(cpuString);
-               playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
-
-               for (int i = 0; i < 2; i++)
-               {
-                  myCardTable.pnlPlayArea.add(playLabelText[i]);
-               }
-
-               myCardTable.pnlHumanHand.remove(humanLabels[humanCardPosition]);
-               myCardTable.pnlComputerHand.remove(0);
-               myCardTable.pnlPlayArea.revalidate();
-               myCardTable.pnlPlayArea.repaint();
-
-               for (int i = 0; i < NUM_PLAYERS; ++i)
-               {
-                  myCardTable.pnlPlayArea.remove(playedCardLabels[i]);
-               }
-               // Handles the arrangement of cards
-               for (int i = humanCardPosition; i < humanLabels.length - 1; i++)
-               {
-                  humanLabels[i] = humanLabels[i + 1];
-                  if (humanLabels[i] != null)
-                  {
-                     humanLabels[i].setActionCommand(Integer.toString(i));
-                  }
-               }
-               if (highCardGame.getHand(0).getnumCards() == 1)
-               {
-
-                  try {
-                     Thread.sleep(500);
-                     gameLogic(0);
-                  }
-                  catch (InterruptedException e)
-                  {
-                     /*not multithreading, sleeping intentionally
-                     to notify the player of auto-complete
-                     with 1 card remaining*/
-                  }
-               }
-            }
-         });
-      }
-
-      //Labels for played cards and text for scoring
-      playedCardLabels[0] = new JLabel(GUICard.getIcon(new Card('A',
-         Card.Suit.spades)));
-      playLabelText[0] = new JLabel(humanString);
-      playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
-
-      playedCardLabels[1] = new JLabel(GUICard.getIcon(new Card('A',
-         Card.Suit.spades)));
-      playLabelText[1] = new JLabel(cpuString);
-      playLabelText[0].setHorizontalAlignment(SwingConstants.CENTER);
-
-      // ADD LABELS TO PANELS -----------------------------------------
-      for (JLabel element:
-         computerLabels)
-      {
-         myCardTable.pnlComputerHand.add(element);
-      }
-      for (int i = 0; i < myHand.getnumCards(); ++i)
-      {
-         myCardTable.pnlHumanHand.add(humanLabels[i]);
-      }
-
-      for (int i = 0; i < NUM_PLAYERS; ++i)
-      {
-         myCardTable.pnlPlayArea.add(playedCardLabels[i]);
-      }
-      for (int i = 0; i < NUM_PLAYERS; ++i)
-      {
-         myCardTable.pnlPlayArea.add(playLabelText[i]);
-
-      }
-      // show everything to the user
-      myCardTable.setVisible(true);
+      View myView = new View();
    }
 
 
@@ -279,7 +49,7 @@ public class MVC
    {
       //logic for ending of game
    }
-   
+
 
 
 
@@ -362,24 +132,24 @@ class Model
       computer = new Player(null, highCardGame.getHand(1), Entity.COMPUTER);
    }
 
-   
-   
-   
-   
-   
+
+
+
+
+
    void playCard(Player playerOrComputer, int cardIndex, Direction locationToPlay)
    {
 
       boolean gameGoodToGo = true;
-      
+
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
-         if (locationToPlay == Direction.LEFT) 
+         if (locationToPlay == Direction.LEFT)
          {
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
             gameGoodToGo = highCardGame.takeCard(getPlayerIndex(playerOrComputer));
          }
-         else 
+         else
          {
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
             gameGoodToGo = highCardGame.takeCard(getPlayerIndex(playerOrComputer));
@@ -393,8 +163,9 @@ class Model
       if (!gameGoodToGo)
          MVC.endGame();
    }
-   
-   
+
+
+   //for use with CardGameFramework's takeCard
    int getPlayerIndex(Player playerOrComputer)
    {
       if (playerOrComputer.entityType == Entity.PLAYER)
@@ -402,13 +173,13 @@ class Model
       else
          return 1;
    }
-   
-   
-   
-   
-   void playCard(Player playerOrComputer, int cardIndex) 
+
+
+
+
+   void playCard(Player playerOrComputer, int cardIndex)
    {
-      if (playerOrComputer == null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getnumCards()) 
+      if (playerOrComputer == null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getnumCards())
       {
          if (playerOrComputer.entityType == Entity.PLAYER)
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
@@ -443,13 +214,13 @@ class Model
    void computerTurn()
    {
       //find playable cards
-      Vector<Card> playableCards = computer.getPlayableCards();
+      //   Vector<Card> playableCards = computer.getPlayableCards();
       //select which one is least like the other cards in hand
-      if(playableCards.size())
+      //     if(playableCards.size())
       {
          //pick a card
       }
-      else
+      //     else
       {
          //can not play
       }
@@ -489,9 +260,9 @@ class Player
       return playerHand.getPlayableCards(left, right);
    }
 
-   
-   
-   
+
+
+
 
 
 }
