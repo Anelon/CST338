@@ -185,11 +185,17 @@ class Model
       if (playerOrComputer == null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getnumCards())
       {
          if (playerOrComputer.entityType == Entity.PLAYER)
+         {
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
+            updateCardArea(Entity.PLAYER);
+         }
          else
+         {
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-
-         View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+            updateCardArea(Entity.COMPUTER);
+         }
+         
+         updatePlayedCardArea();
          //pass turn?
       }
    }
