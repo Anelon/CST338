@@ -46,6 +46,7 @@ public class MVC
    }
 
 
+
    public static void endGame()
    {
       //logic for ending of game
@@ -111,7 +112,7 @@ public class MVC
 class Model
 {
 
-   
+
    Player human;
    Player computer;
    Card lastPlayedLeftCard;
@@ -130,12 +131,12 @@ class Model
    {
       PLAYER, COMPUTER
    }
-   
+
    public enum GameType
    {
       HIGH, BUILD
    }
-   
+
 
    Model(GameType gameType)
    {
@@ -209,7 +210,7 @@ class Model
          human.skippedTurn = false;
          computer.usedTurn = false;
          computer.skippedTurn = false;
-         
+
       }
    }
 
@@ -239,10 +240,10 @@ class Model
       }
    }
 
-   
-   
-   
-   
+
+
+
+
 
    void updateCardArea(Entity entityType)
    {
@@ -252,21 +253,21 @@ class Model
          View.updatePlayerCardImagesArray(human.playerHand);
    }
 
-   
-   
-   
-   
-   
+
+
+
+
+
    void updatePlayedCardArea()
    {
       View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
    }
 
-   
-   
-   
-   
-   
+
+
+
+
+
    void calculateScore(GameType currentGameType)
    {
       switch (currentGameType)
@@ -280,27 +281,27 @@ class Model
       }
 
    }
-   
-   
-   
-   
-   
-   
+
+
+
+
+
+//tested by replacing lastPlayedCard with a new Card() instance, works
    void calculateHighCardScore()
    {
       int leftCardValue = GUICard.turnCardValueIntoInt(lastPlayedLeftCard.getValue());
       int rightCardValue = GUICard.turnCardValueIntoInt(lastPlayedRightCard.getValue());
-      if (leftCardValue < rightCardValue)
+      if (leftCardValue > rightCardValue)
          human.score += 1;
-      else if (rightCardValue > leftCardValue)
+      else if (rightCardValue < leftCardValue)
          computer.score += 1;
    }
-   
-   
-   
-   
-   
-   
+
+
+
+
+
+
    void calculateBuildScore()
    {
       if (human.skippedTurn)
@@ -309,10 +310,10 @@ class Model
          computer.score -= 1;
    }
 
-   
-   
-   
-   
+
+
+
+
 
    void updateScore()
    {
@@ -320,9 +321,9 @@ class Model
    }
 
 
-   
-   
-   
+
+
+
    
    void computerTurn()
    {
