@@ -338,6 +338,7 @@ class View
 
 
 //temporary, need to implement controller functions
+//controller should probably have listeners for all buttons
 class Controller
 {
 
@@ -350,7 +351,7 @@ class Controller
      suggested functions:
      skipTurn()
 
-     playCardAtPosition(int position, Model.Direction sideToPlayTo)
+     playCard()
 
 
     */
