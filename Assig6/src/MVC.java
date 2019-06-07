@@ -386,32 +386,17 @@ class Model
    {
       View.updateScores(new String[]{(Integer.toString(human.score)), Integer.toString(computer.score)});
    }
-   
+
+
+   void computerTurn()
+   {
+      
+   }
 
    /*
 
 
-+lastPlayedLeftCard: Card
 
-+lastPlayedRightCard: Card
-
-+playerScore: int
-
-+computerScore: int
-
-
-
-   updateComputerSide(): void
-   update computer hand and send request to view
-
-updatePlayerSide(): void
-update player hand and send request to view
-
-updatePlayArea(): void
-update played cards and send request to view
-
-updateScore(): void
-update internal score variable and send request to view
 
 computerTurn(): void
 Handle logic for computer's turn
