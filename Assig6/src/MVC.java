@@ -110,6 +110,7 @@ public class MVC
 
 class Model
 {
+   
    Player human;
    Player computer;
    Card lastPlayedLeftCard;
@@ -158,7 +159,11 @@ class Model
             gameGoodToGo = highCardGame.takeCard(getPlayerIndex(playerOrComputer));
          }
 
-         View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+         updateCardArea(playerOrComputer.entityType);
+         updatePlayedCardArea();
+         playerOrComputer.usedTurn = true;
+         turnPass();
+
          if (!gameGoodToGo)
             MVC.endGame();
          //pass turn?
@@ -179,6 +184,26 @@ class Model
 
 
 
+   void turnPass()
+   {
+      if (!human.usedTurn)
+      {
+         // wait for player to do something
+      }
+      else if (human.usedTurn && !computer.usedTurn)
+         computerTurn();
+      else if (human.usedTurn && computer.usedTurn) 
+      {
+         calculateScore();
+         updateScore();
+         human.usedTurn = false;
+         computer.usedTurn = true;
+      }
+   }
+
+
+   
+
 
    void playCard(Player playerOrComputer, int cardIndex)
    {
@@ -194,8 +219,10 @@ class Model
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
             updateCardArea(Entity.COMPUTER);
          }
-         
+
          updatePlayedCardArea();
+         playerOrComputer.usedTurn = true;
+         turnPass();
          //pass turn?
       }
    }
@@ -213,6 +240,12 @@ class Model
    {
       View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
    }
+   
+   void calculateScore()
+   {
+      
+   }
+   
 
    void updateScore()
    {
@@ -254,6 +287,7 @@ class Player
    JLabel playerPlayedCard;
    int score;
    Model.Entity entityType;
+   boolean usedTurn = false;
 
    Player(JLabel playedCard, Hand hand, Model.Entity computerOrHuman)
    {
