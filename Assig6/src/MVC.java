@@ -337,7 +337,9 @@ class Model
    Player computer;
    Card lastPlayedLeftCard;
    Card lastPlayedRightCard;
-
+   CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
+      null, 2, 7 );
+   
    public enum Direction
    {
       LEFT, RIGHT
@@ -348,8 +350,6 @@ class Model
       PLAYER, COMPUTER
    }
 
-   CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
-      null, 2, 7 );
    Model()
    {
       human = new Player(null, highCardGame.getHand(0), Entity.PLAYER);
@@ -390,7 +390,7 @@ class Model
 
    void computerTurn()
    {
-      
+
    }
 
    /*
