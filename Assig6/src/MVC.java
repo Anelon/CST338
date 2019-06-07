@@ -17,12 +17,12 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
-import java.util.Random;
+import java.util.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.Border;
 
 
-public class phase3
+public class MVC
 {
    static int NUM_CARDS_PER_HAND = 7;
    static int  NUM_PLAYERS = 2;
@@ -394,6 +394,17 @@ class Model
 
    void computerTurn()
    {
+      //find playable cards
+      Vector<Card> playableCards = computer.getPlayableCards();
+      //select which one is least like the other cards in hand
+      if(playableCards.size())
+      {
+         //pick a card
+      }
+      else
+      {
+         //can not play
+      }
 
    }
 
@@ -418,11 +429,17 @@ class Player
 
    Player(JLabel playedCard, Hand hand, Model.Entity computerOrHuman)
    {
-    playerHand = hand;
-    entityType = computerOrHuman;
-    playerPlayedCard = playedCard;
+      playerHand = hand;
+      entityType = computerOrHuman;
+      playerPlayedCard = playedCard;
    }
 
+   //using the left and right table cards
+   //returns an array of playable cards in the player's hand
+   public Vector<Card> getPlayableCards(Card left, Card right)
+   {
+      return playerHand.getPlayableCards(left, right);
+   }
 
 
 
@@ -1655,6 +1672,28 @@ class Hand
       myCards = new Card[MAX_CARDS];
       numCards = 0;
 
+   }
+
+   //function gets the left and right table card
+   //returns any cards that are in the hand that are with in 1
+   public Vector<Card> getPlayableCards(Card left, Card right)
+   {
+      Vector<Card> playableCards = new Vector<Card>();
+      int index = 0;
+      int leftCardNum = GUICard.turnCardValueIntoInt(left.getValue());
+      int rightCardNum = GUICard.turnCardValueIntoInt(right.getValue());
+      for(int i = 0; i < numCards; i++)
+      {
+         int myCardNum = GUICard.turnCardValueIntoInt(myCards[i].getValue());
+         int leftdist = Math.abs(myCardNum - leftCardNum);
+         int rightdist = Math.abs(myCardNum - rightCardNum);
+         if(leftdist == 1 || rightdist == 1)
+         {
+            playableCards.addElement(myCards[i]);
+            //playableCards[index++] = myCards[i];
+         }
+      }
+      return playableCards;
    }
 
    //Required by assignment spec
