@@ -337,17 +337,17 @@ class Model
    Player computer;
    Card lastPlayedLeftCard;
    Card lastPlayedRightCard;
-   
+
    public enum Direction
    {
       LEFT, RIGHT
    }
-   
+
    public enum Entity
    {
       PLAYER, COMPUTER
    }
-   
+
    CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
    Model()
@@ -358,26 +358,15 @@ class Model
 
    void playCard(Player playerOrComputer, int cardIndex, Direction locationToPlay)
    {
-      
+
       if (locationToPlay == Direction.LEFT)
          lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
       else
          lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-      
+
       View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
-      
-      //playcard for 2p games
-      //play to left area
-      //send updated data to view
-      //request view to update
    }
 
-   void playCard(Direction leftOrRight)
-   {
-      //play card to left or right stack for new game
-      //send updated data to view
-      //request view to update
-   }
 
 
    void updateCardArea(Entity entityType)
@@ -387,11 +376,18 @@ class Model
       else
          View.updatePlayerCardImagesArray(human.playerHand);
    }
-   
+
    void updatePlayedCardArea()
    {
       View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
    }
+
+   void updateScore()
+   {
+      View.updateScores(new String[]{(Integer.toString(human.score)), Integer.toString(computer.score)});
+   }
+   
+
    /*
 
 
@@ -430,16 +426,16 @@ class Player
    JLabel playerPlayedCard;
    int score;
    Model.Entity entityType;
-   
+
    Player(JLabel playedCard, Hand hand, Model.Entity computerOrHuman)
    {
     playerHand = hand;
     entityType = computerOrHuman;
     playerPlayedCard = playedCard;
    }
-   
-   
-   
+
+
+
 
 }
 
@@ -467,7 +463,7 @@ class View
 
    static void updatePlayerCardImagesArray(Hand playerHand)
    {
-      
+
    }
 
    static void updateComputerHandImagesArray(Hand computerHand)
@@ -504,7 +500,7 @@ class View
    {
       //need this...
    }
-   
+
 
 
 }
@@ -519,8 +515,8 @@ class Controller
      skipTurn()
 
      playCardAtPosition(int position, Model.Direction sideToPlayTo)
-     
-     
+
+
     */
 }
 
