@@ -339,7 +339,7 @@ class Model
    Card lastPlayedRightCard;
    CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
-   
+
    public enum Direction
    {
       LEFT, RIGHT
@@ -359,12 +359,16 @@ class Model
    void playCard(Player playerOrComputer, int cardIndex, Direction locationToPlay)
    {
 
-      if (locationToPlay == Direction.LEFT)
-         lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
-      else
-         lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
+      if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null) 
+      {
+         if (locationToPlay == Direction.LEFT)
+            lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
+         else
+            lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
 
-      View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+         View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+      }
+      //pass turn?
    }
 
 
