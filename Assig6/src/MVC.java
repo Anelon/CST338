@@ -41,7 +41,8 @@ public class MVC
 
    public static void main(String[] args)
    {
-      View myView = new View();
+      Controller mainController = new Controller();
+
    }
 
 
@@ -113,6 +114,7 @@ class Model
    Player computer;
    Card lastPlayedLeftCard;
    Card lastPlayedRightCard;
+   View attachedView;
    CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
 
@@ -130,8 +132,9 @@ class Model
    {
       human = new Player(null, highCardGame.getHand(0), Entity.PLAYER);
       computer = new Player(null, highCardGame.getHand(1), Entity.COMPUTER);
+      attachedView = new View();
+      highCardGame.deal();
    }
-
 
 
 
@@ -338,6 +341,11 @@ class View
 class Controller
 {
 
+   Controller()
+   {
+      Model coreModel = new Model();
+
+   }
    /*
      suggested functions:
      skipTurn()
@@ -354,7 +362,7 @@ class Clock implements Runnable
 
    private JFrame display;
    private long timeInSeconds = -1;
-   private String timeDisplay = "TIME WILL GO HERE";
+   private String timeDisplay = "";
    private JPanel lcdPanel;
    private JLabel timeLabel;
    public boolean clockCountingDown = true;
