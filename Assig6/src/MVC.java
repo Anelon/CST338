@@ -110,13 +110,15 @@ public class MVC
 
 class Model
 {
+
    
    Player human;
    Player computer;
    Card lastPlayedLeftCard;
    Card lastPlayedRightCard;
    View attachedView;
-   CardGameFramework highCardGame = new CardGameFramework(1, 4, 0,
+   GameType currentGameType;
+   CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
 
    public enum Direction
@@ -128,13 +130,20 @@ class Model
    {
       PLAYER, COMPUTER
    }
-
-   Model()
+   
+   public enum GameType
    {
-      human = new Player(null, highCardGame.getHand(0), Entity.PLAYER);
-      computer = new Player(null, highCardGame.getHand(1), Entity.COMPUTER);
+      HIGH, BUILD
+   }
+   
+
+   Model(GameType gameType)
+   {
+      currentGameType = gameType;
+      human = new Player(null, framework.getHand(0), Entity.PLAYER);
+      computer = new Player(null, framework.getHand(1), Entity.COMPUTER);
       attachedView = new View();
-      highCardGame.deal();
+      framework.deal();
    }
 
 
@@ -151,12 +160,12 @@ class Model
          if (locationToPlay == Direction.LEFT)
          {
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
-            gameGoodToGo = highCardGame.takeCard(getPlayerIndex(playerOrComputer));
+            gameGoodToGo = framework.takeCard(getPlayerIndex(playerOrComputer));
          }
          else
          {
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-            gameGoodToGo = highCardGame.takeCard(getPlayerIndex(playerOrComputer));
+            gameGoodToGo = framework.takeCard(getPlayerIndex(playerOrComputer));
          }
 
          updateCardArea(playerOrComputer.entityType);
@@ -192,17 +201,20 @@ class Model
       }
       else if (human.usedTurn && !computer.usedTurn)
          computerTurn();
-      else if (human.usedTurn && computer.usedTurn) 
+      else if (human.usedTurn && computer.usedTurn)
       {
-         calculateScore();
+         calculateScore(currentGameType);
          updateScore();
          human.usedTurn = false;
-         computer.usedTurn = true;
+         human.skippedTurn = false;
+         computer.usedTurn = false;
+         computer.skippedTurn = false;
+         
       }
    }
 
 
-   
+
 
 
    void playCard(Player playerOrComputer, int cardIndex)
@@ -227,6 +239,10 @@ class Model
       }
    }
 
+   
+   
+   
+   
 
    void updateCardArea(Entity entityType)
    {
@@ -236,15 +252,66 @@ class Model
          View.updatePlayerCardImagesArray(human.playerHand);
    }
 
+   
+   
+   
+   
+   
    void updatePlayedCardArea()
    {
       View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
    }
+
    
-   void calculateScore()
+   
+   
+   
+   
+   void calculateScore(GameType currentGameType)
    {
-      
+      switch (currentGameType)
+      {
+         case HIGH:
+            calculateHighCardScore();
+            break;
+         case BUILD:
+            calculateBuildScore();
+            break;
+      }
+
    }
+   
+   
+   
+   
+   
+   
+   void calculateHighCardScore()
+   {
+      int leftCardValue = GUICard.turnCardValueIntoInt(lastPlayedLeftCard.getValue());
+      int rightCardValue = GUICard.turnCardValueIntoInt(lastPlayedRightCard.getValue());
+      if (leftCardValue < rightCardValue)
+         human.score += 1;
+      else if (rightCardValue > leftCardValue)
+         computer.score += 1;
+   }
+   
+   
+   
+   
+   
+   
+   void calculateBuildScore()
+   {
+      if (human.skippedTurn)
+         human.score -= 1;
+      if (computer.skippedTurn)
+         computer.score -= 1;
+   }
+
+   
+   
+   
    
 
    void updateScore()
@@ -253,6 +320,10 @@ class Model
    }
 
 
+   
+   
+   
+   
    void computerTurn()
    {
       //find playable cards
@@ -288,6 +359,7 @@ class Player
    int score;
    Model.Entity entityType;
    boolean usedTurn = false;
+   boolean skippedTurn = false;
 
    Player(JLabel playedCard, Hand hand, Model.Entity computerOrHuman)
    {
@@ -384,7 +456,7 @@ class Controller
 
    Controller()
    {
-      Model coreModel = new Model();
+      Model coreModel = new Model(Model.GameType.HIGH);
 
    }
    /*
