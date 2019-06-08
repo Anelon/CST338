@@ -121,7 +121,32 @@ class Model
 
    public enum GameType
    {
-      HIGH, BUILD
+      HIGH
+         {
+            void calculateScore(Player human, Player computer)
+            {
+               int leftCardValue = lastPlayedLeftCard.valueToInt();
+               int rightCardValue = lastPlayedRightCard.valueToInt();
+               if (leftCardValue > rightCardValue)
+                  human.score += 1;
+               else if (rightCardValue > leftCardValue)
+                  computer.score += 1;
+            }
+
+         },
+      BUILD
+         {
+            void calculateScore(Player human, Player computer)
+            {
+               {
+                  if (human.skippedTurn)
+                     human.score -= 1;
+                  if (computer.skippedTurn)
+                     computer.score -= 1;
+               }
+            }
+         };
+      abstract void calculateScore(Player human, Player computer);
    }
 
 
@@ -177,7 +202,7 @@ class Model
          computerTurn();
       else
       {
-         calculateScore(currentGameType);
+         currentGameType.calculateScore(human, computer);
          updateScore();
          human.usedTurn = false;
          human.skippedTurn = false;
@@ -222,54 +247,6 @@ class Model
    {
       attachedView.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
    }
-
-
-
-
-
-
-   private void calculateScore(GameType currentGameType)
-   {
-      switch (currentGameType)
-      {
-         case HIGH:
-            calculateHighCardScore();
-            break;
-         case BUILD:
-            calculateBuildScore();
-            break;
-      }
-   }
-
-
-
-
-
-   //tested by replacing lastPlayedCard with a new Card() instance, works
-   private void calculateHighCardScore()
-   {
-      int leftCardValue = lastPlayedLeftCard.valueToInt();
-      int rightCardValue = lastPlayedRightCard.valueToInt();
-      if (leftCardValue > rightCardValue)
-         human.score += 1;
-      else if (rightCardValue > leftCardValue)
-         computer.score += 1;
-   }
-
-
-
-
-
-   //untested but trivial
-   private void calculateBuildScore()
-   {
-      if (human.skippedTurn)
-         human.score -= 1;
-      if (computer.skippedTurn)
-         computer.score -= 1;
-   }
-
-
 
 
 
