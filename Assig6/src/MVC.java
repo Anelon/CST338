@@ -31,6 +31,7 @@ public class MVC
    {
       Controller mainController = new Controller();
 
+
    }
 
 
@@ -161,6 +162,10 @@ class Model
       updatePlayedCardArea();
       human.updateCardArea();
       computer.updateCardArea();
+      for (int i = 0; i < human.playerHand.getNumCards(); ++i)
+      {
+         System.out.println(human.playerHand.inspectCard(i));
+      }
    }
 
 
@@ -357,7 +362,7 @@ Handle logic for computer's turn
 
       public void updateCardArea()
       {
-         attachedView.updatePlayerCardImagesArray(playerHand);
+         attachedView.updateComputerHandImagesArray(playerHand);
 
       }
 
@@ -370,7 +375,7 @@ class View
    private static CardTable table = new CardTable("Card Table", 7, 2);
    JLabel[] computerHandImages;
    JLabel[] playerHandImages;
-   
+
 
    View()
    {
@@ -390,55 +395,68 @@ class View
 
    void updatePlayerCardImagesArray(Hand playerHand)
    {
-      table.pnlComputerHand.removeAll();
-      
+      table.pnlHumanHand.removeAll();
+
       int handSize = playerHand.getNumCards();
       playerHandImages = new JLabel[handSize];
       for (int i = 0; i < handSize; ++i)
       {
          playerHandImages[i] = new JLabel(GUICard.getIcon(playerHand.inspectCard(i)));
+         table.pnlHumanHand.add(playerHandImages[i]);
       }
-      for (JLabel card: playerHandImages) 
-      {
-         table.pnlHumanHand.add(card);
-      }
-      table.revalidate();
-      table.repaint();
+      table.pnlHumanHand.revalidate();
+      table.pnlHumanHand.repaint();
    }
 
    void updateComputerHandImagesArray(Hand computerHand)
    {
-      //need this to send updates from model, should update the number of BackOfCard images to match computerHand passed
+      table.pnlComputerHand.removeAll();
+
+      int handSize = computerHand.getNumCards();
+      computerHandImages = new JLabel[handSize];
+      for (int i = 0; i < handSize; ++i)
+      {
+         computerHandImages[i] = new JLabel(GUICard.getIcon(computerHand.inspectCard(i)));
+         table.pnlComputerHand.add(computerHandImages[i]);
+      }
+      table.pnlComputerHand.revalidate();
+      table.pnlComputerHand.repaint();
    }
 
    void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
       //need this to send updates from model, should update the two cards in playArea; left card is 0, right card is 1
+      System.out.println("played card images updated");
    }
 
    void updateScores(String[] scores)
    {
       //need this to send updates from model, should update the two scores; left score/label is 0, right is 1
+      System.out.println("scores images updated");
    }
 
    void hideAllPlayerCardButtons()
    {
       //need this to send updates from model
+      System.out.println("buttons hidden");
    }
 
    void showAllPlayerCardButtons()
    {
       //need this...
+      System.out.println("buttons shown");
    }
 
    void turnPlayedCardsIntoButtons()
    {
       //need this...
+      System.out.println("played cards converted from jlabels to buttons");
    }
 
    void turnPlayedCardsIntoJLabels()
    {
       //need this...
+      System.out.println("played cards converted from buttons to jlabels");
    }
 
 
@@ -551,9 +569,9 @@ class Clock implements Runnable
 class GUICard
 {
    // 14 = A thru K + joker
-   private static Icon[][] iconCards = new ImageIcon[14][4];
+   private static Icon[][] iconCards = new ImageIcon[15][4];
    private static Icon iconBack;
-   private static final int NUM_CARD_VALUES = 14;
+   private static final int NUM_CARD_VALUES = 15;
    private static final int NUM_CARD_SUITES = 4;
 
 
@@ -603,8 +621,9 @@ class GUICard
    public static Icon getIcon(Card card)
    {
       loadCardIcons();
+
       return iconCards[card.valueToInt()-1]
-         [card.SuitToInt()];
+         [card.SuitToInt()-1];
    }
 
 
@@ -865,6 +884,10 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
+      for (int i = 0; i < valuRanks.length; ++i)
+      {
+         System.out.println(i);
+      }
       return indexOf(value, valuRanks);
    }
 
