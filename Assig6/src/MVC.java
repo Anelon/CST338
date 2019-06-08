@@ -294,8 +294,8 @@ class Model
 //tested by replacing lastPlayedCard with a new Card() instance, works
    void calculateHighCardScore()
    {
-      int leftCardValue = GUICard.turnCardValueIntoInt(lastPlayedLeftCard.getValue());
-      int rightCardValue = GUICard.turnCardValueIntoInt(lastPlayedRightCard.getValue());
+      int leftCardValue = lastPlayedLeftCard.toInt();
+      int rightCardValue = lastPlayedRightCard.toInt();
       if (leftCardValue > rightCardValue)
          human.score += 1;
       else if (rightCardValue < leftCardValue)
@@ -606,8 +606,8 @@ class GUICard
    public static Icon getIcon(Card card)
    {
       loadCardIcons();
-      return iconCards[turnCardValueIntoInt(card.getValue())-1]
-         [turnSuitIntoInt(card.getSuit())];
+      return iconCards[card.toInt()-1]
+         [Card.turnSuitIntoInt(card.getSuit())];
    }
 
 
@@ -644,6 +644,7 @@ class GUICard
     */
    public static String turnIntIntoCardValue(int cardNum)
    {
+
       char cardValue;
 
       if (cardNum >= 1 && cardNum <= 14)
@@ -696,58 +697,6 @@ class GUICard
 
 
    /**
-    * Converts a playing card value from char form to
-    * an integer. The value must be "valid" in order
-    * for a meaningful return.
-    *
-    * @param cardValue A char from '2'-'9', 'A', 'T', 'J',
-    *                  'Q', 'K', or 'X'. Using other values
-    *                  will result in garbage being returned.
-    * @return An integer representation of cardValue.
-    */
-   public static int turnCardValueIntoInt(char cardValue)
-   {
-      switch (cardValue)
-      {
-         case 'A':
-            return 1;
-         case 'T':
-            return 10;
-         case 'J':
-            return 11;
-         case 'Q':
-            return 12;
-         case 'K':
-            return 13;
-         case 'X':
-            return 14;
-         case '2':
-            return 2;
-         case '3':
-            return 3;
-         case '4':
-            return 4;
-         case '5':
-            return 5;
-         case '6':
-            return 6;
-         case '7':
-            return 7;
-         case '8':
-            return 8;
-         case '9':
-            return 9;
-         default:
-            return 14;
-      }
-   }
-
-
-
-
-
-
-   /**
     * Converts an integer to a single-character string
     * representation of a playing card suite. 0 = Hearts,
     * 1 = Clubs, 2 = Diamonds, 3 (or a garbage value) = Spades.
@@ -773,30 +722,6 @@ class GUICard
 
 
 
-
-
-   /**
-    * Converts a Card.Suit to an integer value. Simplifies
-    * calculations.  0 = Hearts,
-    * 1 = Clubs, 2 = Diamonds, 3 (or a garbage value) = Spades.
-    *
-    * @param suit Card.Suit desired to be converted to int form.
-    * @return int representation of a Card.Suit
-    */
-   public static int turnSuitIntoInt(Card.Suit suit)
-   {
-      switch (suit)
-      {
-         case hearts:
-            return 0;
-         case clubs:
-            return 1;
-         case diamonds:
-            return 2;
-         default:
-            return 3;
-      }
-   }
 }
 
 
@@ -919,11 +844,63 @@ class Card
    //Static finals for default card values
    public static final Suit DEFAULT_SUIT = Suit.spades;
    public static final char DEFAULT_VALUE = ACE;
-   public static char[] valuRanks;
+   public static Character[] valuRanks;
 
 
 
 
+   /**
+    * Converts a Card.Suit to an integer value. Simplifies
+    * calculations.  0 = Hearts,
+    * 1 = Clubs, 2 = Diamonds, 3 (or a garbage value) = Spades.
+    *
+    * @param suit Card.Suit desired to be converted to int form.
+    * @return int representation of a Card.Suit
+    */
+   public static int turnSuitIntoInt(Card.Suit suit)
+   {
+      switch (suit)
+      {
+         case hearts:
+            return 0;
+         case clubs:
+            return 1;
+         case diamonds:
+            return 2;
+         default:
+            return 3;
+      }
+   }
+
+
+
+
+
+
+
+   /**
+    * Converts a playing card value from char form to
+    * an integer. The value must be "valid" in order
+    * for a meaningful return.
+    *
+    * @return An integer representation of cardValue.
+    */
+   public int toInt()
+   {
+      setUpValuRanks();
+      return indexOf(value, valuRanks);
+   }
+
+   
+   private int indexOf(Object target, Object[] array) 
+   {
+      int index = -1;
+      for (int i = 0; i < array.length; ++i) {
+         if (target.equals(array[i]))
+            index = i;
+      }
+      return index+1;
+   }
 
 
    //card to string converter
@@ -955,10 +932,10 @@ class Card
    //for use in the sorting
    private boolean lessThan(Card card)
    {
-      int lhs = GUICard.turnCardValueIntoInt(this.getValue());
-      lhs += GUICard.turnSuitIntoInt(this.getSuit()) * 100;
-      int rhs = GUICard.turnCardValueIntoInt(card.getValue());
-      rhs += GUICard.turnSuitIntoInt(card.getSuit()) * 100;
+      int lhs = toInt();
+      lhs += turnSuitIntoInt(this.getSuit()) * 100;
+      int rhs = toInt();
+      rhs += turnSuitIntoInt(card.getSuit()) * 100;
       return lhs < rhs;
    }
 
@@ -1029,7 +1006,7 @@ class Card
 
       if (valuRanks == null)
       {
-         valuRanks = new char[15];
+         valuRanks = new Character[15];
          for (int cardNum = 0; cardNum <= 14; ++cardNum)
          {
             char cardValue = GUICard.turnIntIntoCardValue(cardNum).charAt(0);
@@ -1628,11 +1605,11 @@ class Hand
    {
       Vector<Card> playableCards = new Vector<Card>();
       int index = 0;
-      int leftCardNum = GUICard.turnCardValueIntoInt(left.getValue());
-      int rightCardNum = GUICard.turnCardValueIntoInt(right.getValue());
+      int leftCardNum = left.toInt();
+      int rightCardNum = right.toInt();
       for(int i = 0; i < numCards; i++)
       {
-         int myCardNum = GUICard.turnCardValueIntoInt(myCards[i].getValue());
+         int myCardNum = myCards[i].toInt();
          int leftdist = Math.abs(myCardNum - leftCardNum);
          int rightdist = Math.abs(myCardNum - rightCardNum);
          if(leftdist == 1 || rightdist == 1)
