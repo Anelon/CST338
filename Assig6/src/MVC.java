@@ -160,7 +160,7 @@ class Model
       if (!gameGoodToGo)
          MVC.endGame();
    }
-   
+
 
 
 
@@ -195,15 +195,11 @@ class Model
       if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getNumCards())
       {
          if (playerOrComputer.entityType == Entity.PLAYER)
-         {
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
-            updateCardArea(Entity.PLAYER);
-         }
          else
-         {
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-            updateCardArea(Entity.COMPUTER);
-         }
+         
+         updateCardArea(playerOrComputer.entityType);
          updatePlayedCardArea();
          playerOrComputer.usedTurn = true;
          turnPass();
@@ -249,7 +245,6 @@ class Model
             calculateBuildScore();
             break;
       }
-
    }
 
 
