@@ -294,8 +294,8 @@ class Model
 //tested by replacing lastPlayedCard with a new Card() instance, works
    void calculateHighCardScore()
    {
-      int leftCardValue = lastPlayedLeftCard.toInt();
-      int rightCardValue = lastPlayedRightCard.toInt();
+      int leftCardValue = lastPlayedLeftCard.ValuetoInt();
+      int rightCardValue = lastPlayedRightCard.ValuetoInt();
       if (leftCardValue > rightCardValue)
          human.score += 1;
       else if (rightCardValue < leftCardValue)
@@ -606,8 +606,8 @@ class GUICard
    public static Icon getIcon(Card card)
    {
       loadCardIcons();
-      return iconCards[card.toInt()-1]
-         [Card.turnSuitIntoInt(card.getSuit())];
+      return iconCards[card.ValuetoInt()-1]
+         [card.SuitToInt()];
    }
 
 
@@ -845,32 +845,12 @@ class Card
    public static final Suit DEFAULT_SUIT = Suit.spades;
    public static final char DEFAULT_VALUE = ACE;
    public static Character[] valuRanks;
+   public static final Suit[] suitOrder = new Suit[]{Suit.hearts, Suit.clubs, Suit.diamonds, Suit.spades};
 
 
 
 
-   /**
-    * Converts a Card.Suit to an integer value. Simplifies
-    * calculations.  0 = Hearts,
-    * 1 = Clubs, 2 = Diamonds, 3 (or a garbage value) = Spades.
-    *
-    * @param suit Card.Suit desired to be converted to int form.
-    * @return int representation of a Card.Suit
-    */
-   public static int turnSuitIntoInt(Card.Suit suit)
-   {
-      switch (suit)
-      {
-         case hearts:
-            return 0;
-         case clubs:
-            return 1;
-         case diamonds:
-            return 2;
-         default:
-            return 3;
-      }
-   }
+   
 
 
 
@@ -885,14 +865,26 @@ class Card
     *
     * @return An integer representation of cardValue.
     */
-   public int toInt()
+   public int ValuetoInt()
    {
       setUpValuRanks();
       return indexOf(value, valuRanks);
    }
 
-   
-   private int indexOf(Object target, Object[] array) 
+   /**
+    * Converts a Card.Suit to an integer value. Simplifies
+    * calculations.  0 = Hearts,
+    * 1 = Clubs, 2 = Diamonds, 3 (or a garbage value) = Spades.
+    *
+    * @return int representation of a Card.Suit
+    */
+   public int SuitToInt()
+   {
+      return indexOf(suit, suitOrder);
+   }
+
+
+   private int indexOf(Object target, Object[] array)
    {
       int index = -1;
       for (int i = 0; i < array.length; ++i) {
@@ -932,10 +924,10 @@ class Card
    //for use in the sorting
    private boolean lessThan(Card card)
    {
-      int lhs = toInt();
-      lhs += turnSuitIntoInt(this.getSuit()) * 100;
-      int rhs = toInt();
-      rhs += turnSuitIntoInt(card.getSuit()) * 100;
+      int lhs = ValuetoInt();
+      lhs += SuitToInt() * 100;
+      int rhs = ValuetoInt();
+      rhs += SuitToInt() * 100;
       return lhs < rhs;
    }
 
@@ -995,7 +987,6 @@ class Card
       }
       return false;
    }
-
 
 
 
@@ -1605,11 +1596,11 @@ class Hand
    {
       Vector<Card> playableCards = new Vector<Card>();
       int index = 0;
-      int leftCardNum = left.toInt();
-      int rightCardNum = right.toInt();
+      int leftCardNum = left.ValuetoInt();
+      int rightCardNum = right.ValuetoInt();
       for(int i = 0; i < numCards; i++)
       {
-         int myCardNum = myCards[i].toInt();
+         int myCardNum = myCards[i].ValuetoInt();
          int leftdist = Math.abs(myCardNum - leftCardNum);
          int rightdist = Math.abs(myCardNum - rightCardNum);
          if(leftdist == 1 || rightdist == 1)
