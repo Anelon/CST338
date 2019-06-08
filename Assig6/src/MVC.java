@@ -227,7 +227,7 @@ class Model
 
    void playCard(Player playerOrComputer, int cardIndex)
    {
-      if (playerOrComputer == null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getnumCards())
+      if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getnumCards())
       {
          if (playerOrComputer.entityType == Entity.PLAYER)
          {
