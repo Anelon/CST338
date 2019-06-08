@@ -47,7 +47,7 @@ public class MVC
 
 
 
-   public static void endGame()
+   static void endGame()
    {
       //logic for ending of game
    }
@@ -113,13 +113,13 @@ class Model
 {
 
 
-   Player human;
-   Player computer;
-   Card lastPlayedLeftCard;
-   Card lastPlayedRightCard;
-   View attachedView;
-   GameType currentGameType;
-   CardGameFramework framework = new CardGameFramework(1, 4, 0,
+   private Player human;
+   private Player computer;
+   private Card lastPlayedLeftCard;
+   private Card lastPlayedRightCard;
+   private View attachedView;
+   private GameType currentGameType;
+   private CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
 
    public enum Direction
@@ -142,8 +142,8 @@ class Model
    Model(GameType gameType)
    {
       currentGameType = gameType;
-      human = new Player(null, framework.getHand(0), Entity.PLAYER);
-      computer = new Player(null, framework.getHand(1), Entity.COMPUTER);
+      human = new Player(framework.getHand(0), Entity.PLAYER);
+      computer = new Player(framework.getHand(1), Entity.COMPUTER);
       attachedView = new View();
       framework.deal();
       updateScore();
@@ -173,15 +173,10 @@ class Model
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
             gameGoodToGo = framework.takeCard(getPlayerIndex(playerOrComputer));
          }
-
          updateCardArea(playerOrComputer.entityType);
          updatePlayedCardArea();
          playerOrComputer.usedTurn = true;
          turnPass();
-
-         if (!gameGoodToGo)
-            MVC.endGame();
-         //pass turn?
       }
       if (!gameGoodToGo)
          MVC.endGame();
@@ -227,7 +222,7 @@ class Model
 
    void playCard(Player playerOrComputer, int cardIndex)
    {
-      if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getnumCards())
+      if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getNumCards())
       {
          if (playerOrComputer.entityType == Entity.PLAYER)
          {
@@ -292,13 +287,13 @@ class Model
 
 
 //tested by replacing lastPlayedCard with a new Card() instance, works
-   void calculateHighCardScore()
+   private void calculateHighCardScore()
    {
-      int leftCardValue = lastPlayedLeftCard.ValuetoInt();
-      int rightCardValue = lastPlayedRightCard.ValuetoInt();
+      int leftCardValue = lastPlayedLeftCard.valueToInt();
+      int rightCardValue = lastPlayedRightCard.valueToInt();
       if (leftCardValue > rightCardValue)
          human.score += 1;
-      else if (rightCardValue < leftCardValue)
+      else if (rightCardValue > leftCardValue)
          computer.score += 1;
    }
 
@@ -307,7 +302,7 @@ class Model
 
 
 //untested but trivial
-   void calculateBuildScore()
+   private void calculateBuildScore()
    {
       if (human.skippedTurn)
          human.score -= 1;
@@ -320,7 +315,7 @@ class Model
 
 
 
-   void updateScore()
+   private void updateScore()
    {
       View.updateScores(new String[]{(Integer.toString(human.score)), Integer.toString(computer.score)});
    }
@@ -330,7 +325,7 @@ class Model
 
 
 
-   void computerTurn()
+   private void computerTurn()
    {
       //find playable cards
       //   Vector<Card> playableCards = computer.getPlayableCards();
@@ -361,17 +356,15 @@ Handle logic for computer's turn
 class Player
 {
    Hand playerHand;
-   JLabel playerPlayedCard;
    int score;
    Model.Entity entityType;
    boolean usedTurn = false;
    boolean skippedTurn = false;
 
-   Player(JLabel playedCard, Hand hand, Model.Entity computerOrHuman)
+   Player(Hand hand, Model.Entity computerOrHuman)
    {
       playerHand = hand;
       entityType = computerOrHuman;
-      playerPlayedCard = playedCard;
    }
 
    //using the left and right table cards
@@ -478,7 +471,7 @@ class Clock implements Runnable
    private String timeDisplay = "";
    private JPanel lcdPanel;
    private JLabel timeLabel;
-   public boolean clockCountingDown = true;
+   private boolean clockCountingDown = true;
 
    Clock()
    {
@@ -606,7 +599,7 @@ class GUICard
    public static Icon getIcon(Card card)
    {
       loadCardIcons();
-      return iconCards[card.ValuetoInt()-1]
+      return iconCards[card.valueToInt()-1]
          [card.SuitToInt()];
    }
 
@@ -642,7 +635,7 @@ class GUICard
     * @return A one-character string representation that
     *                corresponds to a playing card value
     */
-   public static String turnIntIntoCardValue(int cardNum)
+   static String turnIntIntoCardValue(int cardNum)
    {
 
       char cardValue;
@@ -865,7 +858,7 @@ class Card
     *
     * @return An integer representation of cardValue.
     */
-   public int ValuetoInt()
+   int valueToInt()
    {
       setUpValuRanks();
       return indexOf(value, valuRanks);
@@ -878,7 +871,7 @@ class Card
     *
     * @return int representation of a Card.Suit
     */
-   public int SuitToInt()
+   int SuitToInt()
    {
       return indexOf(suit, suitOrder);
    }
@@ -910,7 +903,7 @@ class Card
 
 
    //returns if this card and another card are the same
-   public boolean equals(Card card)
+   boolean equals(Card card)
    {
       return card.getValue() == value && card.getSuit() == suit;
    }
@@ -924,9 +917,9 @@ class Card
    //for use in the sorting
    private boolean lessThan(Card card)
    {
-      int lhs = ValuetoInt();
+      int lhs = valueToInt();
       lhs += SuitToInt() * 100;
-      int rhs = ValuetoInt();
+      int rhs = valueToInt();
       rhs += SuitToInt() * 100;
       return lhs < rhs;
    }
@@ -1592,11 +1585,11 @@ class Hand
    {
       Vector<Card> playableCards = new Vector<Card>();
       int index = 0;
-      int leftCardNum = left.ValuetoInt();
-      int rightCardNum = right.ValuetoInt();
+      int leftCardNum = left.valueToInt();
+      int rightCardNum = right.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
-         int myCardNum = myCards[i].ValuetoInt();
+         int myCardNum = myCards[i].valueToInt();
          int leftdist = Math.abs(myCardNum - leftCardNum);
          int rightdist = Math.abs(myCardNum - rightCardNum);
          if(leftdist == 1 || rightdist == 1)
@@ -1680,7 +1673,7 @@ class Hand
    }
    /* This is the accessor method for numCards. */
 
-   public int getnumCards()
+   public int getNumCards()
    {
 
       return numCards;
@@ -1891,7 +1884,7 @@ class CardGameFramework
    {
       // returns bad card if either argument is bad
       if (playerIndex < 0 ||  playerIndex > numPlayers - 1 ||
-         cardIndex < 0 || cardIndex > hand[playerIndex].getnumCards() - 1)
+         cardIndex < 0 || cardIndex > hand[playerIndex].getNumCards() - 1)
       {
          //Creates a card that does not work
          return new Card('M', Card.Suit.spades);
