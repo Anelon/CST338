@@ -94,8 +94,8 @@ class Model
 
    private Player human;
    private Player computer;
-   private Card lastPlayedLeftCard;
-   private Card lastPlayedRightCard;
+   private static Card lastPlayedLeftCard;
+   private static Card lastPlayedRightCard;
    private View attachedView;
    private GameType currentGameType;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
@@ -107,10 +107,6 @@ class Model
       LEFT, RIGHT
    }
 
-   public enum Entity
-   {
-      PLAYER, COMPUTER
-   }
 
    public enum GameType
    {
@@ -121,14 +117,14 @@ class Model
    Model(GameType gameType)
    {
       currentGameType = gameType;
-      human = new Player(framework.getHand(0), Entity.PLAYER);
-      computer = new Player(framework.getHand(1), Entity.COMPUTER);
+      human = new HumanPlayer(framework.getHand(0));
+      computer = new ComputerPlayer(framework.getHand(1));
       attachedView = new View();
       framework.deal();
       updateScore();
       updatePlayedCardArea();
-      updateCardArea(Entity.PLAYER);
-      updateCardArea(Entity.COMPUTER);
+      human.updateCardArea();
+      computer.updateCardArea();
    }
 
 
@@ -150,8 +146,9 @@ class Model
          {
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
          }
+         
          gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
-         updateCardArea(playerOrComputer.entityType);
+         playerOrComputer.updateCardArea();
          updatePlayedCardArea();
          playerOrComputer.usedTurn = true;
          turnPass();
@@ -166,7 +163,7 @@ class Model
 
 
 
-   void turnPass()
+   private void turnPass()
    {
       if (!human.usedTurn)
       {
@@ -193,12 +190,9 @@ class Model
    {
       if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getNumCards())
       {
-         if (playerOrComputer.entityType == Entity.PLAYER)
-            lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
-         else
-            lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-
-         updateCardArea(playerOrComputer.entityType);
+         
+         playerOrComputer.stackPosition = playerOrComputer.playerHand.playCard(cardIndex);
+         playerOrComputer.updateCardArea();
          updatePlayedCardArea();
          playerOrComputer.usedTurn = true;
          turnPass();
@@ -210,12 +204,9 @@ class Model
 
 
 
-   private void updateCardArea(Entity entityType)
+   private void updateCardArea(Player humanOrComputer)
    {
-      if (entityType == Model.Entity.PLAYER)
-         attachedView.updateComputerHandImagesArray(computer.playerHand);
-      else
-         attachedView.updatePlayerCardImagesArray(human.playerHand);
+      humanOrComputer.updateCardArea();
    }
 
 
@@ -314,36 +305,74 @@ computerTurn(): void
 Handle logic for computer's turn
     */
 
+
+   abstract class Player
+   {
+      Hand playerHand;
+      int score;
+      boolean usedTurn = false;
+      boolean skippedTurn = false;
+      Card stackPosition;
+
+      Player()
+      {
+
+      }
+
+      //using the left and right table cards
+      //returns an array of playable cards in the player's hand
+      public Vector<Card> getPlayableCards(Card left, Card right)
+      {
+         return playerHand.getPlayableCards(left, right);
+      }
+
+      public abstract void updateCardArea();
+      public abstract int toInt();
+   }
+
+   class HumanPlayer extends Player
+   {
+      HumanPlayer(Hand hand)
+      {
+         stackPosition = Model.lastPlayedLeftCard;
+         playerHand = hand;
+      }
+
+      public int toInt()
+      {
+         return 0;
+      }
+
+      public void updateCardArea()
+      {
+         attachedView.updatePlayerCardImagesArray(playerHand);
+
+      }
+
+   }
+
+   class ComputerPlayer extends Player
+   {
+      ComputerPlayer(Hand hand)
+      {
+         stackPosition = Model.lastPlayedRightCard;
+         playerHand = hand;
+      }
+
+      public int toInt()
+      {
+         return 1;
+      }
+
+
+      public void updateCardArea()
+      {
+         attachedView.updatePlayerCardImagesArray(playerHand);
+
+      }
+
+   }
 }
-
-
-class Player
-{
-   Hand playerHand;
-   int score;
-   Model.Entity entityType;
-   boolean usedTurn = false;
-   boolean skippedTurn = false;
-
-   Player(Hand hand, Model.Entity computerOrHuman)
-   {
-      playerHand = hand;
-      entityType = computerOrHuman;
-   }
-
-   //using the left and right table cards
-   //returns an array of playable cards in the player's hand
-   public Vector<Card> getPlayableCards(Card left, Card right)
-   {
-      return playerHand.getPlayableCards(left, right);
-   }
-
-   public int toInt()
-   {
-      return entityType.ordinal();
-   }
-}
-
 
 //temporary, should have model initialize the view based on controller input
 class View
