@@ -24,6 +24,7 @@ import javax.swing.border.Border;
 
 public class MVC
 {
+   
 
 
    public static void main(String[] args)
@@ -226,9 +227,9 @@ class Model
    void updateCardArea(Entity entityType)
    {
       if (entityType == Model.Entity.PLAYER)
-         View.updateComputerHandImagesArray(computer.playerHand);
+         attachedView.updateComputerHandImagesArray(computer.playerHand);
       else
-         View.updatePlayerCardImagesArray(human.playerHand);
+         attachedView.updatePlayerCardImagesArray(human.playerHand);
    }
 
 
@@ -236,9 +237,9 @@ class Model
 
 
 
-   void updatePlayedCardArea()
+   private void updatePlayedCardArea()
    {
-      View.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
+      attachedView.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
    }
 
 
@@ -246,7 +247,7 @@ class Model
 
 
 
-   void calculateScore(GameType currentGameType)
+   private void calculateScore(GameType currentGameType)
    {
       switch (currentGameType)
       {
@@ -295,7 +296,7 @@ class Model
 
    private void updateScore()
    {
-      View.updateScores(new String[]{(Integer.toString(human.score)), Integer.toString(computer.score)});
+      attachedView.updateScores(new String[]{(Integer.toString(human.score)), Integer.toString(computer.score)});
    }
 
 
@@ -357,7 +358,7 @@ class Player
 //temporary, should have model initialize the view based on controller input
 class View
 {
-   static CardTable table = new CardTable("Card Table", 7, 2);
+   private static CardTable table = new CardTable("Card Table", 7, 2);
 
    View()
    {
@@ -375,42 +376,42 @@ class View
       //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
    }
 
-   static void updatePlayerCardImagesArray(Hand playerHand)
+   void updatePlayerCardImagesArray(Hand playerHand)
    {
 
    }
 
-   static void updateComputerHandImagesArray(Hand computerHand)
+   void updateComputerHandImagesArray(Hand computerHand)
    {
       //need this to send updates from model, should update the number of BackOfCard images to match computerHand passed
    }
 
-   static void updatePlayedCardImagesArray(Card[] twoCardArray)
+   void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
       //need this to send updates from model, should update the two cards in playArea; left card is 0, right card is 1
    }
 
-   static void updateScores(String[] scores)
+   void updateScores(String[] scores)
    {
       //need this to send updates from model, should update the two scores; left score/label is 0, right is 1
    }
 
-   static void hideAllPlayerCardButtons()
+   void hideAllPlayerCardButtons()
    {
       //need this to send updates from model
    }
 
-   static void showAllPlayerCardButtons()
+   void showAllPlayerCardButtons()
    {
       //need this...
    }
 
-   static void turnPlayedCardsIntoButtons()
+   void turnPlayedCardsIntoButtons()
    {
       //need this...
    }
 
-   static void turnPlayedCardsIntoJLabels()
+   void turnPlayedCardsIntoJLabels()
    {
       //need this...
    }
@@ -551,7 +552,7 @@ class GUICard
          {
             for (int suitNum = 0; suitNum < NUM_CARD_SUITES; ++suitNum)
             {
-               String filename = turnIntIntoCardValue(cardNum) +
+               String filename = Card.turnIntIntoCardValue(cardNum) +
                   turnIntIntoCardSuit(suitNum) + ".gif";
                iconCards[cardNum-1][suitNum]
                   = new ImageIcon("images/"+filename);
@@ -602,65 +603,6 @@ class GUICard
 
 
 
-
-   /**
-    * Converts a number from 1-14 into the appropriate
-    * playing card value as a one-character string.
-    * If an invalid number is passed, "A" is returned.
-    *
-    * @param cardNum An integer to be converted into
-    *                a one-character string representation
-    * @return A one-character string representation that
-    *                corresponds to a playing card value
-    */
-   static String turnIntIntoCardValue(int cardNum)
-   {
-
-      char cardValue;
-
-      if (cardNum >= 1 && cardNum <= 14)
-      {
-         switch (cardNum)
-         {
-            case 1:
-            {
-               cardValue = 'A';
-               break;
-            }
-            case 10:
-            {
-               cardValue = 'T';
-               break;
-            }
-            case 11:
-            {
-               cardValue = 'J';
-               break;
-            }
-            case 12:
-            {
-               cardValue = 'Q';
-               break;
-            }
-            case 13:
-            {
-               cardValue = 'K';
-               break;
-            }
-            case 14:
-            {
-               cardValue = 'X';
-               break;
-            }
-            default:
-               cardValue = (char) ('0' + cardNum);
-         }
-      }
-      else
-         cardValue = 'A';
-
-      return new String(new char[] {cardValue});
-   }
 
 
 
@@ -825,6 +767,65 @@ class Card
 
 
 
+   /**
+    * Converts a number from 1-14 into the appropriate
+    * playing card value as a one-character string.
+    * If an invalid number is passed, "A" is returned.
+    *
+    * @param cardNum An integer to be converted into
+    *                a one-character string representation
+    * @return A one-character string representation that
+    *                corresponds to a playing card value
+    */
+   static String turnIntIntoCardValue(int cardNum)
+   {
+
+      char cardValue;
+
+      if (cardNum >= 1 && cardNum <= 14)
+      {
+         switch (cardNum)
+         {
+            case 1:
+            {
+               cardValue = 'A';
+               break;
+            }
+            case 10:
+            {
+               cardValue = 'T';
+               break;
+            }
+            case 11:
+            {
+               cardValue = 'J';
+               break;
+            }
+            case 12:
+            {
+               cardValue = 'Q';
+               break;
+            }
+            case 13:
+            {
+               cardValue = 'K';
+               break;
+            }
+            case 14:
+            {
+               cardValue = 'X';
+               break;
+            }
+            default:
+               cardValue = (char) ('0' + cardNum);
+         }
+      }
+      else
+         cardValue = 'A';
+
+      return new String(new char[] {cardValue});
+   }
+
 
 
 
@@ -967,7 +968,7 @@ class Card
          valuRanks = new Character[15];
          for (int cardNum = 0; cardNum <= 14; ++cardNum)
          {
-            char cardValue = GUICard.turnIntIntoCardValue(cardNum).charAt(0);
+            char cardValue = turnIntIntoCardValue(cardNum).charAt(0);
             valuRanks[cardNum] = cardValue;
          }
       }
