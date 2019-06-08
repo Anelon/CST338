@@ -24,19 +24,6 @@ import javax.swing.border.Border;
 
 public class MVC
 {
-   static int NUM_CARDS_PER_HAND = 7;
-   static int  NUM_PLAYERS = 2;
-   static int firstCard = 0;
-   static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
-   static JLabel[] playedCardLabels  = new JLabel[NUM_PLAYERS];
-   static JLabel[] playLabelText  = new JLabel[NUM_PLAYERS];
-   static int humanScore = 0;
-   static int cpuScore = 0;
-   static String humanString = ("Human Player"+ "    " +"Score:"
-      + humanScore );
-   static String cpuString = ("CPU Player" + "    " +"Score:" + cpuScore );
-   static JButton[] humanLabels = new JButton[NUM_CARDS_PER_HAND];
-
 
 
    public static void main(String[] args)
@@ -53,15 +40,6 @@ public class MVC
    }
 
 
-
-
-
-   //Button action returns position of card that player chose
-   public static int humanCardPosition (int chosenCardPosition)
-   {
-      int cardLocation = chosenCardPosition;
-      return cardLocation;
-   }
 
 
 
