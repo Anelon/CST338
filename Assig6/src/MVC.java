@@ -24,7 +24,7 @@ import javax.swing.border.Border;
 
 public class MVC
 {
-   
+
 
 
    public static void main(String[] args)
@@ -145,12 +145,12 @@ class Model
          if (locationToPlay == Direction.LEFT)
          {
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
-            gameGoodToGo = framework.takeCard(getPlayerIndex(playerOrComputer));
+            gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
          }
          else
          {
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-            gameGoodToGo = framework.takeCard(getPlayerIndex(playerOrComputer));
+            gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
          }
          updateCardArea(playerOrComputer.entityType);
          updatePlayedCardArea();
@@ -160,16 +160,7 @@ class Model
       if (!gameGoodToGo)
          MVC.endGame();
    }
-
-
-   //for use with CardGameFramework's takeCard
-   int getPlayerIndex(Player playerOrComputer)
-   {
-      if (playerOrComputer.entityType == Entity.PLAYER)
-         return 0;
-      else
-         return 1;
-   }
+   
 
 
 
@@ -224,7 +215,7 @@ class Model
 
 
 
-   void updateCardArea(Entity entityType)
+   private void updateCardArea(Entity entityType)
    {
       if (entityType == Model.Entity.PLAYER)
          attachedView.updateComputerHandImagesArray(computer.playerHand);
@@ -351,6 +342,11 @@ class Player
    public Vector<Card> getPlayableCards(Card left, Card right)
    {
       return playerHand.getPlayableCards(left, right);
+   }
+
+   public int toInt()
+   {
+      return entityType.ordinal();
    }
 }
 
