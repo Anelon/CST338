@@ -526,6 +526,11 @@ class Clock implements Runnable
       run();
    }
 
+   public void stopClock()
+   {
+      clockCountingDown = false;
+   }
+
 
 }
 
