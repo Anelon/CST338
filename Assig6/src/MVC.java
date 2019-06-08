@@ -145,13 +145,12 @@ class Model
          if (locationToPlay == Direction.LEFT)
          {
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
-            gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
          }
          else
          {
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-            gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
          }
+         gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
          updateCardArea(playerOrComputer.entityType);
          updatePlayedCardArea();
          playerOrComputer.usedTurn = true;
@@ -198,7 +197,7 @@ class Model
             lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
          else
             lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-         
+
          updateCardArea(playerOrComputer.entityType);
          updatePlayedCardArea();
          playerOrComputer.usedTurn = true;
