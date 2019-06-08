@@ -90,8 +90,6 @@ public class MVC
 
 class Model
 {
-
-
    private Player human;
    private Player computer;
    private static Card lastPlayedLeftCard;
@@ -103,8 +101,21 @@ class Model
 
    public enum Direction
    {
-      //right will probably be unused, left here to clarify intent
-      LEFT, RIGHT
+      LEFT
+         {
+            void setCardAt(Card card)
+            {
+               lastPlayedLeftCard = card;
+            }
+         },
+      RIGHT
+         {
+            void setCardAt(Card card)
+            {
+               lastPlayedRightCard = card;
+            }
+         };
+      abstract void setCardAt(Card card);
    }
 
 
@@ -138,15 +149,8 @@ class Model
 
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
-         if (locationToPlay == Direction.LEFT)
-         {
-            lastPlayedLeftCard = playerOrComputer.playerHand.playCard(cardIndex);
-         }
-         else
-         {
-            lastPlayedRightCard = playerOrComputer.playerHand.playCard(cardIndex);
-         }
-         
+         locationToPlay.setCardAt((playerOrComputer.playerHand.playCard(cardIndex)));
+
          gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
          playerOrComputer.updateCardArea();
          updatePlayedCardArea();
@@ -190,7 +194,7 @@ class Model
    {
       if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getNumCards())
       {
-         
+
          playerOrComputer.stackPosition = playerOrComputer.playerHand.playCard(cardIndex);
          playerOrComputer.updateCardArea();
          updatePlayedCardArea();
@@ -241,7 +245,7 @@ class Model
 
 
 
-//tested by replacing lastPlayedCard with a new Card() instance, works
+   //tested by replacing lastPlayedCard with a new Card() instance, works
    private void calculateHighCardScore()
    {
       int leftCardValue = lastPlayedLeftCard.valueToInt();
@@ -256,7 +260,7 @@ class Model
 
 
 
-//untested but trivial
+   //untested but trivial
    private void calculateBuildScore()
    {
       if (human.skippedTurn)
@@ -1911,6 +1915,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
