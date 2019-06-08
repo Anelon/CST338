@@ -368,6 +368,9 @@ Handle logic for computer's turn
 class View
 {
    private static CardTable table = new CardTable("Card Table", 7, 2);
+   JLabel[] computerHandImages;
+   JLabel[] playerHandImages;
+   
 
    View()
    {
@@ -387,7 +390,20 @@ class View
 
    void updatePlayerCardImagesArray(Hand playerHand)
    {
-
+      table.pnlComputerHand.removeAll();
+      
+      int handSize = playerHand.getNumCards();
+      playerHandImages = new JLabel[handSize];
+      for (int i = 0; i < handSize; ++i)
+      {
+         playerHandImages[i] = new JLabel(GUICard.getIcon(playerHand.inspectCard(i)));
+      }
+      for (JLabel card: playerHandImages) 
+      {
+         table.pnlHumanHand.add(card);
+      }
+      table.revalidate();
+      table.repaint();
    }
 
    void updateComputerHandImagesArray(Hand computerHand)
