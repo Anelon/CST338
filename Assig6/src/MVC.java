@@ -844,13 +844,13 @@ class Card
    //Static finals for default card values
    public static final Suit DEFAULT_SUIT = Suit.spades;
    public static final char DEFAULT_VALUE = ACE;
-   public static Character[] valuRanks;
-   public static final Suit[] suitOrder = new Suit[]{Suit.hearts, Suit.clubs, Suit.diamonds, Suit.spades};
+   private static Character[] valuRanks;
+   private static final Suit[] suitOrder = new Suit[]{Suit.hearts, Suit.clubs, Suit.diamonds, Suit.spades};
 
 
 
 
-   
+
 
 
 
@@ -964,7 +964,7 @@ class Card
 
 
    //default constructor
-   public Card()
+   Card()
    {
       value = ACE;
       suit = Suit.spades;
@@ -979,13 +979,9 @@ class Card
    //For use of checking of the values are valid
    private boolean isValid(char newValue, Suit newSuit)
    {
-      if ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
+      return ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
          || newValue == ACE || newValue == KING || newValue == QUEEN
-         || newValue == TEN || newValue == JACK || newValue == JOKER)
-      {
-         return true;
-      }
-      return false;
+         || newValue == TEN || newValue == JACK || newValue == JOKER);
    }
 
 
