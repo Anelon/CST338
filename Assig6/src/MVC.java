@@ -188,7 +188,16 @@ class Model
 
 
 
+   public void skipTurn()
+   {
+      doNothing(human);
+   }
 
+   private void doNothing(Player humanOrComputer)
+   {
+      humanOrComputer.usedTurn = true;
+      turnPass();
+   }
 
 
 
