@@ -370,18 +370,59 @@ Handle logic for computer's turn
 }
 
 //temporary, should have model initialize the view based on controller input
-class View
+class View extends JFrame
 {
    private static CardTable table = new CardTable("Card Table", 7, 2);
    JLabel[] computerHandImages;
    JLabel[] playerHandImages;
+   static int DEFAULT_NUM_CARDS_PER_HAND = 7;
+   static int DEFAULT_NUM_PLAYERS = 2;
+   static int MAX_CARDS_PER_HAND = 56;
+   static int MAX_PLAYERS = 2; 
+   private int numCardsPerHand;
+   private int numPlayers;
+   static JLabel[] computerLabels = new JLabel[DEFAULT_NUM_CARDS_PER_HAND];
+   static JLabel[] humanLabels = new JLabel[DEFAULT_NUM_CARDS_PER_HAND];
+   static JLabel[] playedCardLabels = new JLabel[DEFAULT_NUM_PLAYERS];
+   public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
+   
+   
 
 
    View()
    {
-      table.setSize(800, 600);
-      table.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-      table.setVisible(true);
+      
+      this.setSize(800, 600);
+      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      this.setVisible(true);
+      this.setLocationRelativeTo(null);
+      
+      GridLayout grideLayout = new GridLayout(3,1);
+      this.setLayout(grideLayout);
+      
+      pnlComputerHand = new JPanel();
+      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
+      pnlComputerHand.setBackground(Color.LIGHT_GRAY);
+      Border textColor = new LineBorder(Color.BLACK);
+      pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
+      add(BorderLayout.NORTH, pnlComputerHand);
+
+
+      this.pnlPlayArea = new JPanel();
+      pnlPlayArea.setLayout(new GridLayout(2, 2, 10, 10));
+      Border textColorPlayArea = new LineBorder(Color.BLACK);
+      pnlPlayArea.setBorder(new TitledBorder(textColorPlayArea, "Play Area"));
+      pnlPlayArea.setBackground(Color.LIGHT_GRAY);
+      add(BorderLayout.CENTER,pnlPlayArea);
+
+      this.pnlHumanHand = new JPanel();
+      pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
+      Border textColorHumanHand= new LineBorder(Color.BLACK);
+      pnlHumanHand.setBorder(new TitledBorder(textColorHumanHand,
+         "Human Hand"));
+      pnlHumanHand.setBackground(Color.LIGHT_GRAY);
+      add(BorderLayout.SOUTH,pnlHumanHand);
+      
 
       Thread clock = new Thread(new Clock());
       clock.start();
