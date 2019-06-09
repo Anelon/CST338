@@ -93,16 +93,15 @@ class Model
 {
    private Player human;
    private Player computer;
-   private static Card lastPlayedLeftCard;
-   private static Card lastPlayedRightCard;
+   static Card lastPlayedLeftCard;
+   static Card lastPlayedRightCard;
    private View attachedView;
    private GameType currentGameType;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
 
    public enum Direction
-   {
-      LEFT
+   {LEFT
          {
             void setCardAt(Card card)
             {
@@ -375,6 +374,7 @@ class View extends JFrame
    private static CardTable table = new CardTable("Card Table", 7, 2);
    JLabel[] computerHandImages;
    JLabel[] playerHandImages;
+   JLabel[] playerAreaImages;
    static int DEFAULT_NUM_CARDS_PER_HAND = 7;
    static int DEFAULT_NUM_PLAYERS = 2;
    static int MAX_CARDS_PER_HAND = 56;
@@ -428,10 +428,19 @@ class View extends JFrame
       clock.start();
    }
 
+   //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
 
    void update()
    {
-      //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
+      table.revalidate();
+      table.repaint();
+      table.pnlHumanHand.revalidate();
+      table.pnlHumanHand.repaint();
+      table.pnlComputerHand.revalidate();
+      table.pnlComputerHand.repaint();
+      table.pnlPlayArea.revalidate();
+      table.pnlPlayArea.repaint();
+      
    }
 
    void updatePlayerCardImagesArray(Hand playerHand)
@@ -463,12 +472,30 @@ class View extends JFrame
       table.pnlComputerHand.revalidate();
       table.pnlComputerHand.repaint();
    }
-
-   void updatePlayedCardImagesArray(Card[] twoCardArray)
+   
+    //need this to send updates from model, should update the two 
+    //cards in playArea; left card is 0, right card is 1
+   
+   public JLabel[] updatePlayedCardImagesArray(Card[] twoCardArray)
    {
-      //need this to send updates from model, should update the two cards in playArea; left card is 0, right card is 1
+      JLabel[] twoCardArr = new JLabel [2];
+      int handSize = twoCardArray.length;
+      playerAreaImages = new JLabel[handSize];
+      for (int i = 0; i < twoCardArr.length; ++i){   
+      // error: cannot find symbol
+        // twoCardArr[0] = new JLabel(GUICard.getIcon(twoCardArray.inspectCard(i)));
+        // table.pnlComputerHand.add(computerHandImages[i]);
+         //twoCardArr[1] = new JLabel(GUICard.getIcon(twoCardArray.inspectCard(i)));
+         //table.pnlHumanHand.add(playerHandImages[i]);
+      }
+      table.pnlPlayArea.revalidate();
+      table.pnlPlayArea.repaint();
+     
       System.out.println("played card images updated");
+      return  twoCardArr;
    }
+   
+   
 
    void updateScores(String[] scores)
    {
