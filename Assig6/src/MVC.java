@@ -478,27 +478,20 @@ class View extends JFrame
    
    void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
-     // JLabel[] twoCardArray = new JLabel [2];
+  
       int handSize = twoCardArray.length;
       playerAreaImages = new JLabel[handSize];
       for (int i = 0; i < twoCardArray.length; ++i){   
-      
-    /*  MVC.java:486: error: incompatible types: JLabel cannot be converted to Card
-        twoCardArray[0] = new JLabel(GUICard.getIcon(twoCardArray[i]));
-        table.pnlComputerHand.add(computerHandImages[i]);        
+       pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));        
         
-        MVC.java:488: error: incompatible types: JLabel cannot be converted to Card
-        twoCardArray[1] = new JLabel(GUICard.getIcon(twoCardArray[i]));
-        table.pnlHumanHand.add(playerHandImages[i]);
-        */
-      }
+     }
       pnlPlayArea.revalidate();
       pnlPlayArea.repaint();
       table.pnlPlayArea.revalidate();
       table.pnlPlayArea.repaint();
      
       System.out.println("played card images updated");
-      //return  twoCardArray;
+     
    }
    
    
