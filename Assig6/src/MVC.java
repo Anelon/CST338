@@ -398,11 +398,6 @@ class View
    }
 
 
-   void update()
-   {
-      //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
-   }
-
    void updatePlayerCardImagesArray(Hand playerHand)
    {
       table.pnlHumanHand.removeAll();
@@ -417,6 +412,8 @@ class View
       table.pnlHumanHand.revalidate();
       table.pnlHumanHand.repaint();
    }
+
+
 
    void updateComputerHandImagesArray(Hand computerHand)
    {
@@ -438,7 +435,7 @@ class View
 
       int handSize = twoCardArray.length;
       for (int i = 0; i < twoCardArray.length; ++i){
-         table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
+       //  table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
 
       }
       table.pnlPlayArea.revalidate();
