@@ -86,9 +86,16 @@ public class MVC
 }
 
 
-
-
-
+/**
+ * Model for the card game. Holds the data and computations for the game.
+ * human - human player
+ * computer - computer opponent
+ * lastPlayedLeftCard - the last played card to the left stack
+ * lastPlayedRightCard - the last played card to the right stack
+ * attachedView - the corresponding MVC View object
+ * framework - the CardGameFramework for deck/card interactions
+ * Direction - enumeration to better control directional indications (left, right)
+ */
 class Model
 {
    private Player human;
@@ -121,6 +128,13 @@ class Model
 
 
 
+
+
+   /**
+    * This model holds the data and computation work for the card game.
+    * The model updates the view at relevant points.
+    *
+    */
    Model()
    {
       human = new HumanPlayer(framework.getHand(0));
@@ -139,7 +153,13 @@ class Model
 
 
 
-   void calculateScore()
+
+
+
+   /**
+    * Updates the score attributes of the two players in the game
+    */
+   private void calculateScore()
    {
       {
          if (human.skippedTurn)
@@ -148,12 +168,38 @@ class Model
             computer.score -= 1;
       }
    }
+
+
+
+
+
+
+   /**
+    * Plays the card indicated from the human player's hand onto the
+    * stack chosen.
+    *
+    * Functions by calling overloaded playCard(Player, int, Direction)
+    *
+    * @param cardIndex  Index within the player's hand of the card to be played
+    * @param locationToPlay Which "stack" to play the chosen card to
+    */
    void playCard(int cardIndex, Direction locationToPlay)
    {
       playCard(human, cardIndex, locationToPlay);
    }
 
 
+
+
+
+
+   /**
+    * Plays the card indicated from the chosen Player objet's hand to the
+    * stack chosen.
+    * @param playerOrComputer
+    * @param cardIndex
+    * @param locationToPlay
+    */
    private void playCard(Player playerOrComputer, int cardIndex, Direction locationToPlay)
    {
 
@@ -174,22 +220,55 @@ class Model
    }
 
 
+
+
+
+
+   /**
+    * Requests the View stop its clock
+    */
    public void stopClock()
    {
       attachedView.mainClock.stopClock();
    }
 
+
+
+
+
+
+   /**
+    * Requests the view restarts its clock
+    */
    public void startClock()
    {
       attachedView.mainClock.run();
    }
 
 
+
+
+
+
+   /**
+    * Passes the human player's turn.
+    * Calls doNothing()
+    */
    public void skipTurn()
    {
       doNothing(human);
    }
 
+
+
+
+
+
+   /**
+    * Passes the chosen player's turn.
+    * Calls turnPass()
+    * @param humanOrComputer
+    */
    private void doNothing(Player humanOrComputer)
    {
       humanOrComputer.usedTurn = true;
@@ -198,6 +277,17 @@ class Model
 
 
 
+
+
+
+   /**
+    * Passes one "half turn" and gives control to the next player
+    * depending on whose turn has been completed. If both players
+    * have completed a turn, scores are calculated and updated.
+    * human always goes first.
+    *
+    * Calls computerTurn(), calculateScore(), updateScore()
+    */
    private void turnPass()
    {
       if (!human.usedTurn)
@@ -222,7 +312,14 @@ class Model
 
 
 
-
+   /**
+    * Requests the view update the card area for the given Player object.
+    *
+    * Calls Player.updateCardArea()
+    *
+    * @param humanOrComputer Player object whose visual card area should
+    *                        be updated
+    */
    private void updateCardArea(Player humanOrComputer)
    {
       humanOrComputer.updateCardArea();
@@ -233,6 +330,11 @@ class Model
 
 
 
+   /**
+    * Requests the view update the play area
+    *
+    * Calls View.updatePlayedCardImagesArray()
+    */
    private void updatePlayedCardArea()
    {
       attachedView.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
@@ -241,6 +343,13 @@ class Model
 
 
 
+
+
+   /**
+    * Requests the view update the score display
+    *
+    * Calls View.updateScores()
+    */
    private void updateScore()
    {
       attachedView.updateScores(new String[]{(Integer.toString(human.score)), Integer.toString(computer.score)});
@@ -251,6 +360,9 @@ class Model
 
 
 
+   /**
+    * Performs the computer Player's turn actions
+    */
    private void computerTurn()
    {
       //find playable cards
@@ -267,16 +379,14 @@ class Model
 
    }
 
-   /*
 
 
 
 
-computerTurn(): void
-Handle logic for computer's turn
+
+   /**
+    * Abstract class for the two main players of the game
     */
-
-
    abstract class Player
    {
       Hand playerHand;
@@ -284,6 +394,7 @@ Handle logic for computer's turn
       boolean usedTurn = false;
       boolean skippedTurn = false;
       Card stackPosition;
+
 
       Player()
       {
@@ -301,19 +412,53 @@ Handle logic for computer's turn
       public abstract int toInt();
    }
 
+
+
+
+
+
+   /**
+    * Player class for the human player of the game
+    */
    class HumanPlayer extends Player
    {
+      /**
+       * Constructor for the human player.  stackPosition is
+       * set to the left stack in the event the highCardGame is
+       * reimplemented.
+       * @param hand The hand that should be assigned to the human player.
+       */
       HumanPlayer(Hand hand)
       {
          stackPosition = Model.lastPlayedLeftCard;
          playerHand = hand;
       }
 
+
+
+
+
+
+      /**
+       * returns an int representation of the player as it relates to the
+       * CardGameFramework array.
+       * @return 0, the human player's position in the cardGameFramework array.
+       */
       public int toInt()
       {
          return 0;
       }
 
+
+
+
+
+
+      /**
+       * Requests the view update the human player's card area.
+       *
+       * Calls View.updatePlayerCardImagesArray()
+       */
       public void updateCardArea()
       {
          attachedView.updatePlayerCardImagesArray(playerHand);
@@ -322,20 +467,53 @@ Handle logic for computer's turn
 
    }
 
+
+
+
+
+
+   /**
+    * Player class for the computer opponent of the game
+    */
    class ComputerPlayer extends Player
    {
+      /**
+       * Constructor for the human player.  stackPosition is
+       * set to the left stack in the event the highCardGame is
+       * reimplemented.
+       * @param hand The hand that should be assigned to the computer player.
+       */
       ComputerPlayer(Hand hand)
       {
          stackPosition = Model.lastPlayedRightCard;
          playerHand = hand;
       }
 
+
+
+
+
+
+      /**
+       * Returns the int value of the computer player as it corresponds
+       * to the CardGameFramework array.
+       * @return 1, the computer's index in the CardGameFramework array
+       */
       public int toInt()
       {
          return 1;
       }
 
 
+
+
+
+
+      /**
+       * Requests the view update the computer's card area.
+       *
+       * Calls View.updateComputerHandImagesArray()
+       */
       public void updateCardArea()
       {
          attachedView.updateComputerHandImagesArray(playerHand);
@@ -344,6 +522,11 @@ Handle logic for computer's turn
 
    }
 }
+
+
+
+
+
 
 //temporary, should have model initialize the view based on controller input
 class View
