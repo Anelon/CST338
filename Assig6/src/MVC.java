@@ -96,7 +96,6 @@ class Model
    private static Card lastPlayedLeftCard;
    private static Card lastPlayedRightCard;
    private View attachedView;
-   private GameType currentGameType;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
 
@@ -120,40 +119,10 @@ class Model
    }
 
 
-   public enum GameType
+
+
+   Model()
    {
-      HIGH
-         {
-            void calculateScore(Player human, Player computer)
-            {
-               int leftCardValue = lastPlayedLeftCard.valueToInt();
-               int rightCardValue = lastPlayedRightCard.valueToInt();
-               if (leftCardValue > rightCardValue)
-                  human.score += 1;
-               else if (rightCardValue > leftCardValue)
-                  computer.score += 1;
-            }
-
-         },
-      BUILD
-         {
-            void calculateScore(Player human, Player computer)
-            {
-               {
-                  if (human.skippedTurn)
-                     human.score -= 1;
-                  if (computer.skippedTurn)
-                     computer.score -= 1;
-               }
-            }
-         };
-      abstract void calculateScore(Player human, Player computer);
-   }
-
-
-   Model(GameType gameType)
-   {
-      currentGameType = gameType;
       human = new HumanPlayer(framework.getHand(0));
       computer = new ComputerPlayer(framework.getHand(1));
       attachedView = new View();
@@ -170,6 +139,15 @@ class Model
 
 
 
+   void calculateScore()
+   {
+      {
+         if (human.skippedTurn)
+            human.score -= 1;
+         if (computer.skippedTurn)
+            computer.score -= 1;
+      }
+   }
    void playCard(int cardIndex, Direction locationToPlay)
    {
       playCard(human, cardIndex, locationToPlay);
@@ -195,15 +173,15 @@ class Model
          MVC.endGame();
    }
 
-   
+
    public void stopClock()
    {
-      
+      attachedView.mainClock.stopClock();
    }
-   
+
    public void startClock()
    {
-      
+      attachedView.mainClock.run();
    }
 
 
@@ -230,7 +208,7 @@ class Model
          computerTurn();
       else
       {
-         currentGameType.calculateScore(human, computer);
+         calculateScore();
          updateScore();
          human.usedTurn = false;
          human.skippedTurn = false;
@@ -383,7 +361,7 @@ class View
       table.setSize(800, 600);
       table.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       table.setVisible(true);
-      
+
 
 
       Thread clock = new Thread(mainClock);
@@ -474,7 +452,7 @@ class Controller
 
    Controller()
    {
-      Model coreModel = new Model(Model.GameType.HIGH);
+      Model coreModel = new Model();
 
    }
    /*
@@ -539,12 +517,8 @@ class Clock implements Runnable
       return format.format(hours) + ":" + format.format(minutes);
    }
 
-   public void resetClock()
-   {
-      run();
-   }
 
-   public void stopClock()
+   void stopClock()
    {
       clockCountingDown = false;
    }
@@ -733,8 +707,8 @@ class CardTable extends JFrame
       //JFrame frame = new JFrame("High Card Game");
 
       pnlComputerHand = new JPanel();
-      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10)); 
-          
+      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
+
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
       Border textColor = new LineBorder(Color.BLACK);
       pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
@@ -756,7 +730,7 @@ class CardTable extends JFrame
          "Human Hand"));
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
-      
+
       timeButtons = new JPanel();
       timeButtons.setLayout(new FlowLayout());
       Border textColorTimer= new LineBorder(Color.BLACK);
@@ -771,7 +745,7 @@ class CardTable extends JFrame
       stop.setPreferredSize(new Dimension (100, 50));
       start.setPreferredSize(new Dimension (100, 50));
       cantPlayHumanHand.setPreferredSize(new Dimension (200, 50));
-      
+
       timeButtons.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,timeButtons);
 
@@ -1963,6 +1937,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
