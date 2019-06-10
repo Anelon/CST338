@@ -378,6 +378,8 @@ class View
 
    View()
    {
+      GridLayout layout = new GridLayout(4,1);
+      table.setLayout(layout);
       table.setSize(800, 600);
       table.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       table.setVisible(true);
@@ -698,7 +700,8 @@ class CardTable extends JFrame
    static int DEFAULT_NUM_PLAYERS = 2;
    private int numCardsPerHand;
    private int numPlayers;
-   public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
+   public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea, timeButtons;
+   public JButton start, stop, cantPlayHumanHand;
 
    CardTable(String title, int numCardsPerHand, int numPlayers)
    {
@@ -730,7 +733,8 @@ class CardTable extends JFrame
       //JFrame frame = new JFrame("High Card Game");
 
       pnlComputerHand = new JPanel();
-      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
+      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10)); 
+          
       pnlComputerHand.setBackground(Color.LIGHT_GRAY);
       Border textColor = new LineBorder(Color.BLACK);
       pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
@@ -752,6 +756,24 @@ class CardTable extends JFrame
          "Human Hand"));
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
+      
+      timeButtons = new JPanel();
+      timeButtons.setLayout(new FlowLayout());
+      Border textColorTimer= new LineBorder(Color.BLACK);
+      timeButtons.setBorder(new TitledBorder(textColorTimer,
+         "Timer"));
+      stop = new JButton("Start timer");
+      start = new JButton("Stop timer");
+      cantPlayHumanHand = new JButton("I cannot play!");
+      timeButtons.add(stop);
+      timeButtons.add(start);
+      timeButtons.add(cantPlayHumanHand);
+      stop.setPreferredSize(new Dimension (100, 50));
+      start.setPreferredSize(new Dimension (100, 50));
+      cantPlayHumanHand.setPreferredSize(new Dimension (200, 50));
+      
+      timeButtons.setBackground(Color.LIGHT_GRAY);
+      add(BorderLayout.SOUTH,timeButtons);
 
    }
 
