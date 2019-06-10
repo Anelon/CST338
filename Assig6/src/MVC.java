@@ -99,7 +99,6 @@ class Model
    private GameType currentGameType;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
-   private int nothingDone = 0;
 
    public enum Direction
    {
@@ -171,18 +170,19 @@ class Model
 
 
 
+   void playCard(int cardIndex, Direction locationToPlay)
+   {
+      playCard(human, cardIndex, locationToPlay);
+   }
 
 
-   void playCard(Player playerOrComputer, int cardIndex, Direction locationToPlay)
+   private void playCard(Player playerOrComputer, int cardIndex, Direction locationToPlay)
    {
 
       boolean gameGoodToGo = true;
 
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
-         //reset nothingDone counter
-         nothingDone = 0;
-
          locationToPlay.setCardAt((playerOrComputer.playerHand.playCard(cardIndex)));
 
          gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
@@ -204,13 +204,6 @@ class Model
 
    private void doNothing(Player humanOrComputer)
    {
-      if (++nothingDone == 2)
-      {
-         //both players haven't done anything
-         framework.deal();
-         human.updateCardArea();
-         computer.updateCardArea();
-      }
       humanOrComputer.usedTurn = true;
       turnPass();
    }
@@ -235,25 +228,7 @@ class Model
          computer.skippedTurn = false;
       }
    }
-
-
-
-
-
-   void playCard(Player playerOrComputer, int cardIndex)
-   {
-      if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getNumCards())
-      {
-         //reset doneNothing counter
-         nothingDone = 0;
-
-         playerOrComputer.stackPosition = playerOrComputer.playerHand.playCard(cardIndex);
-         playerOrComputer.updateCardArea();
-         updatePlayedCardArea();
-         playerOrComputer.usedTurn = true;
-         turnPass();
-      }
-   }
+   
 
 
 
@@ -401,6 +376,11 @@ class View
    }
 
 
+   void update()
+   {
+      //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
+   }
+
    void updatePlayerCardImagesArray(Hand playerHand)
    {
       table.pnlHumanHand.removeAll();
@@ -415,8 +395,6 @@ class View
       table.pnlHumanHand.revalidate();
       table.pnlHumanHand.repaint();
    }
-
-
 
    void updateComputerHandImagesArray(Hand computerHand)
    {
@@ -435,19 +413,8 @@ class View
 
    void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
-
-      int handSize = twoCardArray.length;
-      for (int i = 0; i < twoCardArray.length; ++i){
-       //  table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
-
-      }
-      table.pnlPlayArea.revalidate();
-      table.pnlPlayArea.repaint();
-      table.pnlPlayArea.revalidate();
-      table.pnlPlayArea.repaint();
-
+      //need this to send updates from model, should update the two cards in playArea; left card is 0, right card is 1
       System.out.println("played card images updated");
-
    }
 
    void updateScores(String[] scores)
@@ -455,6 +422,32 @@ class View
       //need this to send updates from model, should update the two scores; left score/label is 0, right is 1
       System.out.println("scores images updated");
    }
+
+   void hideAllPlayerCardButtons()
+   {
+      //need this to send updates from model
+      System.out.println("buttons hidden");
+   }
+
+   void showAllPlayerCardButtons()
+   {
+      //need this...
+      System.out.println("buttons shown");
+   }
+
+   void turnPlayedCardsIntoButtons()
+   {
+      //need this...
+      System.out.println("played cards converted from jlabels to buttons");
+   }
+
+   void turnPlayedCardsIntoJLabels()
+   {
+      //need this...
+      System.out.println("played cards converted from buttons to jlabels");
+   }
+
+
 
 }
 
@@ -1935,6 +1928,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
