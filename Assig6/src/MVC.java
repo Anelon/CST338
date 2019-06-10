@@ -201,7 +201,7 @@ class Model
 
    private void doNothing(Player humanOrComputer)
    {
-      if (++doneNothing == 2)
+      if (++nothingDone == 2)
       {
          //both players haven't done anything
          framework.deal();
@@ -242,7 +242,7 @@ class Model
       if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getNumCards())
       {
          //reset doneNothing counter
-         doneNothing = 0;
+         nothingDone = 0;
 
          playerOrComputer.stackPosition = playerOrComputer.playerHand.playCard(cardIndex);
          playerOrComputer.updateCardArea();
