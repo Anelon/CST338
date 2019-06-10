@@ -180,6 +180,9 @@ class Model
 
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
+         //reset nothingDone counter
+         nothingDone = 0;
+
          locationToPlay.setCardAt((playerOrComputer.playerHand.playCard(cardIndex)));
 
          gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
