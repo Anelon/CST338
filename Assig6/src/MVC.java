@@ -388,11 +388,6 @@ class View
    }
 
 
-   void update()
-   {
-      //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
-   }
-
    void updatePlayerCardImagesArray(Hand playerHand)
    {
       table.pnlHumanHand.removeAll();
@@ -408,6 +403,8 @@ class View
       table.pnlHumanHand.repaint();
    }
 
+   
+   
    void updateComputerHandImagesArray(Hand computerHand)
    {
       table.pnlComputerHand.removeAll();
