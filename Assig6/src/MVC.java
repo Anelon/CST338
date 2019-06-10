@@ -528,7 +528,7 @@ class Model
 
 
 
-//temporary, should have model initialize the view based on controller input
+//This is the interface for the card game. 
 class View
 {
    private static CardTable table = new CardTable("Card Table", 7, 2);
@@ -539,7 +539,7 @@ class View
 
    View()
    {
-      GridLayout layout = new GridLayout(4,1);
+      GridLayout layout = new GridLayout(5,1);
       table.setLayout(layout);
       table.setSize(800, 600);
       table.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -552,11 +552,7 @@ class View
    }
 
 
-   void update()
-   {
-      //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
-   }
-
+   //Sends update from the model, this updates the play card images.
    void updatePlayerCardImagesArray(Hand playerHand)
    {
       table.pnlHumanHand.removeAll();
@@ -571,7 +567,8 @@ class View
       table.pnlHumanHand.revalidate();
       table.pnlHumanHand.repaint();
    }
-
+   
+   //Sends update from the model, this updates the computer hand images.
    void updateComputerHandImagesArray(Hand computerHand)
    {
       table.pnlComputerHand.removeAll();
@@ -587,45 +584,42 @@ class View
       table.pnlComputerHand.repaint();
    }
 
+   //Sends updates from model this should update the two cards in playArea.
    void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
-      //need this to send updates from model, should update the two cards in playArea; left card is 0, right card is 1
-      System.out.println("played card images updated");
+       for (int i = 0; i < twoCardArray.length; ++i){  
+         //table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));   
    }
-
+      table.pnlPlayArea.revalidate();
+      table.pnlPlayArea.repaint();      
+ 
+   }
+   //Sends updates from model this should update the two scores.
+   //Player score is at scores[0]. Cpu score is at scores[1].
    void updateScores(String[] scores)
    {
-      //need this to send updates from model, should update the two scores; left score/label is 0, right is 1
-      System.out.println("scores images updated");
+      JLabel playersScores = new JLabel(scores[0]);
+      JLabel cupsScores = new JLabel(scores[1]);
+      
+      for (int i = 0; i <1; ++i){          
+        table.scoresPanel.add(playersScores, 1, 0); 
+        playersScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));          
    }
-
-   void hideAllPlayerCardButtons()
-   {
-      //need this to send updates from model
-      System.out.println("buttons hidden");
+      
+      for (int i = 0; i <1; ++i){ 
+         table.scoresPanel.add(cupsScores, 1 , 1);   
+         cupsScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));      
+           
    }
-
-   void showAllPlayerCardButtons()
-   {
-      //need this...
-      System.out.println("buttons shown");
-   }
-
-   void turnPlayedCardsIntoButtons()
-   {
-      //need this...
-      System.out.println("played cards converted from jlabels to buttons");
-   }
-
-   void turnPlayedCardsIntoJLabels()
-   {
-      //need this...
-      System.out.println("played cards converted from buttons to jlabels");
-   }
-
-
-
+     table.scoresPanel.revalidate();
+     table.scoresPanel.repaint();  
+   
 }
+}
+
+
+   
+
 
 
 //temporary, need to implement controller functions
@@ -857,8 +851,9 @@ class CardTable extends JFrame
    static int DEFAULT_NUM_PLAYERS = 2;
    private int numCardsPerHand;
    private int numPlayers;
-   public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea, timeButtons;
+   public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea, timeButtons, scoresPanel;
    public JButton start, stop, cantPlayHumanHand;
+   public JLabel cpuScore, playerScore;
 
    CardTable(String title, int numCardsPerHand, int numPlayers)
    {
@@ -887,8 +882,7 @@ class CardTable extends JFrame
       }
 
       /*This creates the card table GUI. */
-      //JFrame frame = new JFrame("High Card Game");
-
+     
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
 
@@ -900,7 +894,7 @@ class CardTable extends JFrame
 
 
       pnlPlayArea = new JPanel();
-      pnlPlayArea.setLayout(new GridLayout(2, 2, 300, 50));
+      pnlPlayArea.setLayout(new GridLayout(1, 1, 300, 50));
       Border textColorPlayArea = new LineBorder(Color.BLACK);
       pnlPlayArea.setBorder(new TitledBorder(textColorPlayArea, "Play Area"));
       pnlPlayArea.setBackground(Color.LIGHT_GRAY);
@@ -914,17 +908,35 @@ class CardTable extends JFrame
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
 
+     
+      
+      scoresPanel = new JPanel();
+      scoresPanel.setLayout(new GridLayout(2,2,10, 10));
+      Border textColorScore= new LineBorder(Color.BLACK);
+      scoresPanel.setBorder(new TitledBorder(textColorScore,
+         "Scores"));    
+      cpuScore = new JLabel("Computer's Score");
+      playerScore = new JLabel("Player's Score");
+      cpuScore.setFont(new Font("Times New Roman", Font.PLAIN, 18)); 
+      playerScore.setFont(new Font("Times New Roman", Font.PLAIN, 18)); 
+      scoresPanel.add(playerScore, 2, 0);
+      scoresPanel.add(cpuScore, 2, 1);
+
+      scoresPanel.setBackground(Color.LIGHT_GRAY);
+      add(BorderLayout.SOUTH,scoresPanel);
+      
       timeButtons = new JPanel();
       timeButtons.setLayout(new FlowLayout());
       Border textColorTimer= new LineBorder(Color.BLACK);
       timeButtons.setBorder(new TitledBorder(textColorTimer,
-         "Timer"));
+         "Card Game"));
       stop = new JButton("Start timer");
       start = new JButton("Stop timer");
       cantPlayHumanHand = new JButton("I cannot play!");
       timeButtons.add(stop);
       timeButtons.add(start);
       timeButtons.add(cantPlayHumanHand);
+      //This sets the size of the buttons.
       stop.setPreferredSize(new Dimension (100, 50));
       start.setPreferredSize(new Dimension (100, 50));
       cantPlayHumanHand.setPreferredSize(new Dimension (200, 50));
