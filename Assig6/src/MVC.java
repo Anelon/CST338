@@ -446,32 +446,6 @@ class View
       System.out.println("scores images updated");
    }
 
-   void hideAllPlayerCardButtons()
-   {
-      //need this to send updates from model
-      System.out.println("buttons hidden");
-   }
-
-   void showAllPlayerCardButtons()
-   {
-      //need this...
-      System.out.println("buttons shown");
-   }
-
-   void turnPlayedCardsIntoButtons()
-   {
-      //need this...
-      System.out.println("played cards converted from jlabels to buttons");
-   }
-
-   void turnPlayedCardsIntoJLabels()
-   {
-      //need this...
-      System.out.println("played cards converted from buttons to jlabels");
-   }
-
-
-
 }
 
 
