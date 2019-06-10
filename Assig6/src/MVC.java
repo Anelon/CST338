@@ -93,15 +93,16 @@ class Model
 {
    private Player human;
    private Player computer;
-   static Card lastPlayedLeftCard;
-   static Card lastPlayedRightCard;
+   private static Card lastPlayedLeftCard;
+   private static Card lastPlayedRightCard;
    private View attachedView;
    private GameType currentGameType;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
 
    public enum Direction
-   {LEFT
+   {
+      LEFT
          {
             void setCardAt(Card card)
             {
@@ -369,78 +370,27 @@ Handle logic for computer's turn
 }
 
 //temporary, should have model initialize the view based on controller input
-class View extends JFrame
+class View
 {
    private static CardTable table = new CardTable("Card Table", 7, 2);
    JLabel[] computerHandImages;
    JLabel[] playerHandImages;
-   JLabel[] playerAreaImages;
-   static int DEFAULT_NUM_CARDS_PER_HAND = 7;
-   static int DEFAULT_NUM_PLAYERS = 2;
-   static int MAX_CARDS_PER_HAND = 56;
-   static int MAX_PLAYERS = 2; 
-   private int numCardsPerHand;
-   private int numPlayers;
-   static JLabel[] computerLabels = new JLabel[DEFAULT_NUM_CARDS_PER_HAND];
-   static JLabel[] humanLabels = new JLabel[DEFAULT_NUM_CARDS_PER_HAND];
-   static JLabel[] playedCardLabels = new JLabel[DEFAULT_NUM_PLAYERS];
-   public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
-   
-   
 
 
    View()
    {
-      
-      this.setSize(800, 600);
-      this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      this.setVisible(true);
-      this.setLocationRelativeTo(null);
-      
-      GridLayout grideLayout = new GridLayout(3,1);
-      this.setLayout(grideLayout);
-      
-      pnlComputerHand = new JPanel();
-      pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
-      pnlComputerHand.setBackground(Color.LIGHT_GRAY);
-      Border textColor = new LineBorder(Color.BLACK);
-      pnlComputerHand.setBorder(new TitledBorder(textColor, "Computer Hand"));
-      add(BorderLayout.NORTH, pnlComputerHand);
-
-
-      this.pnlPlayArea = new JPanel();
-      pnlPlayArea.setLayout(new GridLayout(2, 2, 10, 10));
-      Border textColorPlayArea = new LineBorder(Color.BLACK);
-      pnlPlayArea.setBorder(new TitledBorder(textColorPlayArea, "Play Area"));
-      pnlPlayArea.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.CENTER,pnlPlayArea);
-
-      this.pnlHumanHand = new JPanel();
-      pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
-      Border textColorHumanHand= new LineBorder(Color.BLACK);
-      pnlHumanHand.setBorder(new TitledBorder(textColorHumanHand,
-         "Human Hand"));
-      pnlHumanHand.setBackground(Color.LIGHT_GRAY);
-      add(BorderLayout.SOUTH,pnlHumanHand);
-      
+      table.setSize(800, 600);
+      table.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      table.setVisible(true);
 
       Thread clock = new Thread(new Clock());
       clock.start();
    }
 
-   //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
 
    void update()
    {
-      table.revalidate();
-      table.repaint();
-      table.pnlHumanHand.revalidate();
-      table.pnlHumanHand.repaint();
-      table.pnlComputerHand.revalidate();
-      table.pnlComputerHand.repaint();
-      table.pnlPlayArea.revalidate();
-      table.pnlPlayArea.repaint();
-      
+      //update all the visible JPanels and JLabels in the cardTable (player area, computer area, play area, score)
    }
 
    void updatePlayerCardImagesArray(Hand playerHand)
@@ -472,29 +422,23 @@ class View extends JFrame
       table.pnlComputerHand.revalidate();
       table.pnlComputerHand.repaint();
    }
-   
-    //need this to send updates from model, should update the two 
-    //cards in playArea; left card is 0, right card is 1
-   
+
    void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
-  
+
       int handSize = twoCardArray.length;
-      playerAreaImages = new JLabel[handSize];
-      for (int i = 0; i < twoCardArray.length; ++i){   
-       pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));        
-        
-     }
-      pnlPlayArea.revalidate();
-      pnlPlayArea.repaint();
+      for (int i = 0; i < twoCardArray.length; ++i){
+         table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
+
+      }
       table.pnlPlayArea.revalidate();
       table.pnlPlayArea.repaint();
-     
+      table.pnlPlayArea.revalidate();
+      table.pnlPlayArea.repaint();
+
       System.out.println("played card images updated");
-     
+
    }
-   
-   
 
    void updateScores(String[] scores)
    {
