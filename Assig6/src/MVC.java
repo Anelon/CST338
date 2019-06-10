@@ -99,6 +99,7 @@ class Model
    private GameType currentGameType;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
+   private int nothingDone = 0;
 
    public enum Direction
    {
@@ -200,6 +201,10 @@ class Model
 
    private void doNothing(Player humanOrComputer)
    {
+      if (++doneNothing == 2)
+      {
+         //both players haven't done anything
+      }
       humanOrComputer.usedTurn = true;
       turnPass();
    }
@@ -233,6 +238,8 @@ class Model
    {
       if (playerOrComputer != null && cardIndex >=0 && cardIndex < playerOrComputer.playerHand.getNumCards())
       {
+         //reset doneNothing counter
+         doneNothing = 0;
 
          playerOrComputer.stackPosition = playerOrComputer.playerHand.playCard(cardIndex);
          playerOrComputer.updateCardArea();
