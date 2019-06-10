@@ -403,8 +403,8 @@ class View
       table.pnlHumanHand.repaint();
    }
 
-   
-   
+
+
    void updateComputerHandImagesArray(Hand computerHand)
    {
       table.pnlComputerHand.removeAll();
@@ -425,7 +425,7 @@ class View
 
       int handSize = twoCardArray.length;
       for (int i = 0; i < twoCardArray.length; ++i){
-         table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
+       //  table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
 
       }
       table.pnlPlayArea.revalidate();
