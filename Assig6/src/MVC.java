@@ -195,6 +195,16 @@ class Model
          MVC.endGame();
    }
 
+   
+   public void stopClock()
+   {
+      
+   }
+   
+   public void startClock()
+   {
+      
+   }
 
 
    public void skipTurn()
@@ -228,7 +238,7 @@ class Model
          computer.skippedTurn = false;
       }
    }
-   
+
 
 
 
@@ -363,6 +373,7 @@ class View
    private static CardTable table = new CardTable("Card Table", 7, 2);
    JLabel[] computerHandImages;
    JLabel[] playerHandImages;
+   public Clock mainClock = new Clock();
 
 
    View()
@@ -370,8 +381,10 @@ class View
       table.setSize(800, 600);
       table.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
       table.setVisible(true);
+      
 
-      Thread clock = new Thread(new Clock());
+
+      Thread clock = new Thread(mainClock);
       clock.start();
    }
 
