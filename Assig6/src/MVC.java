@@ -204,6 +204,9 @@ class Model
       if (++doneNothing == 2)
       {
          //both players haven't done anything
+         framework.deal();
+         human.updateCardArea();
+         computer.updateCardArea();
       }
       humanOrComputer.usedTurn = true;
       turnPass();
