@@ -373,11 +373,11 @@ class Model
     */
    private void computerTurn()
    {
-      if(!lastPlayedLeftCard.isValid())
+      if(!lastPlayedLeftCard.getErrorFlag())
       {
          return;
       }
-      if(!lastPlayedRightCard.isValid())
+      if(!lastPlayedRightCard.getErrorFlag())
       {
          return;
       }
