@@ -112,14 +112,14 @@ class Model
          {
             void setCardAt(Card card)
             {
-               lastPlayedLeftCard = card;
+               lastPlayedLeftCard = new Card(card);
             }
          },
       RIGHT
          {
             void setCardAt(Card card)
             {
-               lastPlayedRightCard = card;
+               lastPlayedRightCard = new Card(card);
             }
          };
       abstract void setCardAt(Card card);
@@ -209,7 +209,8 @@ class Model
 
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
-         locationToPlay.setCardAt((playerOrComputer.playerHand.playCard(cardIndex)));
+         System.out.println("CARD" + cardIndex);
+         locationToPlay.setCardAt(playerOrComputer.playerHand.playCard(cardIndex));
 
          gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
          playerOrComputer.updateCardArea();
@@ -622,7 +623,10 @@ class View
    void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
       for (int i = 0; i < twoCardArray.length; ++i){
-         //table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
+         if (twoCardArray[i] != null)
+            table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
+         else
+            table.pnlPlayArea.add(new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades))));
       }
       table.pnlPlayArea.revalidate();
       table.pnlPlayArea.repaint();
@@ -686,7 +690,7 @@ class Controller
       public void actionPerformed(ActionEvent cardClick)
       {
 
-         coreModel.playCard(cardClick.getActionCommand().charAt(0)-0, Model.Direction.LEFT);
+         coreModel.playCard(cardClick.getActionCommand().charAt(0)-'0', Model.Direction.LEFT);
       }
 
       void gameLogic(int humanCardPosition)
