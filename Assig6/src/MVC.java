@@ -209,7 +209,6 @@ class Model
 
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
-         System.out.println("CARD" + cardIndex);
          locationToPlay.setCardAt(playerOrComputer.playerHand.playCard(cardIndex));
 
          gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
@@ -622,9 +621,12 @@ class View
    //Sends updates from model this should update the two cards in playArea.
    void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
+
+      table.pnlPlayArea.removeAll();
       for (int i = 0; i < twoCardArray.length; ++i){
-         if (twoCardArray[i] != null)
+         if (twoCardArray[i] != null) {
             table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
+         }
          else
             table.pnlPlayArea.add(new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades))));
       }
