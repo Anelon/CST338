@@ -26,18 +26,22 @@ import javax.swing.border.Border;
 public class MVC
 {
 
-
+   //Initalize
 
    public static void main(String[] args)
    {
-
+      int theCardIndex = -1; 
+      Model.Direction playerDirection = null;
+      boolean cardHasBeenPicked = false;
+      boolean stackHasBeenPicked = false;
+      
 
       View theView = new View();
       Model theModel = new Model(theView);
 
       Controller mainController = new Controller(theModel, theView);
-
-
+      
+      
    }
 
 
@@ -586,6 +590,9 @@ class View
             public void actionPerformed(ActionEvent cardClick) {
                System.out.println((Integer.valueOf
                      (cardClick.getActionCommand())));
+               
+               
+               
             }
          });
 
@@ -663,17 +670,26 @@ class Controller
       this.coreView = coreView;
 
    }
+   
 
+void gameControllerLogic (int cardNumber, Model.Direction direction ) {
+    
+      
+   }
+
+ 
+}
+   /*
    //buttonListener
    public class buttonListener implements ActionListener{
 
-      /*
+     
       public int chosenCardPosition;
       public buttonListener (int cardLocation)
       {
          this.chosenCardPosition = cardLocation;
        }
-       */
+      
 
       public void actionPerformed(ActionEvent cardClick)
       {
@@ -695,8 +711,10 @@ class Controller
       int cardLocation = chosenCardPosition;
       return cardLocation;
    }
+   
+   */
 
-}
+
 
 /* Pseudo Code
  * CONTROLER: Controller takes in MODEL and VIEW item
