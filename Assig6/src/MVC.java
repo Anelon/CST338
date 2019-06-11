@@ -374,8 +374,8 @@ class Model
    private void computerTurn()
    {
       //find playable cards
-      Vector<Card> leftPlayableCards;
-      Vector<Card> rightPlayableCards;
+      Vector<Integer> leftPlayableCards;
+      Vector<Integer> rightPlayableCards;
       leftPlayableCards = computer.getPlayableCards(lastPlayedLeftCard);
       rightPlayableCards = computer.getPlayableCards(lastPlayedRightCard);
       //play to the deck that has less cards that you can play to
@@ -384,11 +384,13 @@ class Model
       {
          //pick a card
          System.out.println("Computer can play cards on left");
+         playCard(computer, leftPlayableCards.get(0), Direction.LEFT);
       }
       else if(rightPlayableCards.size() != 0)
       {
          //pick a card
          System.out.println("Computer can play cards on right");
+         playCard(computer, rightPlayableCards.get(0), Direction.RIGHT);
       }
       else
       {
@@ -423,7 +425,7 @@ class Model
       //using the left or right table cards
       //returns an array of playable cards in the player's hand
       //for that pile of cards
-      public Vector<Card> getPlayableCards(Card top)
+      public Vector<Integer> getPlayableCards(Card top)
       {
          return playerHand.getPlayableCards(top);
       }
@@ -1889,10 +1891,9 @@ class Hand
 
    //function gets the left and right table card
    //returns any cards that are in the hand that are with in 1
-   public Vector<Card> getPlayableCards(Card top)
+   public Vector<Integer> getPlayableCards(Card top)
    {
-      Vector<Card> playableCards = new Vector<Card>();
-      int index = 0;
+      Vector<Integer> playableCards = new Vector<Integer>();
       int topCardNum = top.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
@@ -1900,8 +1901,7 @@ class Hand
          int topdist = Math.abs(myCardNum - topCardNum);
          if(topdist == 1)
          {
-            playableCards.addElement(myCards[i]);
-            //playableCards[index++] = myCards[i];
+            playableCards.addElement(i);
          }
       }
       return playableCards;
