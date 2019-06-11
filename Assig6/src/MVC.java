@@ -147,6 +147,12 @@ class Model
       computer.updateCardArea();
 
 
+
+
+      for (int i = 0; i < human.playerHand.getNumCards(); ++i)
+      {
+         System.out.println(human.playerHand.inspectCard(i));
+      }
    }
 
 
@@ -367,14 +373,34 @@ class Model
     */
    private void computerTurn()
    {
+      if(!lastPlayedLeftCard.getErrorFlag())
+      {
+         return;
+      }
+      if(!lastPlayedRightCard.getErrorFlag())
+      {
+         return;
+      }
       //find playable cards
-      //   Vector<Card> playableCards = computer.getPlayableCards();
-      //select which one is least like the other cards in hand
-      //     if(playableCards.size())
+      Vector<Integer> leftPlayableCards;
+      Vector<Integer> rightPlayableCards;
+      leftPlayableCards = computer.getPlayableCards(lastPlayedLeftCard);
+      rightPlayableCards = computer.getPlayableCards(lastPlayedRightCard);
+      //play to the deck that has less cards that you can play to
+      if(leftPlayableCards.size() != 0 && 
+            leftPlayableCards.size() < rightPlayableCards.size())
       {
          //pick a card
+         System.out.println("Computer can play cards on left");
+         playCard(computer, leftPlayableCards.get(0), Direction.LEFT);
       }
-      //     else
+      else if(rightPlayableCards.size() != 0)
+      {
+         //pick a card
+         System.out.println("Computer can play cards on right");
+         playCard(computer, rightPlayableCards.get(0), Direction.RIGHT);
+      }
+      else
       {
          //can not play
       }
@@ -405,9 +431,10 @@ class Model
 
       //using the left and right table cards
       //returns an array of playable cards in the player's hand
-      public Vector<Card> getPlayableCards(Card left, Card right)
+      //for that pile of cards
+      public Vector<Integer> getPlayableCards(Card top)
       {
-         return playerHand.getPlayableCards(left, right);
+         return playerHand.getPlayableCards(top);
       }
 
       public abstract void updateCardArea();
@@ -685,7 +712,6 @@ class Controller
 
    //buttonListener
    public  class buttonListener implements ActionListener{
-
 
 
 
@@ -1034,38 +1060,9 @@ class CardTable extends JFrame
       Border textColorTimer= new LineBorder(Color.BLACK);
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
-
-
-      //Start Button
       stop = new JButton("Start timer");
-      stop.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent start) {
-            System.out.println("start");
-         }
-      });
-
-      //Stop Button
       start = new JButton("Stop timer");
-      start.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("stop");
-         }
-      });
-
-
-      //Skip Button
       cantPlayHumanHand = new JButton("I cannot play!");
-      cantPlayHumanHand.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("skip");
-         }
-      });
-
-
-
       timeButtons.add(stop);
       timeButtons.add(start);
       timeButtons.add(cantPlayHumanHand);
@@ -1209,6 +1206,10 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
+      for (int i = 0; i < valuRanks.length; ++i)
+      {
+         System.out.println(i);
+      }
       return indexOf(value, valuRanks);
    }
 
@@ -1929,21 +1930,17 @@ class Hand
 
    //function gets the left and right table card
    //returns any cards that are in the hand that are with in 1
-   public Vector<Card> getPlayableCards(Card left, Card right)
+   public Vector<Integer> getPlayableCards(Card top)
    {
-      Vector<Card> playableCards = new Vector<Card>();
-      int index = 0;
-      int leftCardNum = left.valueToInt();
-      int rightCardNum = right.valueToInt();
+      Vector<Integer> playableCards = new Vector<Integer>();
+      int topCardNum = top.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
          int myCardNum = myCards[i].valueToInt();
-         int leftdist = Math.abs(myCardNum - leftCardNum);
-         int rightdist = Math.abs(myCardNum - rightCardNum);
-         if(leftdist == 1 || rightdist == 1)
+         int topdist = Math.abs(myCardNum - topCardNum);
+         if(topdist == 1)
          {
-            playableCards.addElement(myCards[i]);
-            //playableCards[index++] = myCards[i];
+            playableCards.addElement(i);
          }
       }
       return playableCards;
@@ -2261,7 +2258,6 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
-
 
 
 
