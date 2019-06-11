@@ -685,7 +685,8 @@ class Controller
 
    //buttonListener
    public  class buttonListener implements ActionListener{
-
+      
+      
 
 
       public void actionPerformed(ActionEvent cardClick)
@@ -1034,9 +1035,38 @@ class CardTable extends JFrame
       Border textColorTimer= new LineBorder(Color.BLACK);
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
+      
+      
+      //Start Button
       stop = new JButton("Start timer");
+      stop.addActionListener(new ActionListener() {
+
+         public void actionPerformed(ActionEvent start) {
+            System.out.println("start");
+         }
+      });
+      
+      //Stop Button
       start = new JButton("Stop timer");
+      start.addActionListener(new ActionListener() {
+         
+         public void actionPerformed(ActionEvent stop) {
+            System.out.println("stop");
+         }
+      });
+      
+      
+      //Skip Button
       cantPlayHumanHand = new JButton("I cannot play!");
+      cantPlayHumanHand.addActionListener(new ActionListener() {
+         
+         public void actionPerformed(ActionEvent stop) {
+            System.out.println("skip");
+         }
+      });
+
+      
+      
       timeButtons.add(stop);
       timeButtons.add(start);
       timeButtons.add(cantPlayHumanHand);
