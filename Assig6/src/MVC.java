@@ -28,12 +28,12 @@ public class MVC
 
 
    public static void main(String[] args)
-{  
-      
-      
-      Model theModel = new Model();
-      //View theView = new View(); 
-     
+   {
+
+
+      View theView = new View();
+      Model theModel = new Model(theView);
+
       Controller mainController = new Controller(theModel, theView);
 
 
@@ -140,11 +140,11 @@ class Model
     * The model updates the view at relevant points.
     *
     */
-   Model()
+   Model(View theView)
    {
       human = new HumanPlayer(framework.getHand(0));
       computer = new ComputerPlayer(framework.getHand(1));
-      attachedView = new View();
+      attachedView = theView;
       framework.deal();
       updateScore();
       updatePlayedCardArea();
@@ -157,6 +157,10 @@ class Model
    }
 
 
+   Model()
+   {
+      this(new View());
+   }
 
 
 
@@ -533,7 +537,7 @@ class Model
 
 
 
-//This is the interface for the card game. 
+//This is the interface for the card game.
 class View
 {
    private static CardTable table = new CardTable("Card Table", 7, 2);
@@ -572,7 +576,7 @@ class View
       table.pnlHumanHand.revalidate();
       table.pnlHumanHand.repaint();
    }
-   
+
    //Sends update from the model, this updates the computer hand images.
    void updateComputerHandImagesArray(Hand computerHand)
    {
@@ -592,12 +596,12 @@ class View
    //Sends updates from model this should update the two cards in playArea.
    void updatePlayedCardImagesArray(Card[] twoCardArray)
    {
-       for (int i = 0; i < twoCardArray.length; ++i){  
-         //table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));   
-   }
+      for (int i = 0; i < twoCardArray.length; ++i){
+         //table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
+      }
       table.pnlPlayArea.revalidate();
-      table.pnlPlayArea.repaint();      
- 
+      table.pnlPlayArea.repaint();
+
    }
    //Sends updates from model this should update the two scores.
    //Player score is at scores[0]. Cpu score is at scores[1].
@@ -605,29 +609,29 @@ class View
    {
       JLabel playersScores = new JLabel(scores[0]);
       JLabel cupsScores = new JLabel(scores[1]);
-      
-      for (int i = 0; i <1; ++i){          
-        table.scoresPanel.add(playersScores, 1, 0); 
-        playersScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));          
+
+      for (int i = 0; i <1; ++i){
+         table.scoresPanel.add(playersScores, 1, 0);
+         playersScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+      }
+
+      for (int i = 0; i <1; ++i){
+         table.scoresPanel.add(cupsScores, 1 , 1);
+         cupsScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+
+      }
+      table.scoresPanel.revalidate();
+      table.scoresPanel.repaint();
+
    }
-      
-      for (int i = 0; i <1; ++i){ 
-         table.scoresPanel.add(cupsScores, 1 , 1);   
-         cupsScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));      
-           
-   }
-     table.scoresPanel.revalidate();
-     table.scoresPanel.repaint();  
-   
-}
 }
 
 
-   
+
 
 class Controller
 {
-   //Initializes 
+   //Initializes
    private Model coreModel;
    private View coreView;
 
@@ -639,40 +643,40 @@ class Controller
 
       //runs game loop
       //Might add initialization of game in main rather than here.
-      
+
       //gameLogic();
    }
 
    //private void gameLogic() {
-      // runs game logic
-      
-   }
-  
+   // runs game logic
+
+}
+
 /*
    Controller()
    {
       Model coreModel = new Model();
       View coreView = new View();
-      
-      
+
+
 
    }
    */
-   /* Pseudo Code
-    * CONTROLER: Controller takes in MODEL and VIEW item
-    * In VIEW, cards and buttons are created for player, button listeners are assigned using the CONTROLLER
-    * In VIEW, CPU cards are generated on screen, they do not change (since game ends when deck is empty)
-    * Player selects card via CONTROLLER assigned buttons, maybe change background of card to show selection?
-    * Player then selects which stack, left or right, via CONTROLLER assigned buttons
-    * Player is locked out of selecting stack if stack number is higher than selected card
-    * After selection is made, card is removed from hand and a new card is dealt the player
-    * Player can opt to skip turn if they have no card is higher than the stack, via CONTROLLER assigned button
-    * CPU will check to see which stack has a smaller card, then place its largest card (in the array) on that stack
-    * If CPU also skips, it refreshes the hands of both (MODEL)
-    * Once deck reaches zero, game ends. (Based on deck counter)
-    * End game displays win or lose message at the end
-    * 
-    */
+/* Pseudo Code
+ * CONTROLER: Controller takes in MODEL and VIEW item
+ * In VIEW, cards and buttons are created for player, button listeners are assigned using the CONTROLLER
+ * In VIEW, CPU cards are generated on screen, they do not change (since game ends when deck is empty)
+ * Player selects card via CONTROLLER assigned buttons, maybe change background of card to show selection?
+ * Player then selects which stack, left or right, via CONTROLLER assigned buttons
+ * Player is locked out of selecting stack if stack number is higher than selected card
+ * After selection is made, card is removed from hand and a new card is dealt the player
+ * Player can opt to skip turn if they have no card is higher than the stack, via CONTROLLER assigned button
+ * CPU will check to see which stack has a smaller card, then place its largest card (in the array) on that stack
+ * If CPU also skips, it refreshes the hands of both (MODEL)
+ * Once deck reaches zero, game ends. (Based on deck counter)
+ * End game displays win or lose message at the end
+ *
+ */
 /*
 //temporary, need to implement controller functions
 //controller should probably have listeners for all buttons
@@ -691,9 +695,9 @@ class Controller
      playCard()
 
 
-    */
+
 }
-*/
+   */
 
 class Clock implements Runnable
 {
@@ -934,7 +938,7 @@ class CardTable extends JFrame
       }
 
       /*This creates the card table GUI. */
-     
+
       pnlComputerHand = new JPanel();
       pnlComputerHand.setLayout(new GridLayout(1,1, 10, 10));
 
@@ -960,23 +964,23 @@ class CardTable extends JFrame
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
 
-     
-      
+
+
       scoresPanel = new JPanel();
       scoresPanel.setLayout(new GridLayout(2,2,10, 10));
       Border textColorScore= new LineBorder(Color.BLACK);
       scoresPanel.setBorder(new TitledBorder(textColorScore,
-         "Scores"));    
+         "Scores"));
       cpuScore = new JLabel("Computer's Score");
       playerScore = new JLabel("Player's Score");
-      cpuScore.setFont(new Font("Times New Roman", Font.PLAIN, 18)); 
-      playerScore.setFont(new Font("Times New Roman", Font.PLAIN, 18)); 
+      cpuScore.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+      playerScore.setFont(new Font("Times New Roman", Font.PLAIN, 18));
       scoresPanel.add(playerScore, 2, 0);
       scoresPanel.add(cpuScore, 2, 1);
 
       scoresPanel.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,scoresPanel);
-      
+
       timeButtons = new JPanel();
       timeButtons.setLayout(new FlowLayout());
       Border textColorTimer= new LineBorder(Color.BLACK);
@@ -2184,6 +2188,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
