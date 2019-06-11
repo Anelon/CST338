@@ -586,12 +586,25 @@ class View
       {
          playerHandImages[i] = new JButton(GUICard.getIcon(playerHand.inspectCard(i)));
          playerHandImages[i].setActionCommand(Integer.toString(i));
-         Controller.buttonAction(playerHandImages[i]);
+         playerHandImages[i].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               setPlayerListeners(controller.buttonAct);
+            }
+         });
          System.out.println ("can you see this");
          table.pnlHumanHand.add(playerHandImages[i]);
       }
       table.pnlHumanHand.revalidate();
       table.pnlHumanHand.repaint();
+   }
+
+   void setPlayerListeners(ActionListener listener)
+   {
+      for (int i = 0; i < playerHandImages.length; ++i)
+      {
+         playerHandImages[i].addActionListener(listener);
+      }
    }
 
    //Sends update from the model, this updates the computer hand images.
@@ -652,6 +665,7 @@ class Controller
    //Initializes
    private Model coreModel;
    private View coreView;
+   ActionListener buttonAct = new buttonListener();
 
 
 
@@ -664,26 +678,18 @@ class Controller
 
    }
 
-   public static void buttonAction(JButton button)
+   public  void buttonAction(JButton button)
    {
       button.addActionListener(new buttonListener());
    }
 
    //buttonListener
-   public static class buttonListener implements ActionListener{
+   public  class buttonListener implements ActionListener{
 
-      /*
-      public int chosenCardPosition;
-      public buttonListener (int cardLocation)
-      {
-         this.chosenCardPosition = cardLocation;
-       }
-       */
+
 
       public void actionPerformed(ActionEvent cardClick)
       {
-         System.out.println("Hello the button worked");
-
          System.out.println(cardClick.getActionCommand());
       }
 
