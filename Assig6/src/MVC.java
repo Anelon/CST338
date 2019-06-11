@@ -28,8 +28,13 @@ public class MVC
 
 
    public static void main(String[] args)
-   {
-      Controller mainController = new Controller();
+{  
+      
+      
+      Model theModel = new Model();
+      //View theView = new View(); 
+     
+      Controller mainController = new Controller(theModel, theView);
 
 
    }
@@ -620,8 +625,55 @@ class View
 
    
 
+class Controller
+{
+   //Initializes 
+   private Model coreModel;
+   private View coreView;
 
+   // Standard Constructor
+   Controller(Model coreModel, View coreView)
+   {
+      this.coreModel = coreModel;
+      this.coreView = coreView;
 
+      //runs game loop
+      //Might add initialization of game in main rather than here.
+      
+      //gameLogic();
+   }
+
+   //private void gameLogic() {
+      // runs game logic
+      
+   }
+  
+/*
+   Controller()
+   {
+      Model coreModel = new Model();
+      View coreView = new View();
+      
+      
+
+   }
+   */
+   /* Pseudo Code
+    * CONTROLER: Controller takes in MODEL and VIEW item
+    * In VIEW, cards and buttons are created for player, button listeners are assigned using the CONTROLLER
+    * In VIEW, CPU cards are generated on screen, they do not change (since game ends when deck is empty)
+    * Player selects card via CONTROLLER assigned buttons, maybe change background of card to show selection?
+    * Player then selects which stack, left or right, via CONTROLLER assigned buttons
+    * Player is locked out of selecting stack if stack number is higher than selected card
+    * After selection is made, card is removed from hand and a new card is dealt the player
+    * Player can opt to skip turn if they have no card is higher than the stack, via CONTROLLER assigned button
+    * CPU will check to see which stack has a smaller card, then place its largest card (in the array) on that stack
+    * If CPU also skips, it refreshes the hands of both (MODEL)
+    * Once deck reaches zero, game ends. (Based on deck counter)
+    * End game displays win or lose message at the end
+    * 
+    */
+/*
 //temporary, need to implement controller functions
 //controller should probably have listeners for all buttons
 class Controller
@@ -641,7 +693,7 @@ class Controller
 
     */
 }
-
+*/
 
 class Clock implements Runnable
 {
