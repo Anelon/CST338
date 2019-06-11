@@ -570,8 +570,6 @@ class View
    {
       
       table.pnlHumanHand.removeAll();
-      
-    
       int handSize = playerHand.getNumCards();
       playerHandImages = new JButton[handSize];
       for (int i = 0; i < handSize; ++i)
