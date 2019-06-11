@@ -16,6 +16,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.util.*;
 import javax.swing.border.LineBorder;
@@ -565,7 +566,12 @@ class View
       for (int i = 0; i < handSize; ++i)
       {
          playerHandImages[i] = new JButton(GUICard.getIcon(playerHand.inspectCard(i)));
-         playerHandImages[i].setActionCommand(String.valueOf(i));
+         playerHandImages[i].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               System.out.println("Test");
+            }
+         });
          System.out.println ("can you see this");
          table.pnlHumanHand.add(playerHandImages[i]);
       }
