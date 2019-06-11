@@ -29,7 +29,7 @@ public class MVC
 
    public static void main(String[] args)
    {
-      
+
 
       View theView = new View();
       Model theModel = new Model(theView);
@@ -145,14 +145,7 @@ class Model
       updatePlayedCardArea();
       human.updateCardArea();
       computer.updateCardArea();
-      
 
-
-      
-      for (int i = 0; i < human.playerHand.getNumCards(); ++i)
-      {
-         System.out.println(human.playerHand.inspectCard(i));
-      }
    }
 
 
@@ -563,10 +556,10 @@ class View
    //Sends update from the model, this updates the play card images.
    void updatePlayerCardImagesArray(Hand playerHand)
    {
-      
+
       table.pnlHumanHand.removeAll();
-      
-    
+
+
       int handSize = playerHand.getNumCards();
       playerHandImages = new JButton[handSize];
       for (int i = 0; i < handSize; ++i)
@@ -584,7 +577,7 @@ class View
    void updateComputerHandImagesArray(Hand computerHand)
    {
       table.pnlComputerHand.removeAll();
-      
+
 
       int handSize = computerHand.getNumCards();
       computerHandImages = new JLabel[handSize];
@@ -638,18 +631,18 @@ class Controller
    //Initializes
    private Model coreModel;
    private View coreView;
-   
-   
+
+
 
    // Standard Constructor
    Controller(Model coreModel, View coreView)
    {
       this.coreModel = coreModel;
       this.coreView = coreView;
-      
+
    }
-   
-   //buttonListener 
+
+   //buttonListener
    public class buttonListener implements ActionListener{
 
       /*
@@ -659,27 +652,27 @@ class Controller
          this.chosenCardPosition = cardLocation;
        }
        */
-       
+
       public void actionPerformed(ActionEvent cardClick)
       {
          System.out.println("Hello the button worked");
-         
+
          gameLogic(humanCardPosition(Integer.valueOf
             (cardClick.getActionCommand())));
       }
-      
+
       void gameLogic(int humanCardPosition)
       { int num = humanCardPosition;
          System.out.println(num);
-         }
+      }
    };
 
 
-      public static int humanCardPosition (int chosenCardPosition)
-      {
-         int cardLocation = chosenCardPosition;
-         return cardLocation;
-      }
+   public static int humanCardPosition (int chosenCardPosition)
+   {
+      int cardLocation = chosenCardPosition;
+      return cardLocation;
+   }
 
 }
 
@@ -1153,10 +1146,6 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
-      for (int i = 0; i < valuRanks.length; ++i)
-      {
-         System.out.println(i);
-      }
       return indexOf(value, valuRanks);
    }
 
@@ -2209,6 +2198,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
