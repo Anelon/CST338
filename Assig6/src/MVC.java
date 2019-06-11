@@ -379,15 +379,26 @@ class Model
    private void computerTurn()
    {
       //find playable cards
-      //   Vector<Card> playableCards = computer.getPlayableCards();
-      //select which one is least like the other cards in hand
-      //     if(playableCards.size())
+      Vector<Card> leftPlayableCards;
+      Vector<Card> rightPlayableCards;
+      leftPlayableCards = computer.getPlayableCards(lastPlayedLeftCard);
+      rightPlayableCards = computer.getPlayableCards(lastPlayedRightCard);
+      //play to the deck that has less cards that you can play to
+      if(leftPlayableCards.size() != 0 && 
+            leftPlayableCards.size() < rightPlayableCards.size())
       {
          //pick a card
+         System.out.println("Computer can play cards on left");
       }
-      //     else
+      else if(rightPlayableCards.size() != 0)
+      {
+         //pick a card
+         System.out.println("Computer can play cards on right");
+      }
+      else
       {
          //can not play
+         doNothing(computer);
       }
 
    }
@@ -414,11 +425,12 @@ class Model
 
       }
 
-      //using the left and right table cards
+      //using the left or right table cards
       //returns an array of playable cards in the player's hand
-      public Vector<Card> getPlayableCards(Card left, Card right)
+      //for that pile of cards
+      public Vector<Card> getPlayableCards(Card top)
       {
-         return playerHand.getPlayableCards(left, right);
+         return playerHand.getPlayableCards(top);
       }
 
       public abstract void updateCardArea();
@@ -1851,18 +1863,16 @@ class Hand
 
    //function gets the left and right table card
    //returns any cards that are in the hand that are with in 1
-   public Vector<Card> getPlayableCards(Card left, Card right)
+   public Vector<Card> getPlayableCards(Card top)
    {
       Vector<Card> playableCards = new Vector<Card>();
       int index = 0;
-      int leftCardNum = left.valueToInt();
-      int rightCardNum = right.valueToInt();
+      int topCardNum = top.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
          int myCardNum = myCards[i].valueToInt();
-         int leftdist = Math.abs(myCardNum - leftCardNum);
-         int rightdist = Math.abs(myCardNum - rightCardNum);
-         if(leftdist == 1 || rightdist == 1)
+         int topdist = Math.abs(myCardNum - topCardNum);
+         if(topdist == 1)
          {
             playableCards.addElement(myCards[i]);
             //playableCards[index++] = myCards[i];
