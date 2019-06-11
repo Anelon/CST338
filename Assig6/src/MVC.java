@@ -147,6 +147,12 @@ class Model
       computer.updateCardArea();
 
 
+
+
+      for (int i = 0; i < human.playerHand.getNumCards(); ++i)
+      {
+         System.out.println(human.playerHand.inspectCard(i));
+      }
    }
 
 
@@ -367,6 +373,14 @@ class Model
     */
    private void computerTurn()
    {
+      if(!lastPlayedLeftCard.isValid())
+      {
+         return;
+      }
+      if(!lastPlayedRightCard.isValid())
+      {
+         return;
+      }
       //find playable cards
       Vector<Integer> leftPlayableCards;
       Vector<Integer> rightPlayableCards;
@@ -695,11 +709,11 @@ class Controller
 
 
 
-
       public void actionPerformed(ActionEvent cardClick)
       {
 
          coreModel.playCard(cardClick.getActionCommand().charAt(0)-0, Model.Direction.LEFT);
+         System.out.println(cardClick.getActionCommand().charAt(0)-'0');
       }
 
       void gameLogic(int humanCardPosition)
@@ -1041,38 +1055,9 @@ class CardTable extends JFrame
       Border textColorTimer= new LineBorder(Color.BLACK);
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
-
-
-      //Start Button
       stop = new JButton("Start timer");
-      stop.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent start) {
-            System.out.println("start");
-         }
-      });
-
-      //Stop Button
       start = new JButton("Stop timer");
-      start.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("stop");
-         }
-      });
-
-
-      //Skip Button
       cantPlayHumanHand = new JButton("I cannot play!");
-      cantPlayHumanHand.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("skip");
-         }
-      });
-
-
-
       timeButtons.add(stop);
       timeButtons.add(start);
       timeButtons.add(cantPlayHumanHand);
@@ -1216,6 +1201,10 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
+      for (int i = 0; i < valuRanks.length; ++i)
+      {
+         System.out.println(i);
+      }
       return indexOf(value, valuRanks);
    }
 
@@ -2264,7 +2253,6 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
-
 
 
 
