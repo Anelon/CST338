@@ -16,7 +16,6 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.util.*;
 import javax.swing.border.LineBorder;
@@ -26,22 +25,18 @@ import javax.swing.border.Border;
 public class MVC
 {
 
-   //Initalize
+
 
    public static void main(String[] args)
    {
-      int theCardIndex = -1; 
-      Model.Direction playerDirection = null;
-      boolean cardHasBeenPicked = false;
-      boolean stackHasBeenPicked = false;
-      
+
 
       View theView = new View();
       Model theModel = new Model(theView);
 
       Controller mainController = new Controller(theModel, theView);
-      
-      
+
+
    }
 
 
@@ -151,6 +146,13 @@ class Model
       human.updateCardArea();
       computer.updateCardArea();
 
+
+
+
+      for (int i = 0; i < human.playerHand.getNumCards(); ++i)
+      {
+         System.out.println(human.playerHand.inspectCard(i));
+      }
    }
 
 
@@ -372,28 +374,15 @@ class Model
    private void computerTurn()
    {
       //find playable cards
-      Vector<Integer> leftPlayableCards;
-      Vector<Integer> rightPlayableCards;
-      leftPlayableCards = computer.getPlayableCards(lastPlayedLeftCard);
-      rightPlayableCards = computer.getPlayableCards(lastPlayedRightCard);
-      //play to the deck that has less cards that you can play to
-      if(leftPlayableCards.size() != 0 && 
-            leftPlayableCards.size() < rightPlayableCards.size())
+      //   Vector<Card> playableCards = computer.getPlayableCards();
+      //select which one is least like the other cards in hand
+      //     if(playableCards.size())
       {
          //pick a card
-         System.out.println("Computer can play cards on left");
-         playCard(computer, leftPlayableCards.get(0), Direction.LEFT);
       }
-      else if(rightPlayableCards.size() != 0)
-      {
-         //pick a card
-         System.out.println("Computer can play cards on right");
-         playCard(computer, rightPlayableCards.get(0), Direction.RIGHT);
-      }
-      else
+      //     else
       {
          //can not play
-         doNothing(computer);
       }
 
    }
@@ -420,12 +409,11 @@ class Model
 
       }
 
-      //using the left or right table cards
+      //using the left and right table cards
       //returns an array of playable cards in the player's hand
-      //for that pile of cards
-      public Vector<Integer> getPlayableCards(Card top)
+      public Vector<Card> getPlayableCards(Card left, Card right)
       {
-         return playerHand.getPlayableCards(top);
+         return playerHand.getPlayableCards(left, right);
       }
 
       public abstract void updateCardArea();
@@ -555,6 +543,8 @@ class View
    JLabel[] computerHandImages;
    JButton[] playerHandImages;
    public Clock mainClock = new Clock();
+   Controller controller;
+
 
 
    View()
@@ -572,6 +562,17 @@ class View
    }
 
 
+   int indexOf(Object item, Object[] array)
+   {
+      int goal = -1;
+      for (int i = 0; i < array.length; ++i)
+      {
+         if (array[i].equals(item))
+            goal = i;
+      }
+      return goal;
+   }
+
    //Sends update from the model, this updates the play card images.
    void updatePlayerCardImagesArray(Hand playerHand)
    {
@@ -584,18 +585,9 @@ class View
       for (int i = 0; i < handSize; ++i)
       {
          playerHandImages[i] = new JButton(GUICard.getIcon(playerHand.inspectCard(i)));
-         playerHandImages[i].setActionCommand(String.valueOf(i));
-         playerHandImages[i].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent cardClick) {
-               System.out.println((Integer.valueOf
-                     (cardClick.getActionCommand())));
-               
-               
-               
-            }
-         });
-
+         playerHandImages[i].setActionCommand(Integer.toString(i));
+         Controller.buttonAction(playerHandImages[i]);
+         System.out.println ("can you see this");
          table.pnlHumanHand.add(playerHandImages[i]);
       }
       table.pnlHumanHand.revalidate();
@@ -668,35 +660,31 @@ class Controller
    {
       this.coreModel = coreModel;
       this.coreView = coreView;
+      coreView.controller = this;
 
    }
-   
 
-void gameControllerLogic (int cardNumber, Model.Direction direction ) {
-    
-      
+   public static void buttonAction(JButton button)
+   {
+      button.addActionListener(new buttonListener());
    }
 
- 
-}
-   /*
    //buttonListener
-   public class buttonListener implements ActionListener{
+   public static class buttonListener implements ActionListener{
 
-     
+      /*
       public int chosenCardPosition;
       public buttonListener (int cardLocation)
       {
          this.chosenCardPosition = cardLocation;
        }
-      
+       */
 
       public void actionPerformed(ActionEvent cardClick)
       {
          System.out.println("Hello the button worked");
 
-         gameLogic(humanCardPosition(Integer.valueOf
-            (cardClick.getActionCommand())));
+         System.out.println(cardClick.getActionCommand());
       }
 
       void gameLogic(int humanCardPosition)
@@ -711,10 +699,8 @@ void gameControllerLogic (int cardNumber, Model.Direction direction ) {
       int cardLocation = chosenCardPosition;
       return cardLocation;
    }
-   
-   */
 
-
+}
 
 /* Pseudo Code
  * CONTROLER: Controller takes in MODEL and VIEW item
@@ -1041,31 +1027,8 @@ class CardTable extends JFrame
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
       stop = new JButton("Start timer");
-      
-      stop.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent start) {
-            System.out.println("start");
-         }
-      });
-      
       start = new JButton("Stop timer");
-      start.addActionListener(new ActionListener() {
-       
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("stop");
-         }
-      });
       cantPlayHumanHand = new JButton("I cannot play!");
-      cantPlayHumanHand.addActionListener(new ActionListener() {
-         
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("skip");
-         }
-      });
-
-
-      
       timeButtons.add(stop);
       timeButtons.add(start);
       timeButtons.add(cantPlayHumanHand);
@@ -1209,6 +1172,10 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
+      for (int i = 0; i < valuRanks.length; ++i)
+      {
+         System.out.println(i);
+      }
       return indexOf(value, valuRanks);
    }
 
@@ -1929,17 +1896,21 @@ class Hand
 
    //function gets the left and right table card
    //returns any cards that are in the hand that are with in 1
-   public Vector<Integer> getPlayableCards(Card top)
+   public Vector<Card> getPlayableCards(Card left, Card right)
    {
-      Vector<Integer> playableCards = new Vector<Integer>();
-      int topCardNum = top.valueToInt();
+      Vector<Card> playableCards = new Vector<Card>();
+      int index = 0;
+      int leftCardNum = left.valueToInt();
+      int rightCardNum = right.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
          int myCardNum = myCards[i].valueToInt();
-         int topdist = Math.abs(myCardNum - topCardNum);
-         if(topdist == 1)
+         int leftdist = Math.abs(myCardNum - leftCardNum);
+         int rightdist = Math.abs(myCardNum - rightCardNum);
+         if(leftdist == 1 || rightdist == 1)
          {
-            playableCards.addElement(i);
+            playableCards.addElement(myCards[i]);
+            //playableCards[index++] = myCards[i];
          }
       }
       return playableCards;
