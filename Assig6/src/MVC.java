@@ -29,7 +29,7 @@ public class MVC
 
    public static void main(String[] args)
    {
-
+      
 
       View theView = new View();
       Model theModel = new Model(theView);
@@ -45,11 +45,6 @@ public class MVC
    {
       //logic for ending of game
    }
-
-
-
-
-
 
 
 
@@ -582,12 +577,15 @@ class View
    {
       
       table.pnlHumanHand.removeAll();
+      
+    
       int handSize = playerHand.getNumCards();
       playerHandImages = new JButton[handSize];
       for (int i = 0; i < handSize; ++i)
       {
          playerHandImages[i] = new JButton(GUICard.getIcon(playerHand.inspectCard(i)));
-         
+         playerHandImages[i].setActionCommand(String.valueOf(i));
+         System.out.println ("can you see this");
          table.pnlHumanHand.add(playerHandImages[i]);
       }
       table.pnlHumanHand.revalidate();
@@ -652,6 +650,8 @@ class Controller
    //Initializes
    private Model coreModel;
    private View coreView;
+   
+   
 
    // Standard Constructor
    Controller(Model coreModel, View coreView)
@@ -659,13 +659,39 @@ class Controller
       this.coreModel = coreModel;
       this.coreView = coreView;
       
-      
-
-      
    }
+   
+   //buttonListener 
+   public class buttonListener implements ActionListener{
 
-   //private void gameLogic() {
-   // runs game logic
+      /*
+      public int chosenCardPosition;
+      public buttonListener (int cardLocation)
+      {
+         this.chosenCardPosition = cardLocation;
+       }
+       */
+       
+      public void actionPerformed(ActionEvent cardClick)
+      {
+         System.out.println("Hello the button worked");
+         
+         gameLogic(humanCardPosition(Integer.valueOf
+            (cardClick.getActionCommand())));
+      }
+      
+      void gameLogic(int humanCardPosition)
+      { int num = humanCardPosition;
+         System.out.println(num);
+         }
+   };
+
+
+      public static int humanCardPosition (int chosenCardPosition)
+      {
+         int cardLocation = chosenCardPosition;
+         return cardLocation;
+      }
 
 }
 
