@@ -150,6 +150,10 @@ class Model
       updatePlayedCardArea();
       human.updateCardArea();
       computer.updateCardArea();
+      
+
+
+      
       for (int i = 0; i < human.playerHand.getNumCards(); ++i)
       {
          System.out.println(human.playerHand.inspectCard(i));
@@ -542,7 +546,7 @@ class View
 {
    private static CardTable table = new CardTable("Card Table", 7, 2);
    JLabel[] computerHandImages;
-   JLabel[] playerHandImages;
+   JButton[] playerHandImages;
    public Clock mainClock = new Clock();
 
 
@@ -564,13 +568,16 @@ class View
    //Sends update from the model, this updates the play card images.
    void updatePlayerCardImagesArray(Hand playerHand)
    {
+      
       table.pnlHumanHand.removeAll();
-
+      
+    
       int handSize = playerHand.getNumCards();
-      playerHandImages = new JLabel[handSize];
+      playerHandImages = new JButton[handSize];
       for (int i = 0; i < handSize; ++i)
       {
-         playerHandImages[i] = new JLabel(GUICard.getIcon(playerHand.inspectCard(i)));
+         playerHandImages[i] = new JButton(GUICard.getIcon(playerHand.inspectCard(i)));
+         
          table.pnlHumanHand.add(playerHandImages[i]);
       }
       table.pnlHumanHand.revalidate();
@@ -581,6 +588,7 @@ class View
    void updateComputerHandImagesArray(Hand computerHand)
    {
       table.pnlComputerHand.removeAll();
+      
 
       int handSize = computerHand.getNumCards();
       computerHandImages = new JLabel[handSize];
@@ -640,11 +648,10 @@ class Controller
    {
       this.coreModel = coreModel;
       this.coreView = coreView;
+      
+      
 
-      //runs game loop
-      //Might add initialization of game in main rather than here.
-
-      //gameLogic();
+      
    }
 
    //private void gameLogic() {
@@ -652,16 +659,6 @@ class Controller
 
 }
 
-/*
-   Controller()
-   {
-      Model coreModel = new Model();
-      View coreView = new View();
-
-
-
-   }
-   */
 /* Pseudo Code
  * CONTROLER: Controller takes in MODEL and VIEW item
  * In VIEW, cards and buttons are created for player, button listeners are assigned using the CONTROLLER
