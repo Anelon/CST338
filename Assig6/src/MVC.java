@@ -690,7 +690,9 @@ class Controller
 
       public void actionPerformed(ActionEvent cardClick)
       {
-         System.out.println(cardClick.getActionCommand());
+
+         coreModel.playCard(cardClick.getActionCommand().charAt(0)-0, Model.Direction.LEFT);
+         System.out.println(cardClick.getActionCommand().charAt(0)-'0');
       }
 
       void gameLogic(int humanCardPosition)
