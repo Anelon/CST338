@@ -580,13 +580,15 @@ class View
       for (int i = 0; i < handSize; ++i)
       {
          playerHandImages[i] = new JButton(GUICard.getIcon(playerHand.inspectCard(i)));
+         playerHandImages[i].setActionCommand(String.valueOf(i));
          playerHandImages[i].addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-               System.out.println("Test");
+            public void actionPerformed(ActionEvent cardClick) {
+               System.out.println((Integer.valueOf
+                     (cardClick.getActionCommand())));
             }
          });
-         System.out.println ("can you see this");
+
          table.pnlHumanHand.add(playerHandImages[i]);
       }
       table.pnlHumanHand.revalidate();
@@ -1021,8 +1023,31 @@ class CardTable extends JFrame
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
       stop = new JButton("Start timer");
+      
+      stop.addActionListener(new ActionListener() {
+
+         public void actionPerformed(ActionEvent start) {
+            System.out.println("start");
+         }
+      });
+      
       start = new JButton("Stop timer");
+      start.addActionListener(new ActionListener() {
+       
+         public void actionPerformed(ActionEvent stop) {
+            System.out.println("stop");
+         }
+      });
       cantPlayHumanHand = new JButton("I cannot play!");
+      cantPlayHumanHand.addActionListener(new ActionListener() {
+         
+         public void actionPerformed(ActionEvent stop) {
+            System.out.println("skip");
+         }
+      });
+
+
+      
       timeButtons.add(stop);
       timeButtons.add(start);
       timeButtons.add(cantPlayHumanHand);
