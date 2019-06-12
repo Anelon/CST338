@@ -113,6 +113,10 @@ class Model
             void setCardAt(Card card)
             {
                lastPlayedLeftCard = new Card(card);
+            };
+            Card getCardAt()
+            {
+               return lastPlayedLeftCard;
             }
          },
       RIGHT
@@ -120,9 +124,14 @@ class Model
             void setCardAt(Card card)
             {
                lastPlayedRightCard = new Card(card);
+            };
+            Card getCardAt()
+            {
+               return lastPlayedRightCard;
             }
          };
       abstract void setCardAt(Card card);
+      abstract Card getCardAt();
    }
 
 
@@ -213,6 +222,22 @@ class Model
 
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
+         System.out.println("Card target " + locationToPlay.getCardAt());
+         Card myCard = playerOrComputer.getCard(cardIndex);
+         System.out.println("myCard " + myCard);
+         int myCardNum = myCard.getValue();
+         int topCardNum = -1;
+         if(locationToPlay.getCardAt() != null)
+         {
+            System.out.println("Card target " + locationToPlay.getCardAt());
+            topCardNum = locationToPlay.getCardAt().getValue();
+         }
+         if(topCardNum != -1 && Math.abs(myCardNum - topCardNum) != 1)
+         {
+            System.out.println("Invalid card Choice");
+            return;
+         }
+
          locationToPlay.setCardAt(playerOrComputer.playerHand.playCard(cardIndex));
 
          gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
@@ -456,6 +481,11 @@ class Model
       public Vector<Integer> getPlayableCards(Card top)
       {
          return playerHand.getPlayableCards(top);
+      }
+
+      public Card getCard(int index)
+      {
+         return playerHand.inspectCard(index);
       }
 
       public abstract void updateCardArea();
