@@ -1261,7 +1261,7 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
-      return indexOf(value, valuRanks) + 1;
+      return indexOf(value, valuRanks);
    }
 
    /**
