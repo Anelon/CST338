@@ -626,6 +626,7 @@ class View
 
 
 
+
    View()
    {
       GridLayout layout = new GridLayout(5,1);
@@ -756,22 +757,20 @@ class View
 
    //Sends updates from model this should update the two scores.
    //Player score is at scores[0]. Cpu score is at scores[1].
-   void updateScores(String[] scores)
-   {
+   void updateScores(String[] scores) {
       JLabel playersScores = new JLabel(scores[0]);
       JLabel cupsScores = new JLabel(scores[1]);
 
 
-      for (int i = 0; i <1; ++i){
-         table.scoresPanel.add(playersScores, 1, 0);
-         playersScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));
-      }
+      table.scoresPanel.removeAll();
 
-      for (int i = 0; i <1; ++i){
-         table.scoresPanel.add(cupsScores, 1 , 1);
-         cupsScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+      table.scoresPanel.add(new JLabel("Computer's Score"), 1, 0);
+      table.scoresPanel.add(new JLabel("Player's Score"), 1, 0);
+      table.scoresPanel.add(playersScores, 1, 0);
+      playersScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+      table.scoresPanel.add(cupsScores, 1, 1);
+      cupsScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 
-      }
       table.scoresPanel.revalidate();
       table.scoresPanel.repaint();
 
