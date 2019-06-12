@@ -87,18 +87,18 @@ public class MVC
 
       switch(randNum)
       {
-      case 1:
-         card.set(cardValue, Card.Suit.spades);
-         break;
-      case 2:
-         card.set(cardValue, Card.Suit.hearts);
-         break;
-      case 3:
-         card.set(cardValue, Card.Suit.clubs);
-         break;
-      case 4:
-         card.set(cardValue, Card.Suit.diamonds);
-         break;
+         case 1:
+            card.set(cardValue, Card.Suit.spades);
+            break;
+         case 2:
+            card.set(cardValue, Card.Suit.hearts);
+            break;
+         case 3:
+            card.set(cardValue, Card.Suit.clubs);
+            break;
+         case 4:
+            card.set(cardValue, Card.Suit.diamonds);
+            break;
 
       }
 
@@ -129,32 +129,32 @@ class Model
    private static Card lastPlayedRightCard;
    private View attachedView;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
-         null, 2, 7 );
+      null, 2, 7 );
 
    public enum Direction
    {
       LEFT
-      {
-         void setCardAt(Card card)
          {
-            lastPlayedLeftCard = new Card(card);
-         };
-         Card getCardAt()
-         {
-            return lastPlayedLeftCard;
-         }
-      },
+            void setCardAt(Card card)
+            {
+               lastPlayedLeftCard = new Card(card);
+            };
+            Card getCardAt()
+            {
+               return lastPlayedLeftCard;
+            }
+         },
       RIGHT
-      {
-         void setCardAt(Card card)
          {
-            lastPlayedRightCard = new Card(card);
+            void setCardAt(Card card)
+            {
+               lastPlayedRightCard = new Card(card);
+            };
+            Card getCardAt()
+            {
+               return lastPlayedRightCard;
+            }
          };
-         Card getCardAt()
-         {
-            return lastPlayedRightCard;
-         }
-      };
       abstract void setCardAt(Card card);
       abstract Card getCardAt();
    }
@@ -256,7 +256,7 @@ class Model
          locationToPlay.setCardAt(playerOrComputer.playerHand.playCard(cardIndex));
 
          gameGoodToGo = ((framework.takeCard(playerOrComputer.toInt()) ||
-                          human.playerHand.getNumCards()>0 || computer.playerHand.getNumCards()>0 ));
+            human.playerHand.getNumCards()>0 || computer.playerHand.getNumCards()>0 ));
 
          playerOrComputer.updateCardArea();
          updatePlayedCardArea();
@@ -395,7 +395,7 @@ class Model
     */
    private void updatePlayedCardArea()
    {
-      attachedView.updatePlayedCardImagesArray(new Card[] {lastPlayedLeftCard, lastPlayedRightCard});
+      attachedView.updatePlayedCardImagesArray(new Card[]{lastPlayedLeftCard, lastPlayedRightCard});
    }
 
 
@@ -410,7 +410,7 @@ class Model
     */
    private void updateScore()
    {
-      attachedView.updateScores(new String[] {(Integer.toString(human.score)), Integer.toString(computer.score)});
+      attachedView.updateScores(new String[]{(Integer.toString(human.score)), Integer.toString(computer.score)});
    }
 
 
@@ -452,7 +452,7 @@ class Model
          System.out.println(rightPlayableCards.get(i));
       }
       if(leftPlayableCards.size() != 0 &&
-            leftPlayableCards.size() < rightPlayableCards.size())
+         leftPlayableCards.size() < rightPlayableCards.size())
       {
          //pick a card
          System.out.println("Computer can play cards on left");
@@ -694,11 +694,9 @@ class View
       {
          playerHandImages[i] = new JButton(GUICard.getIcon(playerHand.inspectCard(i)));
          playerHandImages[i].setActionCommand(Integer.toString(i));
-         playerHandImages[i].addActionListener(new ActionListener()
-         {
+         playerHandImages[i].addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                setPlayerListeners(controller.buttonAct);
             }
          });
@@ -765,12 +763,10 @@ class View
 
 
    //Sends updates from model this should update the two cards in playArea.
-   void updatePlayedCardImagesArray(Card[] twoCardArray)
-   {
+   void updatePlayedCardImagesArray(Card[] twoCardArray) {
       JButton button = null;
       table.pnlPlayArea.removeAll();
-      for (int i = 0; i < twoCardArray.length; ++i)
-      {
+      for (int i = 0; i < twoCardArray.length; ++i) {
          if (twoCardArray[i] != null)
             button = new JButton(GUICard.getIcon(twoCardArray[i]));
          else
@@ -783,11 +779,9 @@ class View
          else
             button.setActionCommand("RIGHT");
 
-         button.addActionListener(new ActionListener()
-         {
+         button.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                setStackListeners(controller.stackAct);
             }
          });
@@ -805,8 +799,7 @@ class View
 
    //Sends updates from model this should update the two scores.
    //Player score is at scores[0]. Cpu score is at scores[1].
-   void updateScores(String[] scores)
-   {
+   void updateScores(String[] scores) {
       JLabel playersScores = new JLabel(scores[0]);
       JLabel cupsScores = new JLabel(scores[1]);
 
@@ -830,8 +823,7 @@ class View
 /**
  * Controller class to handle the user's input
  */
-class Controller
-{
+class Controller {
    //Initializes
    private Model coreModel;
    private View coreView;
@@ -848,8 +840,7 @@ class Controller
 
 
    // Standard Constructor
-   Controller(Model coreModel, View coreView)
-   {
+   Controller(Model coreModel, View coreView) {
       this.coreModel = coreModel;
       this.coreView = coreView;
       coreView.controller = this;
@@ -866,15 +857,12 @@ class Controller
    /**
     * Custom listener to start the clock
     */
-   class startClockListener implements ActionListener
-   {
+   class startClockListener implements ActionListener{
 
       @Override
-      public void actionPerformed(ActionEvent e)
-      {
+      public void actionPerformed(ActionEvent e) {
          Thread newThread;
-         if (!coreView.mainClock.clockCountingDown)
-         {
+         if (!coreView.mainClock.clockCountingDown) {
             newThread = new Thread(coreView.mainClock);
             newThread.start();
          }
@@ -889,22 +877,18 @@ class Controller
    /**
     * custom listener to stop the clock
     */
-   class stopClockListener implements ActionListener
-   {
+   class stopClockListener implements ActionListener{
 
       @Override
-      public void actionPerformed(ActionEvent e)
-      {
+      public void actionPerformed(ActionEvent e) {
          coreView.mainClock.stopClock();
       }
    }
 
-   class cantPlayListener implements ActionListener
-   {
+   class cantPlayListener implements ActionListener{
 
       @Override
-      public void actionPerformed(ActionEvent e)
-      {
+      public void actionPerformed(ActionEvent e) {
          coreModel.skipTurn();
       }
    }
@@ -917,11 +901,9 @@ class Controller
    /**
     * custom listener to handle stack selection
     */
-   public class stackListener implements ActionListener
-   {
+   public class stackListener implements ActionListener {
       @Override
-      public void actionPerformed(ActionEvent e)
-      {
+      public void actionPerformed(ActionEvent e) {
          stackChosen = true;
          if (e.getActionCommand() == "LEFT")
             chosenStack = Model.Direction.LEFT;
@@ -936,12 +918,10 @@ class Controller
 
 
    //buttonListener for cards
-   public class buttonListener implements ActionListener
-   {
+   public class buttonListener implements ActionListener {
 
 
-      public void actionPerformed(ActionEvent cardClick)
-      {
+      public void actionPerformed(ActionEvent cardClick) {
          handChosen = true;
          chosenCard = cardClick.getActionCommand().charAt(0) - '0';
 
@@ -960,8 +940,7 @@ class Controller
    public void act()
    {
 
-      if (bothChosen())
-      {
+      if (bothChosen()) {
          coreModel.playCard(chosenCard, chosenStack);
          coreView.setPlayerListeners(buttonAct);
          stackChosen = false;
@@ -976,8 +955,7 @@ class Controller
 
    // returns true if the player has chosen both a stack
    // and a card.
-   public boolean bothChosen()
-   {
+   public boolean bothChosen() {
       return (stackChosen && handChosen);
    }
 }
@@ -1009,8 +987,7 @@ class Clock implements Runnable
    }
 
    @Override
-   public void run()
-   {
+   public void run() {
       clockCountingDown = true;
       long startingTime = System.currentTimeMillis()/1000;
       long currentTimerTime = (System.currentTimeMillis()/1000)-startingTime;
@@ -1117,7 +1094,7 @@ class GUICard
             for (int suitNum = 0; suitNum < NUM_CARD_SUITES; ++suitNum)
             {
                String filename = Card.turnIntIntoCardValue(cardNum) +
-                                 turnIntIntoCardSuit(suitNum) + ".gif";
+                  turnIntIntoCardSuit(suitNum) + ".gif";
                iconCards[cardNum-1][suitNum]
                   = new ImageIcon("images/"+filename);
             }
@@ -1144,7 +1121,7 @@ class GUICard
       loadCardIcons();
 
       return iconCards[card.valueToInt()-1]
-             [card.SuitToInt()-1];
+         [card.SuitToInt()-1];
    }
 
 
@@ -1181,14 +1158,14 @@ class GUICard
    {
       switch (toBeConverted)
       {
-      case 0:
-         return "H";
-      case 1:
-         return "C";
-      case 2:
-         return "D";
-      default:
-         return "S";
+         case 0:
+            return "H";
+         case 1:
+            return "C";
+         case 2:
+            return "D";
+         default:
+            return "S";
       }
    }
 }
@@ -1263,7 +1240,7 @@ class CardTable extends JFrame
       pnlHumanHand.setLayout(new GridLayout(1,1, 10, 10));
       Border textColorHumanHand= new LineBorder(Color.BLACK);
       pnlHumanHand.setBorder(new TitledBorder(textColorHumanHand,
-                                              "Human Hand"));
+         "Human Hand"));
       pnlHumanHand.setBackground(Color.LIGHT_GRAY);
       add(BorderLayout.SOUTH,pnlHumanHand);
 
@@ -1273,7 +1250,7 @@ class CardTable extends JFrame
       scoresPanel.setLayout(new GridLayout(2,2,10, 10));
       Border textColorScore= new LineBorder(Color.BLACK);
       scoresPanel.setBorder(new TitledBorder(textColorScore,
-                                             "Scores"));
+         "Scores"));
       cpuScore = new JLabel("Computer's Score");
       playerScore = new JLabel("Player's Score");
       cpuScore.setFont(new Font("Times New Roman", Font.PLAIN, 18));
@@ -1288,7 +1265,7 @@ class CardTable extends JFrame
       timeButtons.setLayout(new FlowLayout());
       Border textColorTimer= new LineBorder(Color.BLACK);
       timeButtons.setBorder(new TitledBorder(textColorTimer,
-                                             "Card Game"));
+         "Card Game"));
       stop = new JButton("Start timer");
       start = new JButton("Stop timer");
       cantPlayHumanHand = new JButton("I cannot play!");
@@ -1339,7 +1316,7 @@ class Card
    public enum Suit {spades, hearts, clubs, diamonds};
    //Characters to hold the values cards can be
    private static final char ACE = 'A', KING = 'K', QUEEN = 'Q', JACK = 'J',
-                             JOKER = 'X';
+      JOKER = 'X';
    private static final char TEN = 'T';
    private static final char MIN_VALUE = '2', MAX_VALUE = '9';
 
@@ -1353,7 +1330,7 @@ class Card
    public static final Suit DEFAULT_SUIT = Suit.spades;
    public static final char DEFAULT_VALUE = ACE;
    private static Character[] valuRanks;
-   private static final Suit[] suitOrder = new Suit[] {Suit.hearts, Suit.clubs, Suit.diamonds, Suit.spades};
+   private static final Suit[] suitOrder = new Suit[]{Suit.hearts, Suit.clubs, Suit.diamonds, Suit.spades};
 
 
 
@@ -1381,38 +1358,38 @@ class Card
       {
          switch (cardNum)
          {
-         case 1:
-         {
-            cardValue = 'A';
-            break;
-         }
-         case 10:
-         {
-            cardValue = 'T';
-            break;
-         }
-         case 11:
-         {
-            cardValue = 'J';
-            break;
-         }
-         case 12:
-         {
-            cardValue = 'Q';
-            break;
-         }
-         case 13:
-         {
-            cardValue = 'K';
-            break;
-         }
-         case 14:
-         {
-            cardValue = 'X';
-            break;
-         }
-         default:
-            cardValue = (char) ('0' + cardNum);
+            case 1:
+            {
+               cardValue = 'A';
+               break;
+            }
+            case 10:
+            {
+               cardValue = 'T';
+               break;
+            }
+            case 11:
+            {
+               cardValue = 'J';
+               break;
+            }
+            case 12:
+            {
+               cardValue = 'Q';
+               break;
+            }
+            case 13:
+            {
+               cardValue = 'K';
+               break;
+            }
+            case 14:
+            {
+               cardValue = 'X';
+               break;
+            }
+            default:
+               cardValue = (char) ('0' + cardNum);
          }
       }
       else
@@ -1454,8 +1431,7 @@ class Card
    private int indexOf(Object target, Object[] array)
    {
       int index = -1;
-      for (int i = 0; i < array.length; ++i)
-      {
+      for (int i = 0; i < array.length; ++i) {
          if (target.equals(array[i]))
             index = i;
       }
@@ -1548,8 +1524,8 @@ class Card
    private boolean isValid(char newValue, Suit newSuit)
    {
       return ((newValue >= MIN_VALUE && newValue <= MAX_VALUE)
-              || newValue == ACE || newValue == KING || newValue == QUEEN
-              || newValue == TEN || newValue == JACK || newValue == JOKER);
+         || newValue == ACE || newValue == KING || newValue == QUEEN
+         || newValue == TEN || newValue == JACK || newValue == JOKER);
    }
 
 
@@ -1779,7 +1755,7 @@ class Deck
       for (int packNumber = 0; packNumber < numPacks; ++packNumber)
       {
          for (int masterIndex = 0; masterIndex < masterPack.length;
-               ++masterIndex)
+              ++masterIndex)
          {
             cards[totalCardIndex] = new Card(masterPack[masterIndex]);
             ++totalCardIndex;
@@ -1917,7 +1893,7 @@ class Deck
    {
       int numFound = 0;
       for (Card examine:
-            cards)
+         cards)
       {
          if (examine.equals(card))
             ++numFound;
@@ -2022,14 +1998,14 @@ class Deck
    {
       switch (toBeConverted)
       {
-      case 0:
-         return Card.Suit.hearts;
-      case 1:
-         return Card.Suit.clubs;
-      case 2:
-         return Card.Suit.diamonds;
-      default:
-         return Card.Suit.spades;
+         case 0:
+            return Card.Suit.hearts;
+         case 1:
+            return Card.Suit.clubs;
+         case 2:
+            return Card.Suit.diamonds;
+         default:
+            return Card.Suit.spades;
       }
 
    }
@@ -2055,36 +2031,36 @@ class Deck
                char cardValue = (char)('0' + cardNum);
                switch (cardNum)
                {
-               case 1:
-               {
-                  cardValue = 'A';
-                  break;
-               }
-               case 10:
-               {
-                  cardValue = 'T';
-                  break;
-               }
-               case 11:
-               {
-                  cardValue = 'J';
-                  break;
-               }
-               case 12:
-               {
-                  cardValue = 'Q';
-                  break;
-               }
-               case 13:
-               {
-                  cardValue = 'K';
-                  break;
-               }
-               case 14:
-               {
-                  cardValue = 'X';
-                  break;
-               }
+                  case 1:
+                  {
+                     cardValue = 'A';
+                     break;
+                  }
+                  case 10:
+                  {
+                     cardValue = 'T';
+                     break;
+                  }
+                  case 11:
+                  {
+                     cardValue = 'J';
+                     break;
+                  }
+                  case 12:
+                  {
+                     cardValue = 'Q';
+                     break;
+                  }
+                  case 13:
+                  {
+                     cardValue = 'K';
+                     break;
+                  }
+                  case 14:
+                  {
+                     cardValue = 'X';
+                     break;
+                  }
                }
                masterPack[masterIndex] =
                   new Card(cardValue, intToSuit(suitInt));
@@ -2281,7 +2257,7 @@ class CardGameFramework
          numPlayers = 4;
       // one of many ways to assure at least one full deal to all players
       if  (numCardsPerHand < 1 ||
-            numCardsPerHand >  numPacks * (56 - numUnusedCardsPerPack)
+         numCardsPerHand >  numPacks * (56 - numUnusedCardsPerPack)
             / numPlayers )
          numCardsPerHand = numPacks * (56 - numUnusedCardsPerPack) / numPlayers;
 
@@ -2429,7 +2405,7 @@ class CardGameFramework
    {
       // returns bad card if either argument is bad
       if (playerIndex < 0 ||  playerIndex > numPlayers - 1 ||
-            cardIndex < 0 || cardIndex > hand[playerIndex].getNumCards() - 1)
+         cardIndex < 0 || cardIndex > hand[playerIndex].getNumCards() - 1)
       {
          //Creates a card that does not work
          return new Card('M', Card.Suit.spades);

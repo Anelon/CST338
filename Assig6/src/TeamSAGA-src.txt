@@ -1,3 +1,4 @@
+/*------- File: MVC.java -------*/
 /*
  * Team SAGA - Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado
  * 6-11-2019
@@ -2471,4 +2472,8 @@ class CardGameFramework
 
 
 
+
+/* ---------- paste of run ----------
+
+   ---------- paste of run ----------*/
 
