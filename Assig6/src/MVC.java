@@ -43,7 +43,7 @@ public class MVC
 
    static void endGame()
    {
-      //logic for ending of game
+      System.out.println("END");
    }
 
 
@@ -604,6 +604,13 @@ class View
    }
 
 
+   void setExtraButtons(ActionListener start, ActionListener stop, ActionListener cantPlay)
+   {
+      table.start.addActionListener(start);
+      table.stop.addActionListener(stop);
+      table.cantPlayHumanHand.addActionListener(cantPlay);
+   }
+
    int indexOf(Object item, Object[] array)
    {
       int goal = -1;
@@ -742,6 +749,10 @@ class Controller {
    private View coreView;
    ActionListener buttonAct = new buttonListener();
    ActionListener stackAct = new stackListener();
+   ActionListener startClock = new startClockListener();
+   ActionListener stopClock = new stopClockListener();
+   ActionListener cantPlay = new cantPlayListener();
+
    private boolean stackChosen = false;
    private boolean handChosen = false;
    private Model.Direction chosenStack;
@@ -755,8 +766,37 @@ class Controller {
       coreView.controller = this;
       coreView.setPlayerListeners(buttonAct);
       coreView.setStackListeners(stackAct);
-
+      coreView.setExtraButtons(stopClock, startClock, cantPlay);
    }
+
+   class startClockListener implements ActionListener{
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         Thread newThread;
+         if (!coreView.mainClock.clockCountingDown) {
+            newThread = new Thread(coreView.mainClock);
+            newThread.start();
+         }
+      }
+   }
+
+   class stopClockListener implements ActionListener{
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         coreView.mainClock.stopClock();
+      }
+   }
+
+   class cantPlayListener implements ActionListener{
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         coreModel.skipTurn();
+      }
+   }
+
 
    public class stackListener implements ActionListener {
       @Override
@@ -812,42 +852,6 @@ class Controller {
    }
 }
 
-/* Pseudo Code
- * CONTROLER: Controller takes in MODEL and VIEW item
- * In VIEW, cards and buttons are created for player, button listeners are assigned using the CONTROLLER
- * In VIEW, CPU cards are generated on screen, they do not change (since game ends when deck is empty)
- * Player selects card via CONTROLLER assigned buttons, maybe change background of card to show selection?
- * Player then selects which stack, left or right, via CONTROLLER assigned buttons
- * Player is locked out of selecting stack if stack number is higher than selected card
- * After selection is made, card is removed from hand and a new card is dealt the player
- * Player can opt to skip turn if they have no card is higher than the stack, via CONTROLLER assigned button
- * CPU will check to see which stack has a smaller card, then place its largest card (in the array) on that stack
- * If CPU also skips, it refreshes the hands of both (MODEL)
- * Once deck reaches zero, game ends. (Based on deck counter)
- * End game displays win or lose message at the end
- *
- */
-/*
-//temporary, need to implement controller functions
-//controller should probably have listeners for all buttons
-class Controller
-{
-
-   Controller()
-   {
-      Model coreModel = new Model();
-
-   }
-   /*
-     suggested functions:
-     skipTurn()
-
-     playCard()
-
-
-
-}
-   */
 
 class Clock implements Runnable
 {
@@ -857,7 +861,7 @@ class Clock implements Runnable
    private String timeDisplay = "";
    private JPanel lcdPanel;
    private JLabel timeLabel;
-   private boolean clockCountingDown = true;
+   boolean clockCountingDown = true;
 
    Clock()
    {
@@ -873,6 +877,8 @@ class Clock implements Runnable
 
    @Override
    public void run() {
+      clockCountingDown = true;
+      System.out.println("START");
       long startingTime = System.currentTimeMillis()/1000;
       long currentTimerTime = (System.currentTimeMillis()/1000)-startingTime;
       while (clockCountingDown)
@@ -880,6 +886,8 @@ class Clock implements Runnable
          timeInSeconds = (System.currentTimeMillis() / 1000) - startingTime;
          if (timeInSeconds != currentTimerTime)
          {
+            System.out.println(timeDisplay);
+            System.out.println(timeDisplay);
             lcdPanel.remove(timeLabel);
             timeDisplay = convertTimeToString();
             timeLabel = new JLabel(timeDisplay);
@@ -891,6 +899,7 @@ class Clock implements Runnable
       }
    }
 
+   
    private String convertTimeToString()
    {
       long hours = timeInSeconds/60;
@@ -902,6 +911,7 @@ class Clock implements Runnable
 
    void stopClock()
    {
+      System.out.println("STOP CLOCK");
       clockCountingDown = false;
    }
 
@@ -1067,6 +1077,7 @@ class CardTable extends JFrame
       /*This sets each hand and each player back to the default limits for hand
        * and the player.
        */
+
 
       if(numCardsPerHand<=MAX_CARDS_PER_HAND )
       {
