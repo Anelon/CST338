@@ -638,7 +638,7 @@ class View
       computerHandImages = new JLabel[handSize];
       for (int i = 0; i < handSize; ++i)
       {
-         computerHandImages[i] = new JLabel(GUICard.getIcon(computerHand.inspectCard(i)));
+         computerHandImages[i] = new JLabel(GUICard.getBackCardIcon());
          table.pnlComputerHand.add(computerHandImages[i]);
       }
       table.pnlComputerHand.revalidate();
