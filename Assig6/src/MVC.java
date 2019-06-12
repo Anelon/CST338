@@ -225,16 +225,17 @@ class Model
          System.out.println("Card target " + locationToPlay.getCardAt());
          Card myCard = playerOrComputer.getCard(cardIndex);
          System.out.println("myCard " + myCard);
-         int myCardNum = myCard.getValue();
+         int myCardNum = myCard.valueToInt();
          int topCardNum = -1;
          if(locationToPlay.getCardAt() != null)
          {
             System.out.println("Card target " + locationToPlay.getCardAt());
-            topCardNum = locationToPlay.getCardAt().getValue();
+            topCardNum = locationToPlay.getCardAt().valueToInt();
          }
-         if(topCardNum != -1 && Math.abs(myCardNum - topCardNum) != 1)
+         if(topCardNum != -1 && Math.abs(myCardNum - topCardNum) > 1)
          {
             System.out.println("Invalid card Choice");
+            System.out.println("Mycard value was " + myCardNum + " other value was " + topCardNum);
             return;
          }
 
@@ -303,6 +304,7 @@ class Model
    private void doNothing(Player humanOrComputer)
    {
       humanOrComputer.usedTurn = true;
+      humanOrComputer.skippedTurn = true;
       turnPass();
    }
 
@@ -321,6 +323,11 @@ class Model
     */
    private void turnPass()
    {
+      if (computer.skippedTurn && human.skippedTurn)
+      {
+         framework.deal();
+         human.updateCardArea();
+      }
       System.out.println("Turn Pass");
       if (!human.usedTurn)
       {
@@ -754,6 +761,7 @@ class View
       JLabel playersScores = new JLabel(scores[0]);
       JLabel cupsScores = new JLabel(scores[1]);
 
+
       for (int i = 0; i <1; ++i){
          table.scoresPanel.add(playersScores, 1, 0);
          playersScores.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -908,7 +916,6 @@ class Clock implements Runnable
    @Override
    public void run() {
       clockCountingDown = true;
-      System.out.println("START");
       long startingTime = System.currentTimeMillis()/1000;
       long currentTimerTime = (System.currentTimeMillis()/1000)-startingTime;
       while (clockCountingDown)
@@ -916,8 +923,6 @@ class Clock implements Runnable
          timeInSeconds = (System.currentTimeMillis() / 1000) - startingTime;
          if (timeInSeconds != currentTimerTime)
          {
-            System.out.println(timeDisplay);
-            System.out.println(timeDisplay);
             lcdPanel.remove(timeLabel);
             timeDisplay = convertTimeToString();
             timeLabel = new JLabel(timeDisplay);
@@ -2052,7 +2057,7 @@ class Hand
          System.out.println("index " + i);
          int myCardNum = myCards[i].valueToInt();
          int topdist = Math.abs(myCardNum - topCardNum);
-         //int topdist = 0; 
+         //int topdist = 0;
          if(topdist == 1)
          {
             playableCards.addElement(i);
@@ -2373,6 +2378,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
