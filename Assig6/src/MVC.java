@@ -1,13 +1,16 @@
 /*
  * Team SAGA - Shelly Sun, Andrew Bell, Greg Brown, Andrew Terrado
- * 5-30-2019
+ * 6-11-2019
  *
  *
  *
  * The following program is built to produce a specific output per
- * assignment specifications.
- *
- * Note**  The last card is played automatically.
+ * assignment specifications. The user and computer can play to either
+ * the left or right stack if the absolute value of the cards compared are within 1.
+ * The game ends when the deck runs out/if anyone needs to draw and their are
+ * not enough cards. Passing a turn decrements points. Cards from the hand are to be
+ * selected first.  If the stack is selected first, some issues may or may not arise.
+ * A timer exists and can be reset whenever it is desired.
  */
 
 
@@ -22,6 +25,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.Border;
 
 
+/**
+ * main class of the function
+ */
 public class MVC
 {
 
@@ -40,10 +46,25 @@ public class MVC
    }
 
 
-
-   static void endGame()
+   /**
+    * A message is displayed depending on the value
+    * of playerWon
+    * @param playerWon A boolean intended to be the comparison of
+    *                  scores
+    */
+   static void endGame(boolean playerWon)
    {
-      System.out.println("END");
+      JLabel message;
+      JFrame end = new JFrame("Game Over");
+      if (playerWon)
+         message = new JLabel("You Won");
+      else
+         message = new JLabel("You didn't win");
+      end.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      end.setSize(300, 300);
+      end.add(message);
+      end.setVisible(true);
+
    }
 
 
@@ -84,6 +105,10 @@ public class MVC
       return card;
    }
 }
+
+
+
+
 
 
 /**
@@ -154,14 +179,6 @@ class Model
       updatePlayedCardArea();
       human.updateCardArea();
       computer.updateCardArea();
-
-
-
-
-      for (int i = 0; i < human.playerHand.getNumCards(); ++i)
-      {
-         System.out.println(human.playerHand.inspectCard(i));
-      }
    }
 
 
@@ -208,6 +225,8 @@ class Model
 
 
 
+
+
    /**
     * Plays the card indicated from the chosen Player objet's hand to the
     * stack chosen.
@@ -222,33 +241,30 @@ class Model
 
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
-         System.out.println("Card target " + locationToPlay.getCardAt());
          Card myCard = playerOrComputer.getCard(cardIndex);
-         System.out.println("myCard " + myCard);
          int myCardNum = myCard.valueToInt();
          int topCardNum = -1;
          if(locationToPlay.getCardAt() != null)
          {
-            System.out.println("Card target " + locationToPlay.getCardAt());
             topCardNum = locationToPlay.getCardAt().valueToInt();
          }
          if(topCardNum != -1 && Math.abs(myCardNum - topCardNum) > 1)
          {
-            System.out.println("Invalid card Choice");
-            System.out.println("Mycard value was " + myCardNum + " other value was " + topCardNum);
             return;
          }
 
          locationToPlay.setCardAt(playerOrComputer.playerHand.playCard(cardIndex));
 
-         gameGoodToGo = framework.takeCard(playerOrComputer.toInt());
+         gameGoodToGo = ((framework.takeCard(playerOrComputer.toInt()) ||
+            human.playerHand.getNumCards()>0 || computer.playerHand.getNumCards()>0 ));
+
          playerOrComputer.updateCardArea();
          updatePlayedCardArea();
          playerOrComputer.usedTurn = true;
          turnPass();
       }
       if (!gameGoodToGo)
-         MVC.endGame();
+         MVC.endGame(human.score>computer.score);
    }
 
 
@@ -325,17 +341,17 @@ class Model
    {
       if (computer.skippedTurn && human.skippedTurn)
       {
-         framework.deal();
+         if (!(framework.deal()))
+            MVC.endGame(human.score>computer.score);
+
          human.updateCardArea();
       }
-      System.out.println("Turn Pass");
       if (!human.usedTurn)
       {
          // wait for player to do something
       }
       else if (!computer.usedTurn)
       {
-         System.out.println("Calling AI Turn");
          computerTurn();
       }
       else
@@ -407,17 +423,13 @@ class Model
     */
    private void computerTurn()
    {
-      System.out.println("Running computer AI?");
-      System.out.println("left " + lastPlayedLeftCard + " right " + lastPlayedRightCard);
       if(lastPlayedLeftCard == null)
       {
-         System.out.println("Left Error flag set?");
          playCard(computer, 0, Direction.LEFT);
          return;
       }
       if(lastPlayedRightCard == null)
       {
-         System.out.println("Right Error flag set?");
          playCard(computer, 0, Direction.RIGHT);
          return;
       }
@@ -455,7 +467,7 @@ class Model
       else
       {
          //can not play
-         System.out.println("Can Not Play");
+         System.out.println("Computer Can Not Play");
          doNothing(computer);
       }
    }
@@ -642,6 +654,10 @@ class View
    }
 
 
+
+
+
+   // adds the desired listeners to the panel of non-card buttons
    void setExtraButtons(ActionListener start, ActionListener stop, ActionListener cantPlay)
    {
       table.start.addActionListener(start);
@@ -659,6 +675,11 @@ class View
       }
       return goal;
    }
+
+
+
+
+
 
    //Sends update from the model, this updates the play card images.
    void updatePlayerCardImagesArray(Hand playerHand)
@@ -679,13 +700,18 @@ class View
                setPlayerListeners(controller.buttonAct);
             }
          });
-         System.out.println ("can you see this");
          table.pnlHumanHand.add(playerHandImages[i]);
       }
       table.pnlHumanHand.revalidate();
       table.pnlHumanHand.repaint();
    }
 
+
+
+
+
+
+   // Adds listeners to the player's cards
    void setPlayerListeners(ActionListener listener)
    {
       for (int i = 0; i < playerHandImages.length; ++i)
@@ -693,6 +719,11 @@ class View
          playerHandImages[i].addActionListener(listener);
       }
    }
+
+
+
+
+
 
    //Sends update from the model, this updates the computer hand images.
    void updateComputerHandImagesArray(Hand computerHand)
@@ -713,6 +744,10 @@ class View
 
 
 
+
+
+
+   //adds listeners to the two card stacks
    void setStackListeners(ActionListener listener)
    {
       for (int i = 0; i < table.pnlPlayArea.getComponents().length; ++i)
@@ -721,6 +756,9 @@ class View
          button.addActionListener(listener);
       }
    }
+
+
+
 
 
 
@@ -744,7 +782,6 @@ class View
          button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               System.out.println("ALKJHFA");
                setStackListeners(controller.stackAct);
             }
          });
@@ -754,6 +791,11 @@ class View
       table.pnlPlayArea.revalidate();
       table.pnlPlayArea.repaint();
    }
+
+
+
+
+
 
    //Sends updates from model this should update the two scores.
    //Player score is at scores[0]. Cpu score is at scores[1].
@@ -778,8 +820,9 @@ class View
 }
 
 
-
-
+/**
+ * Controller class to handle the user's input
+ */
 class Controller {
    //Initializes
    private Model coreModel;
@@ -806,6 +849,14 @@ class Controller {
       coreView.setExtraButtons(stopClock, startClock, cantPlay);
    }
 
+
+
+
+
+
+   /**
+    * Custom listener to start the clock
+    */
    class startClockListener implements ActionListener{
 
       @Override
@@ -818,6 +869,14 @@ class Controller {
       }
    }
 
+
+
+
+
+
+   /**
+    * custom listener to stop the clock
+    */
    class stopClockListener implements ActionListener{
 
       @Override
@@ -835,6 +894,13 @@ class Controller {
    }
 
 
+
+
+
+
+   /**
+    * custom listener to handle stack selection
+    */
    public class stackListener implements ActionListener {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -844,7 +910,6 @@ class Controller {
          else
             chosenStack = Model.Direction.RIGHT;
 
-         System.out.println("in stack, card/stack" + handChosen + " " + stackChosen);
          act();
 
       }
@@ -852,14 +917,13 @@ class Controller {
    }
 
 
-   //buttonListener
+   //buttonListener for cards
    public class buttonListener implements ActionListener {
 
 
       public void actionPerformed(ActionEvent cardClick) {
          handChosen = true;
          chosenCard = cardClick.getActionCommand().charAt(0) - '0';
-         System.out.println("in buttonListener, card/stack" + handChosen + " " + stackChosen);
 
          act();
       }
@@ -867,13 +931,16 @@ class Controller {
 
    }
 
+
+
+
+
+
+   // Update the model with the user's selected data
    public void act()
    {
 
-      System.out.println("in act");
       if (bothChosen()) {
-         System.out.println("in inner act");
-         System.out.println(chosenCard + " " + chosenStack);
          coreModel.playCard(chosenCard, chosenStack);
          coreView.setPlayerListeners(buttonAct);
          stackChosen = false;
@@ -882,14 +949,21 @@ class Controller {
    }
 
 
+
+
+
+
+   // returns true if the player has chosen both a stack
+   // and a card.
    public boolean bothChosen() {
       return (stackChosen && handChosen);
-
-
    }
 }
 
 
+/**
+ * Stop-watch like clock that operates in a separate small window.
+ */
 class Clock implements Runnable
 {
 
@@ -934,6 +1008,16 @@ class Clock implements Runnable
    }
 
 
+
+
+
+
+   /**
+    * converts time (in seconds) to a standard
+    * time format (00:00)
+    * @return String representation of timeInSeconds in time
+    * format
+    */
    private String convertTimeToString()
    {
       long hours = timeInSeconds/60;
@@ -943,14 +1027,25 @@ class Clock implements Runnable
    }
 
 
+
+
+
+
+   /**
+    * Stops the clock at the following second.  Leaves
+    * display intact.
+    */
    void stopClock()
    {
-      System.out.println("STOP CLOCK");
       clockCountingDown = false;
    }
 
 
 }
+
+
+
+
 
 
 /**
@@ -1051,11 +1146,6 @@ class GUICard
 
 
 
-
-
-
-
-
    /**
     * Converts an integer to a single-character string
     * representation of a playing card suite. 0 = Hearts,
@@ -1078,10 +1168,6 @@ class GUICard
             return "S";
       }
    }
-
-
-
-
 }
 
 
@@ -1983,33 +2069,6 @@ class Deck
          }
       }
    }
-
-
-
-
-
-
-   /**
-    * Tests deck init, shuffle, and dealCard
-    */
-   public void testDeck(int numPacks)
-   {
-      init(numPacks);
-
-      for (int currentCard = 0; currentCard < cards.length; ++ currentCard)
-      {
-         System.out.println(dealCard());
-      }
-
-      init(numPacks);
-      shuffle();
-
-
-      for (int currentCard = 0; currentCard < cards.length; ++ currentCard)
-      {
-         System.out.println(dealCard());
-      }
-   }
 }
 
 
@@ -2048,12 +2107,10 @@ class Hand
    //returns any cards that are in the hand that are with in 1
    public Vector<Integer> getPlayableCards(Card top)
    {
-      System.out.println("Getting playable cards?" + top);
       Vector<Integer> playableCards = new Vector<Integer>();
       int topCardNum = top.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
-         System.out.println("index " + i);
          int myCardNum = myCards[i].valueToInt();
          int topdist = Math.abs(myCardNum - topCardNum);
          //int topdist = 0;
