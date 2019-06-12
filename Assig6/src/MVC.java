@@ -408,8 +408,8 @@ class Model
       leftPlayableCards = computer.getPlayableCards(lastPlayedLeftCard);
       rightPlayableCards = computer.getPlayableCards(lastPlayedRightCard);
       //play to the deck that has less cards that you can play to
-      if(leftPlayableCards.size() != 0 && 
-            leftPlayableCards.size() < rightPlayableCards.size())
+      if(leftPlayableCards.size() != 0 &&
+         leftPlayableCards.size() < rightPlayableCards.size())
       {
          //pick a card
          System.out.println("Computer can play cards on left");
@@ -673,11 +673,10 @@ class View
 
       table.pnlPlayArea.removeAll();
       for (int i = 0; i < twoCardArray.length; ++i){
-         if (twoCardArray[i] != null) {
-            table.pnlPlayArea.add(new JLabel(GUICard.getIcon(twoCardArray[i])));
-         }
+         if (twoCardArray[i] != null)
+            table.pnlPlayArea.add(new JButton(GUICard.getIcon(twoCardArray[i])));
          else
-            table.pnlPlayArea.add(new JLabel(GUICard.getIcon(new Card('A', Card.Suit.spades))));
+            table.pnlPlayArea.add(new JButton(GUICard.getIcon(new Card('A', Card.Suit.spades))));
       }
       table.pnlPlayArea.revalidate();
       table.pnlPlayArea.repaint();
@@ -1083,10 +1082,41 @@ class CardTable extends JFrame
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
       stop = new JButton("Start timer");
+      
+      stop.addActionListener(new ActionListener() {
+
+         public void actionPerformed(ActionEvent start) {
+            System.out.println("start");
+         }
+      });
+      
+      
       start = new JButton("Stop timer");
+      start.addActionListener(new ActionListener() {
+         
+         public void actionPerformed(ActionEvent stop) {
+            System.out.println("stop");
+         }
+      });
+      
+      
       cantPlayHumanHand = new JButton("I cannot play!");
+      cantPlayHumanHand.addActionListener(new ActionListener() {
+         
+         public void actionPerformed(ActionEvent stop) {
+            System.out.println("skip");
+         }
+      });
+
+      
+      
       timeButtons.add(stop);
+      
+      
       timeButtons.add(start);
+      
+      
+      
       timeButtons.add(cantPlayHumanHand);
       //This sets the size of the buttons.
       stop.setPreferredSize(new Dimension (100, 50));
@@ -2280,6 +2310,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
