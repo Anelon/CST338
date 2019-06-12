@@ -391,17 +391,20 @@ class Model
    private void computerTurn()
    {
       System.out.println("Running computer AI?");
-      if(!lastPlayedLeftCard.getErrorFlag())
+      System.out.println("left " + lastPlayedLeftCard + " right " + lastPlayedRightCard);
+      if(lastPlayedLeftCard == null)
       {
+         System.out.println("Error flag set?");
          playCard(computer, 0, Direction.LEFT);
          return;
       }
-      if(!lastPlayedRightCard.getErrorFlag())
+      if(lastPlayedRightCard == null)
       {
          playCard(computer, 0, Direction.RIGHT);
          return;
       }
       System.out.println("Getting playable Cards");
+      System.out.println("left " + lastPlayedLeftCard + " right " + lastPlayedRightCard);
       //find playable cards
       Vector<Integer> leftPlayableCards;
       Vector<Integer> rightPlayableCards;
@@ -1984,12 +1987,15 @@ class Hand
    //returns any cards that are in the hand that are with in 1
    public Vector<Integer> getPlayableCards(Card top)
    {
+      System.out.println("Getting playable cards?" + top);
       Vector<Integer> playableCards = new Vector<Integer>();
-      int topCardNum = top.valueToInt();
+      //int topCardNum = top.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
+         System.out.println("index " + i);
          int myCardNum = myCards[i].valueToInt();
-         int topdist = Math.abs(myCardNum - topCardNum);
+         //int topdist = Math.abs(myCardNum - topCardNum);
+         int topdist = 0; 
          if(topdist == 1)
          {
             playableCards.addElement(i);
