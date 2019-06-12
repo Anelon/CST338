@@ -746,6 +746,7 @@ class Controller {
          else
             chosenStack = Model.Direction.RIGHT;
 
+         System.out.println("in stack, card/stack" + handChosen + " " + stackChosen);
          act();
 
       }
@@ -760,6 +761,7 @@ class Controller {
       public void actionPerformed(ActionEvent cardClick) {
          handChosen = true;
          chosenCard = cardClick.getActionCommand().charAt(0) - '0';
+         System.out.println("in buttonListener, card/stack" + handChosen + " " + stackChosen);
 
          act();
       }
@@ -773,9 +775,12 @@ class Controller {
       System.out.println("in act");
       if (bothChosen()) {
          System.out.println("in inner act");
+         System.out.println(chosenCard + " " + chosenStack);
          coreModel.playCard(chosenCard, chosenStack);
-         chosenStack = null;
-         chosenCard = -1;
+         coreView.setPlayerListeners(buttonAct);
+         coreView.setStackListeners(stackAct);
+         stackChosen = false;
+         handChosen = false;
       }
    }
 
@@ -855,7 +860,6 @@ class Clock implements Runnable
          timeInSeconds = (System.currentTimeMillis() / 1000) - startingTime;
          if (timeInSeconds != currentTimerTime)
          {
-            System.out.println(timeDisplay);
             lcdPanel.remove(timeLabel);
             timeDisplay = convertTimeToString();
             timeLabel = new JLabel(timeDisplay);
@@ -1257,11 +1261,7 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
-      for (int i = 0; i < valuRanks.length; ++i)
-      {
-         System.out.println(i);
-      }
-      return indexOf(value, valuRanks);
+      return indexOf(value, valuRanks) + 1;
    }
 
    /**
