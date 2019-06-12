@@ -105,7 +105,6 @@ class Model
    private View attachedView;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
-   int nothingDone = 0;
 
    public enum Direction
    {
@@ -214,9 +213,6 @@ class Model
 
       boolean gameGoodToGo = true;
 
-      //reset nothing done counter
-      nothingDone = 0;
-
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
          locationToPlay.setCardAt(playerOrComputer.playerHand.playCard(cardIndex));
@@ -283,15 +279,6 @@ class Model
     */
    private void doNothing(Player humanOrComputer)
    {
-      System.out.println("Noting " + nothingDone);
-      if(++nothingDone == 2)
-      {
-         /*
-         framework.deal();
-         human.updateCardArea();
-         computer.updateCardArea();
-         */
-      }
       humanOrComputer.usedTurn = true;
       turnPass();
    }
@@ -311,16 +298,12 @@ class Model
     */
    private void turnPass()
    {
-      System.out.println("Turn Pass");
       if (!human.usedTurn)
       {
          // wait for player to do something
       }
       else if (!computer.usedTurn)
-      {
-         System.out.println("Run Comuter AI");
          computerTurn();
-      }
       else
       {
          calculateScore();
@@ -400,7 +383,6 @@ class Model
       }
       if(lastPlayedRightCard == null)
       {
-         playCard(computer, 0, Direction.RIGHT);
          return;
       }
       System.out.println("Getting playable Cards");
@@ -427,9 +409,7 @@ class Model
       else
       {
          //can not play
-         doNothing(computer);
       }
-
    }
 
 
@@ -670,21 +650,50 @@ class View
       table.pnlComputerHand.repaint();
    }
 
-   //Sends updates from model this should update the two cards in playArea.
-   void updatePlayedCardImagesArray(Card[] twoCardArray)
-   {
 
-      table.pnlPlayArea.removeAll();
-      for (int i = 0; i < twoCardArray.length; ++i){
-         if (twoCardArray[i] != null)
-            table.pnlPlayArea.add(new JButton(GUICard.getIcon(twoCardArray[i])));
-         else
-            table.pnlPlayArea.add(new JButton(GUICard.getIcon(new Card('A', Card.Suit.spades))));
+
+   void setStackListeners(ActionListener listener)
+   {
+      for (int i = 0; i < table.pnlPlayArea.getComponents().length; ++i)
+      {
+         JButton button = (JButton)table.pnlPlayArea.getComponent(i);
+         button.addActionListener(listener);
       }
+   }
+
+
+
+   //Sends updates from model this should update the two cards in playArea.
+   void updatePlayedCardImagesArray(Card[] twoCardArray) {
+      JButton button = null;
+      table.pnlPlayArea.removeAll();
+      for (int i = 0; i < twoCardArray.length; ++i) {
+         if (twoCardArray[i] != null)
+            button = new JButton(GUICard.getIcon(twoCardArray[i]));
+         else
+            button = new JButton(GUICard.getIcon(new Card('A', Card.Suit.spades)));
+
+
+         table.pnlPlayArea.add(button);
+         if (i == 0)
+            button.setActionCommand("LEFT");
+         else
+            button.setActionCommand("RIGHT");
+
+         button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               System.out.println("ALKJHFA");
+               setStackListeners(controller.stackAct);
+            }
+         });
+
+      }
+      table.pnlPlayArea.add(button);
       table.pnlPlayArea.revalidate();
       table.pnlPlayArea.repaint();
-
    }
+
    //Sends updates from model this should update the two scores.
    //Player score is at scores[0]. Cpu score is at scores[1].
    void updateScores(String[] scores)
@@ -711,53 +720,81 @@ class View
 
 
 
-class Controller
-{
+class Controller {
    //Initializes
    private Model coreModel;
    private View coreView;
    ActionListener buttonAct = new buttonListener();
-
+   ActionListener stackAct = new stackListener();
+   private boolean stackChosen = false;
+   private boolean handChosen = false;
+   private Model.Direction chosenStack;
+   private int chosenCard = -1;
 
 
    // Standard Constructor
-   Controller(Model coreModel, View coreView)
-   {
+   Controller(Model coreModel, View coreView) {
       this.coreModel = coreModel;
       this.coreView = coreView;
       coreView.controller = this;
+      coreView.setPlayerListeners(buttonAct);
+      coreView.setStackListeners(stackAct);
 
    }
 
-   public  void buttonAction(JButton button)
-   {
-      button.addActionListener(new buttonListener());
+   public class stackListener implements ActionListener {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         stackChosen = true;
+         if (e.getActionCommand() == "LEFT")
+            chosenStack = Model.Direction.LEFT;
+         else
+            chosenStack = Model.Direction.RIGHT;
+
+         System.out.println("in stack, card/stack" + handChosen + " " + stackChosen);
+         act();
+
+      }
+
    }
+
 
    //buttonListener
-   public  class buttonListener implements ActionListener{
+   public class buttonListener implements ActionListener {
 
 
+      public void actionPerformed(ActionEvent cardClick) {
+         handChosen = true;
+         chosenCard = cardClick.getActionCommand().charAt(0) - '0';
+         System.out.println("in buttonListener, card/stack" + handChosen + " " + stackChosen);
 
-      public void actionPerformed(ActionEvent cardClick)
-      {
-
-         coreModel.playCard(cardClick.getActionCommand().charAt(0)-'0', Model.Direction.LEFT);
+         act();
       }
 
-      void gameLogic(int humanCardPosition)
-      { int num = humanCardPosition;
-         System.out.println(num);
-      }
-   };
 
-
-   public static int humanCardPosition (int chosenCardPosition)
-   {
-      int cardLocation = chosenCardPosition;
-      return cardLocation;
    }
 
+   public void act()
+   {
+
+      System.out.println("in act");
+      if (bothChosen()) {
+         System.out.println("in inner act");
+         System.out.println(chosenCard + " " + chosenStack);
+         coreModel.playCard(chosenCard, chosenStack);
+         coreView.setPlayerListeners(buttonAct);
+         coreView.setStackListeners(stackAct);
+         stackChosen = false;
+         handChosen = false;
+      }
+   }
+
+
+   public boolean bothChosen() {
+      return (stackChosen && handChosen);
+
+
+   }
 }
 
 /* Pseudo Code
@@ -828,7 +865,6 @@ class Clock implements Runnable
          timeInSeconds = (System.currentTimeMillis() / 1000) - startingTime;
          if (timeInSeconds != currentTimerTime)
          {
-            System.out.println(timeDisplay);
             lcdPanel.remove(timeLabel);
             timeDisplay = convertTimeToString();
             timeLabel = new JLabel(timeDisplay);
@@ -1085,41 +1121,10 @@ class CardTable extends JFrame
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
       stop = new JButton("Start timer");
-      
-      stop.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent start) {
-            System.out.println("start");
-         }
-      });
-      
-      
       start = new JButton("Stop timer");
-      start.addActionListener(new ActionListener() {
-         
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("stop");
-         }
-      });
-      
-      
       cantPlayHumanHand = new JButton("I cannot play!");
-      cantPlayHumanHand.addActionListener(new ActionListener() {
-         
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("skip");
-         }
-      });
-
-      
-      
       timeButtons.add(stop);
-      
-      
       timeButtons.add(start);
-      
-      
-      
       timeButtons.add(cantPlayHumanHand);
       //This sets the size of the buttons.
       stop.setPreferredSize(new Dimension (100, 50));
@@ -1261,11 +1266,7 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
-      for (int i = 0; i < valuRanks.length; ++i)
-      {
-         System.out.println(i);
-      }
-      return indexOf(value, valuRanks);
+      return indexOf(value, valuRanks) + 1;
    }
 
    /**
