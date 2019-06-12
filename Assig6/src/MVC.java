@@ -199,8 +199,6 @@ class Model
 
 
 
-
-
    /**
     * Plays the card indicated from the chosen Player objet's hand to the
     * stack chosen.
