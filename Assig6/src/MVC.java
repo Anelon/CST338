@@ -105,7 +105,6 @@ class Model
    private View attachedView;
    private CardGameFramework framework = new CardGameFramework(1, 4, 0,
       null, 2, 7 );
-   int nothingDone = 0;
 
    public enum Direction
    {
@@ -214,9 +213,6 @@ class Model
 
       boolean gameGoodToGo = true;
 
-      //reset nothing done counter
-      nothingDone = 0;
-
       if (playerOrComputer != null && cardIndex != -1 && locationToPlay != null)
       {
          locationToPlay.setCardAt(playerOrComputer.playerHand.playCard(cardIndex));
@@ -283,15 +279,6 @@ class Model
     */
    private void doNothing(Player humanOrComputer)
    {
-      System.out.println("Noting " + nothingDone);
-      if(++nothingDone == 2)
-      {
-         /*
-         framework.deal();
-         human.updateCardArea();
-         computer.updateCardArea();
-         */
-      }
       humanOrComputer.usedTurn = true;
       turnPass();
    }
@@ -311,16 +298,12 @@ class Model
     */
    private void turnPass()
    {
-      System.out.println("Turn Pass");
       if (!human.usedTurn)
       {
          // wait for player to do something
       }
       else if (!computer.usedTurn)
-      {
-         System.out.println("Run Comuter AI");
          computerTurn();
-      }
       else
       {
          calculateScore();
@@ -392,15 +375,12 @@ class Model
    {
 /*      if(!lastPlayedLeftCard.getErrorFlag())
       {
-         playCard(computer, 0, Direction.LEFT);
          return;
       }
       if(!lastPlayedRightCard.getErrorFlag())
       {
-         playCard(computer, 0, Direction.RIGHT);
          return;
       }
-      System.out.println("Getting playable Cards");
       //find playable cards
       Vector<Integer> leftPlayableCards;
       Vector<Integer> rightPlayableCards;
@@ -423,7 +403,6 @@ class Model
       else
       {
          //can not play
-         doNothing(computer);
       }
 */
    }
@@ -753,6 +732,8 @@ class Controller {
       this.coreModel = coreModel;
       this.coreView = coreView;
       coreView.controller = this;
+      coreView.setPlayerListeners(buttonAct);
+      coreView.setStackListeners(stackAct);
 
    }
 
@@ -1131,41 +1112,10 @@ class CardTable extends JFrame
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
       stop = new JButton("Start timer");
-      
-      stop.addActionListener(new ActionListener() {
-
-         public void actionPerformed(ActionEvent start) {
-            System.out.println("start");
-         }
-      });
-      
-      
       start = new JButton("Stop timer");
-      start.addActionListener(new ActionListener() {
-         
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("stop");
-         }
-      });
-      
-      
       cantPlayHumanHand = new JButton("I cannot play!");
-      cantPlayHumanHand.addActionListener(new ActionListener() {
-         
-         public void actionPerformed(ActionEvent stop) {
-            System.out.println("skip");
-         }
-      });
-
-      
-      
       timeButtons.add(stop);
-      
-      
       timeButtons.add(start);
-      
-      
-      
       timeButtons.add(cantPlayHumanHand);
       //This sets the size of the buttons.
       stop.setPreferredSize(new Dimension (100, 50));
