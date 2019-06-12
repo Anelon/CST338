@@ -373,20 +373,14 @@ class Model
     */
    private void computerTurn()
    {
-      System.out.println("Running computer AI?");
-      System.out.println("left " + lastPlayedLeftCard + " right " + lastPlayedRightCard);
-      if(lastPlayedLeftCard == null)
-      {
-         System.out.println("Error flag set?");
-         playCard(computer, 0, Direction.LEFT);
-         return;
-      }
-      if(lastPlayedRightCard == null)
+/*      if(!lastPlayedLeftCard.getErrorFlag())
       {
          return;
       }
-      System.out.println("Getting playable Cards");
-      System.out.println("left " + lastPlayedLeftCard + " right " + lastPlayedRightCard);
+      if(!lastPlayedRightCard.getErrorFlag())
+      {
+         return;
+      }
       //find playable cards
       Vector<Integer> leftPlayableCards;
       Vector<Integer> rightPlayableCards;
@@ -410,6 +404,7 @@ class Model
       {
          //can not play
       }
+*/
    }
 
 
@@ -783,7 +778,6 @@ class Controller {
          System.out.println(chosenCard + " " + chosenStack);
          coreModel.playCard(chosenCard, chosenStack);
          coreView.setPlayerListeners(buttonAct);
-         coreView.setStackListeners(stackAct);
          stackChosen = false;
          handChosen = false;
       }
@@ -1988,15 +1982,12 @@ class Hand
    //returns any cards that are in the hand that are with in 1
    public Vector<Integer> getPlayableCards(Card top)
    {
-      System.out.println("Getting playable cards?" + top);
       Vector<Integer> playableCards = new Vector<Integer>();
-      //int topCardNum = top.valueToInt();
+      int topCardNum = top.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
-         System.out.println("index " + i);
          int myCardNum = myCards[i].valueToInt();
-         //int topdist = Math.abs(myCardNum - topCardNum);
-         int topdist = 0; 
+         int topdist = Math.abs(myCardNum - topCardNum);
          if(topdist == 1)
          {
             playableCards.addElement(i);
@@ -2317,6 +2308,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
