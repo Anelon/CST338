@@ -881,7 +881,7 @@ class Clock implements Runnable
       }
    }
 
-   
+
    private String convertTimeToString()
    {
       long hours = timeInSeconds/60;
@@ -1274,7 +1274,7 @@ class Card
    int valueToInt()
    {
       setUpValuRanks();
-      return indexOf(value, valuRanks);
+      return indexOf(value, valuRanks)-1;
    }
 
    /**
@@ -2004,7 +2004,7 @@ class Hand
          System.out.println("index " + i);
          int myCardNum = myCards[i].valueToInt();
          //int topdist = Math.abs(myCardNum - topCardNum);
-         int topdist = 0; 
+         int topdist = 0;
          if(topdist == 1)
          {
             playableCards.addElement(i);
@@ -2325,6 +2325,7 @@ class CardGameFramework
       return hand[playerIndex].takeCard(deck.dealCard());
    }
 }
+
 
 
 
