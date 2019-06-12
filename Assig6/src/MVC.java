@@ -1060,10 +1060,41 @@ class CardTable extends JFrame
       timeButtons.setBorder(new TitledBorder(textColorTimer,
          "Card Game"));
       stop = new JButton("Start timer");
+      
+      stop.addActionListener(new ActionListener() {
+
+         public void actionPerformed(ActionEvent start) {
+            System.out.println("start");
+         }
+      });
+      
+      
       start = new JButton("Stop timer");
+      start.addActionListener(new ActionListener() {
+         
+         public void actionPerformed(ActionEvent stop) {
+            System.out.println("stop");
+         }
+      });
+      
+      
       cantPlayHumanHand = new JButton("I cannot play!");
+      cantPlayHumanHand.addActionListener(new ActionListener() {
+         
+         public void actionPerformed(ActionEvent stop) {
+            System.out.println("skip");
+         }
+      });
+
+      
+      
       timeButtons.add(stop);
+      
+      
       timeButtons.add(start);
+      
+      
+      
       timeButtons.add(cantPlayHumanHand);
       //This sets the size of the buttons.
       stop.setPreferredSize(new Dimension (100, 50));
