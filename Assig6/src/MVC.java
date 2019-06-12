@@ -373,7 +373,7 @@ class Model
     */
    private void computerTurn()
    {
-      if(!lastPlayedLeftCard.getErrorFlag())
+/*      if(!lastPlayedLeftCard.getErrorFlag())
       {
          return;
       }
@@ -404,7 +404,7 @@ class Model
       {
          //can not play
       }
-
+*/
    }
 
 
@@ -645,21 +645,50 @@ class View
       table.pnlComputerHand.repaint();
    }
 
-   //Sends updates from model this should update the two cards in playArea.
-   void updatePlayedCardImagesArray(Card[] twoCardArray)
-   {
 
-      table.pnlPlayArea.removeAll();
-      for (int i = 0; i < twoCardArray.length; ++i){
-         if (twoCardArray[i] != null)
-            table.pnlPlayArea.add(new JButton(GUICard.getIcon(twoCardArray[i])));
-         else
-            table.pnlPlayArea.add(new JButton(GUICard.getIcon(new Card('A', Card.Suit.spades))));
+
+   void setStackListeners(ActionListener listener)
+   {
+      for (int i = 0; i < table.pnlPlayArea.getComponents().length; ++i)
+      {
+         JButton button = (JButton)table.pnlPlayArea.getComponent(i);
+         button.addActionListener(listener);
       }
+   }
+
+
+
+   //Sends updates from model this should update the two cards in playArea.
+   void updatePlayedCardImagesArray(Card[] twoCardArray) {
+      JButton button = null;
+      table.pnlPlayArea.removeAll();
+      for (int i = 0; i < twoCardArray.length; ++i) {
+         if (twoCardArray[i] != null)
+            button = new JButton(GUICard.getIcon(twoCardArray[i]));
+         else
+            button = new JButton(GUICard.getIcon(new Card('A', Card.Suit.spades)));
+
+
+         table.pnlPlayArea.add(button);
+         if (i == 0)
+            button.setActionCommand("LEFT");
+         else
+            button.setActionCommand("RIGHT");
+
+         button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               System.out.println("ALKJHFA");
+               setStackListeners(controller.stackAct);
+            }
+         });
+
+      }
+      table.pnlPlayArea.add(button);
       table.pnlPlayArea.revalidate();
       table.pnlPlayArea.repaint();
-
    }
+
    //Sends updates from model this should update the two scores.
    //Player score is at scores[0]. Cpu score is at scores[1].
    void updateScores(String[] scores)
@@ -686,53 +715,74 @@ class View
 
 
 
-class Controller
-{
+class Controller {
    //Initializes
    private Model coreModel;
    private View coreView;
    ActionListener buttonAct = new buttonListener();
-
+   ActionListener stackAct = new stackListener();
+   private boolean stackChosen = false;
+   private boolean handChosen = false;
+   private Model.Direction chosenStack;
+   private int chosenCard = -1;
 
 
    // Standard Constructor
-   Controller(Model coreModel, View coreView)
-   {
+   Controller(Model coreModel, View coreView) {
       this.coreModel = coreModel;
       this.coreView = coreView;
       coreView.controller = this;
 
    }
 
-   public  void buttonAction(JButton button)
-   {
-      button.addActionListener(new buttonListener());
+   public class stackListener implements ActionListener {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+         stackChosen = true;
+         if (e.getActionCommand() == "LEFT")
+            chosenStack = Model.Direction.LEFT;
+         else
+            chosenStack = Model.Direction.RIGHT;
+
+         act();
+
+      }
+
    }
+
 
    //buttonListener
-   public  class buttonListener implements ActionListener{
+   public class buttonListener implements ActionListener {
 
 
+      public void actionPerformed(ActionEvent cardClick) {
+         handChosen = true;
+         chosenCard = cardClick.getActionCommand().charAt(0) - '0';
 
-      public void actionPerformed(ActionEvent cardClick)
-      {
-
-         coreModel.playCard(cardClick.getActionCommand().charAt(0)-'0', Model.Direction.LEFT);
+         act();
       }
 
-      void gameLogic(int humanCardPosition)
-      { int num = humanCardPosition;
-         System.out.println(num);
-      }
-   };
 
-
-   public static int humanCardPosition (int chosenCardPosition)
-   {
-      int cardLocation = chosenCardPosition;
-      return cardLocation;
    }
 
+   public void act()
+   {
+
+      System.out.println("in act");
+      if (bothChosen()) {
+         System.out.println("in inner act");
+         coreModel.playCard(chosenCard, chosenStack);
+         chosenStack = null;
+         chosenCard = -1;
+      }
+   }
+
+
+   public boolean bothChosen() {
+      return (stackChosen && handChosen);
+
+
+   }
 }
 
 /* Pseudo Code
