@@ -296,12 +296,16 @@ class Model
     */
    private void turnPass()
    {
+      System.out.println("Turn Pass");
       if (!human.usedTurn)
       {
          // wait for player to do something
       }
       else if (!computer.usedTurn)
+      {
+         System.out.println("Calling AI Turn");
          computerTurn();
+      }
       else
       {
          calculateScore();
@@ -375,12 +379,14 @@ class Model
       System.out.println("left " + lastPlayedLeftCard + " right " + lastPlayedRightCard);
       if(lastPlayedLeftCard == null)
       {
-         System.out.println("Error flag set?");
+         System.out.println("Left Error flag set?");
          playCard(computer, 0, Direction.LEFT);
          return;
       }
       if(lastPlayedRightCard == null)
       {
+         System.out.println("Right Error flag set?");
+         playCard(computer, 0, Direction.RIGHT);
          return;
       }
       System.out.println("Getting playable Cards");
@@ -391,6 +397,16 @@ class Model
       leftPlayableCards = computer.getPlayableCards(lastPlayedLeftCard);
       rightPlayableCards = computer.getPlayableCards(lastPlayedRightCard);
       //play to the deck that has less cards that you can play to
+      System.out.println("Left Cards:");
+      for(int i = 0; i < leftPlayableCards.size(); i++)
+      {
+         System.out.println(leftPlayableCards.get(i));
+      }
+      System.out.println("right Cards:");
+      for(int i = 0; i < rightPlayableCards.size(); i++)
+      {
+         System.out.println(rightPlayableCards.get(i));
+      }
       if(leftPlayableCards.size() != 0 &&
          leftPlayableCards.size() < rightPlayableCards.size())
       {
@@ -407,6 +423,8 @@ class Model
       else
       {
          //can not play
+         System.out.println("Can Not Play");
+         doNothing(computer);
       }
    }
 
@@ -1987,13 +2005,13 @@ class Hand
    {
       System.out.println("Getting playable cards?" + top);
       Vector<Integer> playableCards = new Vector<Integer>();
-      //int topCardNum = top.valueToInt();
+      int topCardNum = top.valueToInt();
       for(int i = 0; i < numCards; i++)
       {
          System.out.println("index " + i);
          int myCardNum = myCards[i].valueToInt();
-         //int topdist = Math.abs(myCardNum - topCardNum);
-         int topdist = 0; 
+         int topdist = Math.abs(myCardNum - topCardNum);
+         //int topdist = 0; 
          if(topdist == 1)
          {
             playableCards.addElement(i);
