@@ -1,0 +1,521 @@
+/*Andrew Terrado
+ *CST-388
+ *This program replicates a casino slot machine and is designed to have two classes, the main assig2 and TripleString
+ *
+ *assig2 relies on a series of helper classes to get user information and perform core game logic of each pull
+ *Max pull is 40, max length of strings is 20. 
+ * 
+ * TripleString  defines the TripleString object, max length of string, max pulls per game, array data
+ */
+
+//Imported Scanner for user input and Math for pull logic
+import java.util.Scanner;
+import java.lang.Math;
+
+/*Main Class, assig2
+ * Pre-Loop: Gets initial bet from user (1-100), creates new TripleString object (threeStringPull), creates counter variable
+ * Loop: gets win amount, savings winnings to array, displays result, deducts from counter
+ * Post Loop: After 40 pulls or user quits, will display individual/total winnings and end game
+ * Relies on TripleString and helper classes for functionality
+ */
+public class assig2 {
+
+   public static void main(String[] args)
+   {
+      //Gets user bet, creates new TripleString object, sets counter using object
+      //getBet() get users bet and runs a validation check on bet
+      int betAmount = getBet();
+      TripleString threeStringPull = new TripleString();
+      int counter = TripleString.MAX_PULLS;
+      
+      
+      //Continues to call getBet() if user does not input 0 and if counter is not 0
+      //Will quit game if user attempts to play game beyond 40 pulls
+      while (betAmount != 0 && counter > 0)
+      {
+         //Sets value of pull() to threeStringPull
+         threeStringPull = pull();
+         int winAmount = betAmount * getPayMultiplier(threeStringPull);
+         
+         threeStringPull.saveWinnings(winAmount);
+         
+         display(threeStringPull, winAmount);
+      
+       
+         betAmount = getBet();
+         counter -= 1;
+      }
+      
+      // Displays end game string with formatted text
+      System.out.println("Thanks for playing at the Casino!");
+      System.out.print(threeStringPull.displayWinnings());
+   }
+   
+   
+   //Helper Classes of Main
+   
+   /*
+    * getBet handles user input and collects bet
+    * Validates bet, to ensure it is between 1 and 100
+    * Incorrect bets will prompt user again
+    * Returns bet amount (integer)
+    */
+   private static int getBet()
+   {
+      //Gets user input
+      Scanner userBetInput = new Scanner(System.in);
+      System.out.println("How much would you like to bet? (1 - 100) or 0 to quit");
+      int bet = userBetInput.nextInt();
+      
+      
+      // While loop continues asking user for bet, if initial bet is not valid (1-100)
+      while (bet < 0 || bet > 100)
+      {
+         System.out.println("How much would you like to bet? (1 - 100) or 0 to quit");
+         
+         bet = userBetInput.nextInt();
+      }
+      
+      return bet;
+   }
+   
+   //Creates a new TripleString object, sets random string values to it, and returns it to user
+   private static TripleString pull()
+   {
+      TripleString randomPull = new TripleString();
+      
+      //Uses mutators to set string in randomPull, uses randString to determine string value for each
+      randomPull.setString1(randString());
+      randomPull.setString2(randString());
+      randomPull.setString3(randString());
+      return randomPull;
+   }
+   
+   //Determines string output using Math.random (0 to 1) and uses equivalent percentages
+   private static String randString()
+   {
+      double pullResult =  Math.random();
+      if ((pullResult >= 0) && (pullResult<= 0.5)) //50%
+         return "BAR";
+      if ((pullResult > 0.5) && (pullResult<= 0.75)) //25%
+         return "cherries";
+      if ((pullResult > 0.75) && (pullResult<= 0.875)) //12.5%
+         return "(space)";
+      else
+         return "7"; //12.5%, remaining percentage
+   }
+   
+ 
+   
+   
+   //Finds win multiplier, takes TripleString object.
+   //Evaluates the TripleString contents
+   //returns integer value for multiplier
+   public static int getPayMultiplier(TripleString thePull)
+   {
+      String pullString1 = thePull.getString1();
+      String pullString2 = thePull.getString2();
+      String pullString3 = thePull.getString3();
+      
+      if (pullString1.equals("cherries") && pullString2 != ("cherries"))
+      {
+      return 5;
+      }
+   
+      if (pullString1.equals("cherries") && pullString2.equals("cherries"))
+      {
+      return 15;
+      }
+
+      if (pullString1.equals("cherries") && pullString2.equals("cherries") && pullString3.equals("cherries"))
+      {
+      return 30;
+      }
+   
+      if (pullString1.equals("BAR") && pullString2.equals("BAR") && pullString3.equals("BAR"))
+      {
+      return 50;
+      }
+      
+      if (pullString1.equals("7") && pullString2.equals("7") && pullString3.equals("7"))
+      {
+      return 100;
+      }
+      
+      
+      else 
+      return 0;
+        
+   }
+
+   
+
+   // Prints output of single pull to user
+   //Prints triple string object contents using toString
+   public static void display(TripleString thePull, int winnings)
+   {
+      System.out.println("whirrrrrr .... and your pull is ... ");
+      System.out.println(thePull.toString());
+      
+      //If winnings exist, user is congratulated with amount
+      if (winnings > 0)
+         System.out.println("Congratulations, you won $" + winnings);
+      else
+         System.out.println("sorry, you lose");
+      
+   }   
+   
+}
+
+
+
+//Responsible of for creating the TripleString object.
+//Creates accessors/mutators and toString for objects
+//Sets max string size and pulls
+//Holds maintains win record + end game string
+
+class TripleString
+{
+   //Private members of TripleString
+   private String string1;
+   private String string2;
+   private String string3;
+   
+   // Max length for strings
+   public static final int MAX_LEN = 20;
+   // Maximum pulls per game
+   public static final int MAX_PULLS = 40;
+   
+   //Defines max size of static integer array,pullWinnings, to be 40 (MAX_PULLS)
+   private static int[] pullWinnings = new int[MAX_PULLS];
+   
+   //Counter for pullWinnings arrays
+   private static int numPulls = 0;
+   
+   //Validates string, checks to see if string is of appropriate length and checks if contents are valid
+   //Also checks to see if string is not null
+   private boolean validString(String str)
+   {
+      if (str.length() <= MAX_LEN)
+         {if (str != null){
+         return true;
+         }
+      
+         }
+      return false;
+   }
+   
+   //Basic constructor that initializes data of TripleString to be: ""
+   TripleString()
+   {
+      string1 = "";
+      string2 = "";
+      string3 = "";
+   }
+   
+   // Accessors (aka getters)
+   public String getString1()
+   {
+      return string1;
+   }
+   
+   public String getString2()
+   {
+      return string2;
+   }
+   
+   public String getString3()
+   {
+      return string3;
+   }
+   
+   // Mutators (aka setters), checks to see if string is valid
+   //Returns false if not valid, returns true of valid (not visible to user)
+   //Uses validString for confirmation
+   public boolean setString1(String input)
+   {
+    
+      if (validString(input))
+      {
+         string1 = input;
+         return true;
+      }
+      return false;
+   }
+   
+   public boolean setString2(String input)
+   {
+
+      if (validString(input))
+      {
+         string2 = input;
+         return true;
+      }
+      return false;
+   }
+   
+   public boolean setString3(String input)
+   {
+
+      if (validString(input))
+      {
+         string3 = input;
+         return true;
+      }
+     
+      return false;
+   }
+   
+   
+   //Returns all strings as one string
+   public String toString()
+   {
+      return string1 + " " + string2 + " " + string3;
+   }
+   
+ 
+   //saves winnings to array
+   //returns true if successful, returns false if not (not visible to user)
+   public boolean saveWinnings(int winnings)
+   {
+         //Sets winnings
+         pullWinnings[numPulls] = winnings;
+            ++numPulls;
+            return true;
+
+   }
+   
+   //Creates string of winnings to displayed when user quits game
+   public String displayWinnings()
+   {
+      String individualAmount = "";
+      int totalWinAmount = 0;
+      
+      //Iterates through array and adds winnings
+      for (int position = 0; position < numPulls; ++position)
+      {
+         //Finds individual winnings
+         individualAmount += " " + pullWinnings[position];
+         //Finds win total
+         totalWinAmount += pullWinnings[position];
+      }
+      
+      //Assembles endGame string, returns string
+      String endGameString = "Your individual winnings were:\n";
+      endGameString += individualAmount;
+      endGameString += "\nYour total winnings were: $" + totalWinAmount;
+      
+      return endGameString;
+   }
+   
+ 
+}
+
+
+//OUTPUT SECTION
+How much would you like to bet? (1 - 100) or 0 to quit
+5
+whirrrrrr .... and your pull is ... 
+cherries BAR BAR
+Congratulations, you won $25
+How much would you like to bet? (1 - 100) or 0 to quit
+5
+whirrrrrr .... and your pull is ... 
+BAR BAR BAR
+Congratulations, you won $250
+How much would you like to bet? (1 - 100) or 0 to quit
+10
+whirrrrrr .... and your pull is ... 
+BAR cherries BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+10
+whirrrrrr .... and your pull is ... 
+7 7 cherries
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+10
+1whirrrrrr .... and your pull is ... 
+BAR (space) (space)
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+0
+whirrrrrr .... and your pull is ... 
+BAR (space) BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR BAR BAR
+Congratulations, you won $400
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR cherries BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+(space) BAR BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR BAR 7
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR BAR (space)
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+cherries BAR (space)
+Congratulations, you won $40
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR BAR BAR
+Congratulations, you won $400
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR (space) BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+(space) BAR BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR BAR BAR
+Congratulations, you won $400
+How much would you like to bet? (1 - 100) or 0 to quit
+7
+whirrrrrr .... and your pull is ... 
+BAR 7 7
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+7
+whirrrrrr .... and your pull is ... 
+BAR BAR BAR
+Congratulations, you won $350
+How much would you like to bet? (1 - 100) or 0 to quit
+7
+whirrrrrr .... and your pull is ... 
+(space) (space) 7
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+7
+whirrrrrr .... and your pull is ... 
+BAR 7 BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+7
+whirrrrrr .... and your pull is ... 
+BAR (space) cherries
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+7
+whirrrrrr .... and your pull is ... 
+7 BAR BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+7
+whirrrrrr .... and your pull is ... 
+BAR cherries (space)
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+cherries 7 BAR
+Congratulations, you won $40
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+cherries BAR 7
+Congratulations, you won $40
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR cherries BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+cherries cherries BAR
+Congratulations, you won $120
+How much would you like to bet? (1 - 100) or 0 to quit
+9
+whirrrrrr .... and your pull is ... 
+BAR cherries BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+9
+whirrrrrr .... and your pull is ... 
+cherries BAR cherries
+Congratulations, you won $45
+How much would you like to bet? (1 - 100) or 0 to quit
+9
+whirrrrrr .... and your pull is ... 
+BAR BAR (space)
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+9
+whirrrrrr .... and your pull is ... 
+BAR cherries BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+cherries 7 7
+Congratulations, you won $40
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+cherries BAR cherries
+Congratulations, you won $40
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR 7 BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+BAR (space) cherries
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+(space) 7 BAR
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+cherries 7 BAR
+Congratulations, you won $40
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+7 7 (space)
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+cherries cherries cherries
+Congratulations, you won $120
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+whirrrrrr .... and your pull is ... 
+(space) BAR 7
+sorry, you lose
+How much would you like to bet? (1 - 100) or 0 to quit
+8
+Thanks for playing at the Casino!
+Your individual winnings were:
+ 25 250 0 0 0 0 400 0 0 0 0 40 400 0 0 400 0 350 0 0 0 0 0 40 40 0 120 0 45 0 0 40 40 0 0 0 40 0 120 0
+Your total winnings were: $2350
